@@ -51,9 +51,6 @@
     <ClCompile Include="EngineCore.cpp">
       <Filter>A.Debug\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="MyImGui.cpp">
-      <Filter>Contents</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadPool.cpp">
       <Filter>A.Debug\Thread</Filter>
     </ClCompile>
@@ -74,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
       <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="MyImGui.cpp">
+      <Filter>Contents\cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
