@@ -7,6 +7,7 @@
 #include "MyTime.h"
 #include "ThreadPool.h"
 #include "MyDefine.h"
+#include "GuiInterface.h"
 
 
 
@@ -17,6 +18,7 @@ MyImGui::MyImGui()
 	: ThreadPools(std::make_shared<ThreadPool>(MYThreadCount))
 {
 	MyImGuis = this;
+	Interfaces = std::make_shared<GuiInterface>();
 }
 MyImGui::~MyImGui()
 {
@@ -102,6 +104,9 @@ void MyImGui::Instance()
 			LogFileOpen();
 			LogFileSet = false;
 		}
+
+
+		Interfaces->Instance();
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ImGui::Render();

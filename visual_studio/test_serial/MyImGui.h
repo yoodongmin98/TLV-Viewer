@@ -22,8 +22,9 @@ static ID3D11RenderTargetView* g_mainRenderTargetView = nullptr;
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+
+class GuiInterface;
 class ThreadPool;
-class MyGUI_Interface;
 class MyImGui
 {
 public:
@@ -80,8 +81,10 @@ private:
     int width = 0;
     int height = 0;
 
-    std::shared_ptr<MyGUI_Interface> MyGUI_Interfaces = nullptr;
-    std::shared_ptr<ThreadPool> ThreadPools;
+   
+    std::shared_ptr<ThreadPool> ThreadPools = nullptr;
+    std::shared_ptr<GuiInterface> Interfaces = nullptr;
+
 
 
     std::ofstream logFile;
