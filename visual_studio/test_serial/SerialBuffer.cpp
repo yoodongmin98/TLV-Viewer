@@ -4,7 +4,6 @@
 
 #include <serial/serial.h>
 
-
 SerialBuffer::SerialBuffer()
 {
 	DetectHeaders = std::make_shared<DetectHeader>();
@@ -19,12 +18,5 @@ SerialBuffer::~SerialBuffer()
 
 void SerialBuffer::Instance()
 {
-	GetPortInfo();
 	
-}
-
-
-void SerialBuffer::GetPortInfo()
-{
-	PortInfos = serial::list_ports();
 }
