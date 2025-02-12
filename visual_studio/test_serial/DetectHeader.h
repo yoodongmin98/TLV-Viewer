@@ -10,9 +10,10 @@ public:
 	DetectHeader();
 	~DetectHeader();
 	bool FindHeader(std::vector<std::string>& _Buffer);
+
 protected:
 	void FindMagicNumber(); 
-	void ParsingData();
+
 private:
 	
 };

@@ -9,8 +9,8 @@ public:
 	ParsingData();
 	~ParsingData();
 
-	//юс╫ц
-	void DataParsing(std::vector<int> _Array);
+	
+	void DataParsing(std::vector<std::string>& _Buffer);
 protected:
 private:
 };

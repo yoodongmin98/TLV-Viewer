@@ -45,7 +45,7 @@ void GuiInterface::Instance()
    
 
 
-    Buffers->Instance();
+    Buffers->Instance(HexBuffer);
 }
 
 

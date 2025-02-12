@@ -1,2 +1,3 @@
 에러가 발생했습니다. Error : IO Exception: Specified port, COM120, does not exist., file C:\Users\admin\PersonalWorkSpace\Code\TLV-Viewer\src\impl\win.cc, line 83.
 에러가 발생했습니다. Error : IO Exception: Specified port, COM120, does not exist., file C:\Users\admin\PersonalWorkSpace\Code\TLV-Viewer\src\impl\win.cc, line 83.
+에러가 발생했습니다. Error : IO Exception: Specified port, COM120, does not exist., file C:\Users\admin\PersonalWorkSpace\Code\TLV-Viewer\src\impl\win.cc, line 83.
