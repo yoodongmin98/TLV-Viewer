@@ -22,6 +22,7 @@
     <ProjectGuid>{92EE7E58-C737-41F9-B795-9B6ACF6AB0B8}</ProjectGuid>
     <RootNamespace>test_serial</RootNamespace>
     <ProjectName>Serial-DirectX(ImGui)</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(VisualStudioVersion)' == '14.0'">v140_xp</PlatformToolset>
@@ -117,6 +118,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir);$(ProjectDir)ThirdParty\ImGui;$(ProjectDir)ThirdParty\ImGui\backends</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

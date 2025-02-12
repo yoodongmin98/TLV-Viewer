@@ -13,7 +13,7 @@ DetectHeader::~DetectHeader()
 }
 
 
-bool DetectHeader::FindHeader()
+bool DetectHeader::FindHeader(std::vector<std::string>& _Buffer)
 {
 	
 	

@@ -33,7 +33,7 @@ void MyImGui::Instance()
 {
 	WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
 	::RegisterClassExW(&wc);
-	hwnd = ::CreateWindowW(wc.lpszClassName, L"SerialPort Program", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1500, 820, nullptr, nullptr, wc.hInstance, nullptr);
+	hwnd = ::CreateWindowW(wc.lpszClassName, L"TLV-Viewer Program", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1500, 820, nullptr, nullptr, wc.hInstance, nullptr);
 
 
 
