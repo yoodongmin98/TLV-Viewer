@@ -16,75 +16,62 @@
 GuiInterface::GuiInterface()
 {
 	Buffers = std::make_shared<SerialBuffer>();
-    std::function<void()> Functions = std::bind(&GuiInterface::DataInput, this);
-    MyImGui::MyImGuis->GetThreadPool()->AddWork(Functions);
+	std::function<void()> Functions = std::bind(&GuiInterface::DataInput, this);
+	MyImGui::MyImGuis->GetThreadPool()->AddWork(Functions);
 }
 GuiInterface::~GuiInterface()
 {
-	 
+
 }
 
 
 
 void GuiInterface::Instance()
 {
-    SetBackGround();
+	SetBackGround();
 	GetPortInfo();
-	
-    ////////////////////////////////////////////Test
-    if (!MySerial.isOpen())
-    {
-        MySerial.setPort("COM120");
-        MySerial.setBaudrate(1843200);
-        MySerial.setBytesize(serial::bytesize_t::eightbits);
-        MySerial.setTimeout(serial::Timeout::simpleTimeout(10));
-        MySerial.open();
-    }
-    std::cout << HexBuffer.size() << std::endl;
-  ////////////////////////////////////////////////////
-   
+
+	////////////////////////////////////////////Test
+	if (!MySerial.isOpen())
+	{
+		MySerial.setPort("COM119");
+		MySerial.setBaudrate(1843200);
+		MySerial.setBytesize(serial::bytesize_t::eightbits);
+		MySerial.setTimeout(serial::Timeout::simpleTimeout(10));
+		MySerial.open();
+	}
+	std::cout << HexBuffer.size() << std::endl;
+	////////////////////////////////////////////////////
 
 
-    Buffers->Instance(HexBuffer);
+
+	Buffers->Instance(HexBuffer);
 }
 
 
 void GuiInterface::SetBackGround()
 {
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(MyImGui::MyImGuis->GetWindowSize_X(), MyImGui::MyImGuis->GetWindowSize_Y()), ImGuiCond_Always);
-    
-    ImGui::Begin("TLV-Viewer", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-    ImGui::End();
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(MyImGui::MyImGuis->GetWindowSize_X(), MyImGui::MyImGuis->GetWindowSize_Y()), ImGuiCond_Always);
+
+	ImGui::Begin("TLV-Viewer", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+	ImGui::End();
 }
 
 
 void GuiInterface::GetPortInfo()
 {
 	PortInfos = serial::list_ports();
-    ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_Always);
-    ImGui::Begin("Select Port",nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-   
-    ImGui::End();
+	ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_Always);
+	ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+
+	ImGui::End();
 }
 
 
 void GuiInterface::DataInput()
 {
-    while (true)
-    {
-        if (MySerial.available())
-        {
-            std::lock_guard<std::mutex> lock(HexBufferMutex);
-            std::string hexs = MySerial.read();
 
-            std::stringstream hexStream;
-            hexStream.str("");
-            for (unsigned char c : hexs)
-                hexStream << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(c) << " ";
-            HexBuffer.push_back(hexStream.str());
-        }
-    }
 }
 
 //typedef struct TLV_Header_Struct 
