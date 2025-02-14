@@ -3,7 +3,8 @@
 #include <serial/serial.h>
 #include <vector>
 #include <string>
-#include <mutex>
+#include <shared_mutex>
+#include <atomic>
 
 class SerialBuffer;
 class GuiInterface
@@ -22,6 +23,8 @@ private:
 
 	serial::Serial MySerial;
 	std::vector<serial::PortInfo> PortInfos;
-	std::vector<std::string> HexBuffer;
-	std::mutex HexBufferMutex;
+
+	std::vector<int> HexBuffer;
+	std::shared_mutex HexBufferMutex;
+	std::atomic<bool> stop = false;
 };

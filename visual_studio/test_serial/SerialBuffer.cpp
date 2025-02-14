@@ -16,7 +16,7 @@ SerialBuffer::~SerialBuffer()
 }
 
 
-void SerialBuffer::Instance(std::vector<std::string>& _Buffer)
+void SerialBuffer::Instance(std::vector<int>& _Buffer)
 {
 	FindHeader(_Buffer);
 	DataParsing(_Buffer);
@@ -27,13 +27,13 @@ void SerialBuffer::Instance(std::vector<std::string>& _Buffer)
 
 
 
-void SerialBuffer::FindHeader(std::vector<std::string>& _Buffer)
+void SerialBuffer::FindHeader(std::vector<int>& _Buffer)
 {
 	DetectHeaders->FindHeader(_Buffer);
 }
 
 
-void SerialBuffer::DataParsing(std::vector<std::string>& _Buffer)
+void SerialBuffer::DataParsing(std::vector<int>& _Buffer)
 {
 	ParsingDatas->DataParsing(_Buffer);
 }

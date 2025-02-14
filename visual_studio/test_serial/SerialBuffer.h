@@ -12,10 +12,10 @@ public:
 	SerialBuffer();
 	~SerialBuffer();
 
-	void Instance(std::vector<std::string>& _Buffer);
+	void Instance(std::vector<int>& _Buffer);
 protected:
-	void FindHeader(std::vector<std::string>& _Buffer);
-	void DataParsing(std::vector<std::string>& _Buffer);
+	void FindHeader(std::vector<int>& _Buffer);
+	void DataParsing(std::vector<int>& _Buffer);
 private:
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 	std::shared_ptr<ParsingData> ParsingDatas = nullptr;

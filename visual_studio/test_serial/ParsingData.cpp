@@ -17,7 +17,7 @@ ParsingData::~ParsingData()
 }
 
 
-void ParsingData::DataParsing(std::vector<std::string>& _Buffer) 
+void ParsingData::DataParsing(std::vector<int>& _Buffer) 
 {
 
 }

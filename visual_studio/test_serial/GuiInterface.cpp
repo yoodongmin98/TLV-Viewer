@@ -9,6 +9,9 @@
 #include <sstream>
 #include <string>
 #include <functional>
+#include <thread>
+#include <shared_mutex>
+#include <serial/serial.h>
 
 
 
@@ -16,12 +19,12 @@
 GuiInterface::GuiInterface()
 {
 	Buffers = std::make_shared<SerialBuffer>();
-	std::function<void()> Functions = std::bind(&GuiInterface::DataInput, this);
-	MyImGui::MyImGuis->GetThreadPool()->AddWork(Functions);
+	std::thread serialThread(&GuiInterface::DataInput, this);
+	serialThread.detach();
 }
 GuiInterface::~GuiInterface()
 {
-
+	stop = true;
 }
 
 
@@ -37,7 +40,6 @@ void GuiInterface::Instance()
 		MySerial.setPort("COM119");
 		MySerial.setBaudrate(1843200);
 		MySerial.setBytesize(serial::bytesize_t::eightbits);
-		MySerial.setTimeout(serial::Timeout::simpleTimeout(10));
 		MySerial.open();
 	}
 	std::cout << HexBuffer.size() << std::endl;
@@ -71,7 +73,21 @@ void GuiInterface::GetPortInfo()
 
 void GuiInterface::DataInput()
 {
+	while (!stop)
+	{
+		if (MySerial.available())
+		{
+			std::string hexs = MySerial.read();  // 시리얼 데이터 읽기
+			{
+				std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
+				for (unsigned char c : hexs)
+					HexBuffer.push_back(static_cast<int>(c));  // 바로 변환 후 저장
 
+			}
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(0));
+		}
+	}
 }
 
 //typedef struct TLV_Header_Struct 

@@ -1,7 +1,7 @@
 #include "DetectHeader.h"
 #include <algorithm>
-
-
+#include <shared_mutex>
+#include <string_view>
 DetectHeader::DetectHeader()
 {
 
@@ -13,23 +13,23 @@ DetectHeader::~DetectHeader()
 }
 
 
-bool DetectHeader::FindHeader(std::vector<std::string>& _Buffer)
+bool DetectHeader::FindHeader(std::vector<int>& _Buffer)
 {
-	std::vector<std::string> pattern = { "02" , "01" , "04" , "03" , "06" , "05" , "08" , "07" };
+	std::vector<int> pattern = { 2,1,4,3,6,5,8,7 };
+	size_t patternsize = pattern.size();
 
-	//Sliding Window Algorithm
-	size_t dataSize = _Buffer.size();
-	size_t patternSize = pattern.size();
+	std::lock_guard<std::shared_mutex> lock(HeaderMutex);
 
-	if (dataSize < patternSize) return false;
+	if (_Buffer.size() < 2000)
+		return false;
 
-	auto it = search(_Buffer.begin(), _Buffer.end(), pattern.begin(), pattern.end());
 
-	if (it != _Buffer.end()) 
+	for (auto i = 0; i < _Buffer.size() - pattern.size(); ++i)
 	{
-		//¹öÆÛ ÀÌ ^^¤Ó
-		_Buffer.erase(_Buffer.begin(), it + pattern.size());
-		return true;
+		if (std::equal(_Buffer.begin() + i, _Buffer.begin() + i + patternsize, pattern.begin()))
+		{
+			return true;
+		}
 	}
 	return false;
 }

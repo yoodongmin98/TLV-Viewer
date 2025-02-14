@@ -10,7 +10,7 @@ public:
 	~ParsingData();
 
 	
-	void DataParsing(std::vector<std::string>& _Buffer);
+	void DataParsing(std::vector<int>& _Buffer);
 protected:
 private:
 };
