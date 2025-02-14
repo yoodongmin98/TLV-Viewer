@@ -55,7 +55,7 @@ void ParsingData::DataParsing(std::vector<int>& _Buffer)
 
 void ParsingData::DataView()
 {
-    ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(500, 250), ImGuiCond_Always);
     ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 
     ImGui::Text("Version = %d", Version);
