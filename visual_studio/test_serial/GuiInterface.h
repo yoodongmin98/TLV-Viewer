@@ -18,6 +18,10 @@ protected:
 	void SetBackGround();
 	void GetPortInfo();
 	void DataInput();
+
+	void R7Setting();
+	void R642Setting();
+	void ubpulseSetting();
 private:
 	std::shared_ptr<SerialBuffer> Buffers = nullptr;
 
