@@ -28,17 +28,9 @@ bool DetectHeader::FindHeader(std::vector<int>& _Buffer)
 	{
 		if (std::equal(_Buffer.begin() + i, _Buffer.begin() + i + patternsize, pattern.begin()))
 		{
+			_Buffer.erase(_Buffer.begin(), _Buffer.begin() + i + 8);
 			return true;
 		}
 	}
 	return false;
 }
-
-
-
-
-void DetectHeader::FindMagicNumber()
-{
-	
-}
-
