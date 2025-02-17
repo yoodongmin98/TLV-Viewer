@@ -37,7 +37,7 @@ ParsingData::~ParsingData()
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer) 
 {
-    Version = ParseLittleEndian(_Buffer , 4);
+    Version = TransVersion(_Buffer);
     TotalPacketLength = ParseLittleEndian(_Buffer, 4);
     Platform = ParseLittleEndian(_Buffer, 4);
     FrameNumber = ParseLittleEndian(_Buffer, 4);
@@ -55,10 +55,10 @@ void ParsingData::DataParsing(std::vector<int>& _Buffer)
 
 void ParsingData::DataView()
 {
-    ImGui::SetNextWindowSize(ImVec2(500, 250), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Always);
     ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 
-    ImGui::Text("Version = %d", Version);
+    ImGui::Text("Version = %s", Version.c_str());
     ImGui::Text("TotalPacketLength = %d", TotalPacketLength);
     ImGui::Text("Platform = %d", Platform);
     ImGui::Text("FrameNumber = %d", FrameNumber);
@@ -84,4 +84,17 @@ int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesi
     
     BufferIndex += _bytesize;
     return value;
+}
+
+
+std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
+{
+    std::string VersionString;
+    VersionString = VersionString + 
+    std::to_string(_Buffer[3]) + "." +
+    std::to_string(_Buffer[2]) + "." +
+    std::to_string(_Buffer[1]) + "." +
+    std::to_string(_Buffer[0]);
+    BufferIndex += 4;
+    return VersionString;
 }
