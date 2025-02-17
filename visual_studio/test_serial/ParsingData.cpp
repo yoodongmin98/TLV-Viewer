@@ -1,7 +1,7 @@
 #include "ParsingData.h"
 
 #include "imgui.h"
-
+#include "CSV.h"
 
 
 //
@@ -25,7 +25,7 @@
 
 ParsingData::ParsingData()
 {
-
+    CSVs = std::make_shared<CSV>();
 }
 
 
@@ -37,19 +37,47 @@ ParsingData::~ParsingData()
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer) 
 {
-    Version = TransVersion(_Buffer);
-    TotalPacketLength = ParseLittleEndian(_Buffer, 4);
-    Platform = ParseLittleEndian(_Buffer, 4);
-    FrameNumber = ParseLittleEndian(_Buffer, 4);
-    Time = ParseLittleEndian(_Buffer, 4);
-    NumberofDetectedObjects = ParseLittleEndian(_Buffer, 4);
-    NumberofTLVs = ParseLittleEndian(_Buffer, 4);
-    SubframeNumber = ParseLittleEndian(_Buffer, 4);
-
-    TLVType = ParseLittleEndian(_Buffer, 4);
-    TLVLength = ParseLittleEndian(_Buffer, 4);
-    BufferIndex = 0;
+    //1216개 들어오면 헤더 떼내고 타입만큼 파싱하고 돌면서,
+    //그 헤더의 패킷길이까지 Bufferindex가 늘어나면 다시 초기화해서 파싱하는 느낌으로
+    TLV_HeaderParsing(_Buffer);
     DataView();
+}
+
+
+void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
+{
+    if (_Buffer.size() > 100)
+    {
+        Version = TransVersion(_Buffer);
+        TotalPacketLength = ParseLittleEndian(_Buffer);
+        Platform = ParseLittleEndian(_Buffer);
+        FrameNumber = ParseLittleEndian(_Buffer);
+        Time = ParseLittleEndian(_Buffer);
+        NumberofDetectedObjects = ParseLittleEndian(_Buffer);
+        NumberofTLVs = ParseLittleEndian(_Buffer);
+        SubframeNumber = ParseLittleEndian(_Buffer);
+        //TLV_TypeParsing(_Buffer);
+        //TLV_Datas;
+        BufferIndex = 0;
+    }
+}
+
+
+void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
+{
+    TLV_Datas.clear();
+    TLV_Datas.resize(NumberofTLVs);
+    for (auto i = 0; i < NumberofTLVs; ++i)
+    {
+        TLVType = ParseLittleEndian(_Buffer);
+        TLVLength = ParseLittleEndian(_Buffer);
+        for (auto k = 0; k < TLVLength; ++k)
+        {
+            TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
+        }
+
+    }
+        BufferIndex += TLVLength;
 }
 
 
@@ -72,14 +100,19 @@ void ParsingData::DataView()
 }
 
 
-int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize)
+int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
 {
     int value = 0;
     if (_Buffer.size() < 4 || BufferIndex + 3 >= _Buffer.size()) return 0;
 
+    if (_bytesize == 4)
     {
         std::lock_guard<std::shared_mutex> lock(DataMutex);
-        value = (_Buffer[BufferIndex] << 0) | (_Buffer[BufferIndex + 1] << 8) |  (_Buffer[BufferIndex + 2] << 16) |  (_Buffer[BufferIndex + 3] << 24);
+        value = (_Buffer[BufferIndex] << 0) | (_Buffer[BufferIndex + 1] << 8) | (_Buffer[BufferIndex + 2] << 16) | (_Buffer[BufferIndex + 3] << 24);
+    }
+    else if (_bytesize == 2)
+    {
+        value = (_Buffer[BufferIndex] << 0) | (_Buffer[BufferIndex + 1] << 8);
     }
     
     BufferIndex += _bytesize;
@@ -91,10 +124,10 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 {
     std::string VersionString;
     VersionString = VersionString + 
-    std::to_string(_Buffer[3]) + "." +
-    std::to_string(_Buffer[2]) + "." +
-    std::to_string(_Buffer[1]) + "." +
-    std::to_string(_Buffer[0]);
+    std::to_string(_Buffer[BufferIndex+3]) + "." +
+    std::to_string(_Buffer[BufferIndex+2]) + "." +
+    std::to_string(_Buffer[BufferIndex+1]) + "." +
+    std::to_string(_Buffer[BufferIndex+0]);
     BufferIndex += 4;
     return VersionString;
 }

@@ -4,6 +4,8 @@
 #include <shared_mutex>
 #include <string>
 
+
+class CSV;
 class ParsingData
 {
 public:
@@ -13,15 +15,15 @@ public:
 	
 	void DataParsing(std::vector<int>& _Buffer);
 protected:
-	int ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize);
+	std::string TransVersion(std::vector<int>& _Buffer);
+	int ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize=4);
+	void TLV_HeaderParsing(std::vector<int>& _Buffer);
+	void TLV_TypeParsing(std::vector<int>& _Buffer);
 	void DataView();
 
-	//Test
-	std::string TransVersion(std::vector<int>& _Buffer);
+	
 private:
-	std::shared_mutex DataMutex;
-
-	int BufferIndex = 0;
+	int BufferIndex = 8;
 	std::string Version;
 	int TotalPacketLength = 0;
 	int Platform = 0;
@@ -33,4 +35,11 @@ private:
 
 	int TLVType = 0;
 	int TLVLength = 0;
+
+	std::shared_mutex DataMutex;
+
+	
+	std::vector<std::vector<int>> TLV_Datas;
+
+	std::shared_ptr<CSV> CSVs = nullptr;
 };

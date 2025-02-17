@@ -8,8 +8,8 @@
 class CSV
 {
 public:
-	CSV();
-	~CSV();
+	/*CSV();
+	~CSV();*/
 
 
 protected:

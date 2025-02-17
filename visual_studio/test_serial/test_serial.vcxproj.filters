@@ -37,6 +37,9 @@
     <Filter Include="ThirdParty\ImGui">
       <UniqueIdentifier>{9aca0d51-5f30-4dd2-8916-be78f1607a47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\OPENXLSX">
+      <UniqueIdentifier>{0d0752ca-3264-48a5-8922-238acfd6a95c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
