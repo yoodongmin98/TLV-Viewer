@@ -56,8 +56,8 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofDetectedObjects = ParseLittleEndian(_Buffer);
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
-        //TLV_TypeParsing(_Buffer);
-        //TLV_Datas;
+        TLV_TypeParsing(_Buffer);
+        
         BufferIndex = 0;
     }
 }
@@ -71,13 +71,12 @@ void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
     {
         TLVType = ParseLittleEndian(_Buffer);
         TLVLength = ParseLittleEndian(_Buffer);
-        for (auto k = 0; k < TLVLength; ++k)
+        for (auto k = 0; k < TLVLength/2; ++k)
         {
             TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
         }
-
     }
-        BufferIndex += TLVLength;
+    BufferIndex += TLVLength;
 }
 
 

@@ -8,10 +8,11 @@
 class CSV
 {
 public:
-	/*CSV();
-	~CSV();*/
+	CSV();
+	~CSV();
 
-
+	void WriteFile();
 protected:
+
 private:
 };
