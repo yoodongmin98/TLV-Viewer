@@ -148,6 +148,7 @@
     <ClCompile Include="MyTime.cpp" />
     <ClCompile Include="ParsingData.cpp" />
     <ClCompile Include="R642.cpp" />
+    <ClCompile Include="R7.cpp" />
     <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="ThreadPool.cpp" />
+    <ClCompile Include="ubpulse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSV.h" />
@@ -168,11 +170,13 @@
     <ClInclude Include="MyTime.h" />
     <ClInclude Include="ParsingData.h" />
     <ClInclude Include="R642.h" />
+    <ClInclude Include="R7.h" />
     <ClInclude Include="ThirdParty\ImGui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="ThirdParty\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui_internal.h" />
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="ubpulse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

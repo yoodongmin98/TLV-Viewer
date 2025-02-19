@@ -4,17 +4,16 @@
 
 
 
-class R642 : public Module
+class R7 : public Module
 {
 public:
-	R642();
-	~R642();
-
+	R7();
+	~R7();
 	void Instance();
 protected:
 	void SetBaudrate() override;
 
-	void R642Setting();
+	void R7Setting();
 	void UI();
 private:
 };

@@ -33,6 +33,10 @@ void Module::SetBaudrate()
 
 void Module::DataInput()
 {
+	//Debug
+	static int Countsss = 0;
+	//
+
 	while (!stop)
 	{
 		if (MySerial.available())
@@ -44,7 +48,12 @@ void Module::DataInput()
 					HexBuffer.push_back(static_cast<int>(c));
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(0));
+			Countsss++;
 		}
+
+		//Debug
+		std::cout <<"읽은 데이터 개수"<< Countsss << std::endl;
+		//
 	}
 }
 

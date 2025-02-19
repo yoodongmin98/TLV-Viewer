@@ -11,7 +11,7 @@ public:
 	CSV();
 	~CSV();
 
-	void WriteFile(std::vector<int> _Data);
+	void WriteFile(std::vector<int>& _Data);
 protected:
 	void CreateFile();
 private:

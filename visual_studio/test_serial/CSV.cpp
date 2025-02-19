@@ -44,8 +44,8 @@ void CSV::CreateFile()
 }
 
 
-//어찌되었든 저장이 되긴 되니까 다른거 먼저해봅시다
-void CSV::WriteFile(std::vector<int> _Data)
+//어찌되었든 저장이 되긴 되니까 다른거 먼저해야징
+void CSV::WriteFile(std::vector<int>& _Data)
 {
 	CreateFile();
 	//파일 하나생성

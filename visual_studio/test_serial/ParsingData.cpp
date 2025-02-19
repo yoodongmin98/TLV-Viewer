@@ -37,7 +37,6 @@ ParsingData::~ParsingData()
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer) 
 {
-    std::cout << _Buffer.size() << std::endl;
     TLV_HeaderParsing(_Buffer);
     DataView();
 }
@@ -56,7 +55,12 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        CSVs->WriteFile(TLV_Datas[1]);
+        //Debug
+        if(TLV_Datas[1].size()==0)
+        {
+            int a = 0;
+        }
+        CSVs->WriteFile(TLV_Datas[1]); //가끔 1번인덱스가 비어있네?
         BufferIndex = 0;
     }
 }
@@ -80,9 +84,6 @@ void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 
 void ParsingData::DataView()
 {
-    //ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Always);
-    //ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-
     ImGui::Text("Version = %s", Version.c_str());
     ImGui::Text("TotalPacketLength = %d", TotalPacketLength);
     ImGui::Text("Platform = %d", Platform);
@@ -93,7 +94,6 @@ void ParsingData::DataView()
     ImGui::Text("SubframeNumber = %d", SubframeNumber);
     ImGui::Text("TLVType = %d", TLVType);
     ImGui::Text("TLVLength = %d", TLVLength);
-
 }
 
 

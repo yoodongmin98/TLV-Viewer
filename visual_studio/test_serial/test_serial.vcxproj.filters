@@ -96,6 +96,12 @@
     <ClCompile Include="Module.cpp">
       <Filter>Contents\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="R7.cpp">
+      <Filter>Contents\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ubpulse.cpp">
+      <Filter>Contents\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineDebug.h">
@@ -144,6 +150,12 @@
       <Filter>Contents\Header</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
+      <Filter>Contents\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="R7.h">
+      <Filter>Contents\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ubpulse.h">
       <Filter>Contents\Header</Filter>
     </ClInclude>
   </ItemGroup>
