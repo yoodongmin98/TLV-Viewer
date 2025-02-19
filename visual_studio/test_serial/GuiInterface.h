@@ -6,7 +6,7 @@
 #include <shared_mutex>
 #include <atomic>
 
-class SerialBuffer;
+class R642;
 class GuiInterface
 {
 public:
@@ -16,19 +16,10 @@ public:
 	void Instance();
 protected:
 	void SetBackGround();
-	void GetPortInfo();
-	void DataInput();
 
-	void R7Setting();
-	void R642Setting();
-	void ubpulseSetting();
+
 private:
-	std::shared_ptr<SerialBuffer> Buffers = nullptr;
+	std::shared_ptr<R642> R642s = nullptr;
 
-	serial::Serial MySerial;
-	std::vector<serial::PortInfo> PortInfos;
 
-	std::vector<int> HexBuffer;
-	std::shared_mutex HexBufferMutex;
-	std::atomic<bool> stop = false;
 };

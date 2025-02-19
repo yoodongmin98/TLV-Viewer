@@ -143,10 +143,11 @@
     <ClCompile Include="EngineDebug.cpp" />
     <ClCompile Include="GuiInterface.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="MyImGui.cpp" />
     <ClCompile Include="MyTime.cpp" />
     <ClCompile Include="ParsingData.cpp" />
-    <ClCompile Include="SerialBuffer.cpp" />
+    <ClCompile Include="R642.cpp" />
     <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="ThirdParty\ImGui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
@@ -161,11 +162,12 @@
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="EngineDebug.h" />
     <ClInclude Include="GuiInterface.h" />
+    <ClInclude Include="Module.h" />
     <ClInclude Include="MyDefine.h" />
     <ClInclude Include="MyImGui.h" />
     <ClInclude Include="MyTime.h" />
     <ClInclude Include="ParsingData.h" />
-    <ClInclude Include="SerialBuffer.h" />
+    <ClInclude Include="R642.h" />
     <ClInclude Include="ThirdParty\ImGui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="ThirdParty\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui.h" />

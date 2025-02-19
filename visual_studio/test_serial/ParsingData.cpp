@@ -57,7 +57,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        
+        CSVs->WriteFile(TLV_Datas[1]);
         BufferIndex = 0;
     }
 }
@@ -76,7 +76,6 @@ void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
             TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
         }
     }
-    BufferIndex += TLVLength;
 }
 
 

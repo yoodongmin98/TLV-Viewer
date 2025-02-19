@@ -84,13 +84,16 @@
     <ClCompile Include="GuiInterface.cpp">
       <Filter>Contents\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="SerialBuffer.cpp">
-      <Filter>Contents\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="ParsingData.cpp">
       <Filter>Contents\cpp</Filter>
     </ClCompile>
     <ClCompile Include="CSV.cpp">
+      <Filter>Contents\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="R642.cpp">
+      <Filter>Contents\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
       <Filter>Contents\cpp</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,13 +134,16 @@
     <ClInclude Include="GuiInterface.h">
       <Filter>Contents\Header</Filter>
     </ClInclude>
-    <ClInclude Include="SerialBuffer.h">
-      <Filter>Contents\Header</Filter>
-    </ClInclude>
     <ClInclude Include="ParsingData.h">
       <Filter>Contents\Header</Filter>
     </ClInclude>
     <ClInclude Include="CSV.h">
+      <Filter>Contents\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="R642.h">
+      <Filter>Contents\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
       <Filter>Contents\Header</Filter>
     </ClInclude>
   </ItemGroup>
