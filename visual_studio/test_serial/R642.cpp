@@ -47,5 +47,10 @@ void R642::UI()
 	{
 		Connect();
 	}
+	if (MySerial.isOpen())
+	{
+		DataParsing();
+	}
 	ImGui::End();
 }
+

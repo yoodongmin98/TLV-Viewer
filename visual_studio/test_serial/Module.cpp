@@ -1,5 +1,6 @@
 #include "Module.h"
-
+#include "DetectHeader.h"
+#include "ParsingData.h"
 
 #include <thread>
 #include <shared_mutex>
@@ -12,7 +13,8 @@
 Module::Module()
 	: serialThread(&Module::DataInput, this)
 {
-
+	DetectHeaders = std::make_shared<DetectHeader>();
+	ParsingDatas = std::make_shared<ParsingData>();
 }
 Module::~Module()
 {
@@ -57,7 +59,7 @@ void Module::SetPortInfo()
 }
 
 
-void Module::Connect()
+bool Module::Connect()
 {
 	if (!MySerial.isOpen())
 	{
@@ -65,5 +67,19 @@ void Module::Connect()
 		MySerial.setBaudrate(Baudrate);
 		MySerial.setTimeout(timeout);
 		MySerial.open();
+		return true;
 	}
+	return false;
 }
+
+
+void Module::DataParsing()
+{
+	DetectHeaders->FindHeader(HexBuffer);
+	ParsingDatas->DataParsing(HexBuffer);
+	
+}
+
+
+
+

@@ -8,6 +8,8 @@
 #include <thread>
 
 
+class ParsingData;
+class DetectHeader;
 class Module
 {
 public:
@@ -16,23 +18,31 @@ public:
 	virtual void SetBaudrate() = 0;
 
 protected:
-	unsigned int  Baudrate = 0;
-	std::string ComPort;
+	//Serial
 	serial::Serial MySerial;
+	std::string ComPort;
+	unsigned int  Baudrate = 0;
+	serial::Timeout timeout = serial::Timeout::simpleTimeout(100);
+	std::vector<serial::PortInfo> PortInfos;
+
+	//Data Buffer
 	std::vector<const char*> AllPort;
 	std::vector<int> HexBuffer;
 
 	int SelectPort = 0;
+
 	void SetPortInfo();
-	void Connect();
+	bool Connect();
+	void DataParsing();
 private:
+	//Thread
 	void DataInput();
-
 	std::thread serialThread;
-
-
-	serial::Timeout timeout = serial::Timeout::simpleTimeout(100);
-	std::vector<serial::PortInfo> PortInfos;
 	std::shared_mutex HexBufferMutex;
 	std::atomic<bool> stop = false;
+	
+
+	//Data Parsing
+	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
+	std::shared_ptr<ParsingData> ParsingDatas = nullptr;
 };

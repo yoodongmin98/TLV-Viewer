@@ -16,6 +16,7 @@ protected:
 
 	void R642Setting();
 	void UI();
+	
 private:
 
 };

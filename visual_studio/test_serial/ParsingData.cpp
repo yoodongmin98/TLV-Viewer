@@ -37,8 +37,7 @@ ParsingData::~ParsingData()
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer) 
 {
-    //1216개 들어오면 헤더 떼내고 타입만큼 파싱하고 돌면서,
-    //그 헤더의 패킷길이까지 Bufferindex가 늘어나면 다시 초기화해서 파싱하는 느낌으로
+    std::cout << _Buffer.size() << std::endl;
     TLV_HeaderParsing(_Buffer);
     DataView();
 }
@@ -81,8 +80,8 @@ void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 
 void ParsingData::DataView()
 {
-    ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Always);
-    ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+    //ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Always);
+    //ImGui::Begin("Select Port", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 
     ImGui::Text("Version = %s", Version.c_str());
     ImGui::Text("TotalPacketLength = %d", TotalPacketLength);
@@ -94,8 +93,9 @@ void ParsingData::DataView()
     ImGui::Text("SubframeNumber = %d", SubframeNumber);
     ImGui::Text("TLVType = %d", TLVType);
     ImGui::Text("TLVLength = %d", TLVLength);
-    ImGui::End();
+
 }
+
 
 
 int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)

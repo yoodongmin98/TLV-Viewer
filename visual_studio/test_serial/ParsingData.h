@@ -23,7 +23,7 @@ protected:
 
 	
 private:
-	int BufferIndex = 8;
+	int BufferIndex = 0;
 	std::string Version;
 	int TotalPacketLength = 0;
 	int Platform = 0;
