@@ -10,13 +10,17 @@
 
 
 Module::Module()
+	: serialThread(&Module::DataInput, this)
 {
-	std::thread serialThread(&Module::DataInput, this);
-	serialThread.detach();
+
 }
 Module::~Module()
 {
 	stop = true;
+	if (serialThread.joinable()) 
+		serialThread.join();
+	if (MySerial.isOpen())
+		MySerial.close();
 }
 
 
@@ -44,12 +48,14 @@ void Module::DataInput()
 
 void Module::SetPortInfo()
 {
-	std::vector<serial::PortInfo> PortInfos = serial::list_ports();
+	PortInfos = serial::list_ports();
+	AllPort.clear();
 	for (serial::PortInfo& V : PortInfos)
 	{
 		AllPort.emplace_back(V.port.c_str());
 	}
 }
+
 
 void Module::Connect()
 {
@@ -57,6 +63,7 @@ void Module::Connect()
 	{
 		MySerial.setPort(ComPort);
 		MySerial.setBaudrate(Baudrate);
+		MySerial.setTimeout(timeout);
 		MySerial.open();
 	}
 }

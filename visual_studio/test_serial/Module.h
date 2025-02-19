@@ -5,6 +5,7 @@
 #include <atomic>
 #include <vector>
 #include <string>
+#include <thread>
 
 
 class Module
@@ -26,6 +27,12 @@ protected:
 	void Connect();
 private:
 	void DataInput();
+
+	std::thread serialThread;
+
+
+	serial::Timeout timeout = serial::Timeout::simpleTimeout(100);
+	std::vector<serial::PortInfo> PortInfos;
 	std::shared_mutex HexBufferMutex;
 	std::atomic<bool> stop = false;
 };

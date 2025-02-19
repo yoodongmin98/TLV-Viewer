@@ -2,7 +2,7 @@
 #include <vector>
 #include "imgui.h"
 #include "MyImGui.h"
-
+#include <string>
 
 R642::R642()
 {
@@ -19,12 +19,14 @@ void R642::Instance()
 	SetPortInfo();
 	SetBaudrate();
 	R642Setting();
+	UI();
 }
 
 
 void R642::SetBaudrate()
 {
-	ComPort = AllPort[SelectPort];
+	if(AllPort.size()>=SelectPort)
+		ComPort = std::string(AllPort[SelectPort]);
 	Baudrate = 1843200;
 }
 
@@ -35,8 +37,13 @@ void R642::R642Setting()
 	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
 	ImGui::Begin("B", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
 	ImGui::SeparatorText("HRS-R642 [1843200]");
-	ImGui::Combo("SelectPort", &SelectPort, AllPort.data(), AllPort.size()); //포트번호가 왜깨질까/
-	if (ImGui::Button("TestConnect"))
+	ImGui::Combo("SelectPort", &SelectPort, AllPort.data(), AllPort.size());
+	
+}
+
+void R642::UI()
+{
+	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
 	{
 		Connect();
 	}
