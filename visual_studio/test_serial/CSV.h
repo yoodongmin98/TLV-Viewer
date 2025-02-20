@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <OpenXLSX.hpp>
-
+#include <string>
 using namespace OpenXLSX;
 //여기에 OpenXlsx넣을듯 ㅇㅇ
 class CSV
@@ -14,6 +14,7 @@ public:
 	void WriteFile(std::vector<int>& _Data);
 protected:
 	void CreateFile();
+	std::string getExcelColumnName(int colNum);
 private:
 	bool IsCreate = false;
 	std::vector<XLDocument> DocumentList;

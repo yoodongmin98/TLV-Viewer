@@ -2,8 +2,7 @@
 
 #include "imgui.h"
 #include "CSV.h"
-
-
+#include "DetectHeader.h"
 //
 //프레임 헤더 구조 :
 //
@@ -26,6 +25,7 @@
 ParsingData::ParsingData()
 {
     CSVs = std::make_shared<CSV>();
+    DetectHeaders = std::make_shared<DetectHeader>();
 }
 
 
@@ -55,25 +55,33 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        //CSVs->WriteFile(TLV_Datas[1]);
-        BufferIndex = 0;
+        if (TLV_Datas.size() == 2)
+            CSVs->WriteFile(TLV_Datas[1]);
+        BufferIndex = 8;
     }
 }
 
 
-void ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
+bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 {
+    std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
     TLV_Datas.clear();
     TLV_Datas.resize(NumberofTLVs);
     for (auto i = 0; i < NumberofTLVs; ++i)
     {
-        TLVType = ParseLittleEndian(_Buffer);
-        TLVLength = ParseLittleEndian(_Buffer);
-        for (auto k = 0; k < TLVLength/2; ++k)
+        if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
         {
-            TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
+            //좀 짜치지만 나중에 바꾸는거로
+            BufferIndex = 0;
+            TLVType = ParseLittleEndian(_Buffer);
+            TLVLength = ParseLittleEndian(_Buffer);
+            for (auto k = 0; k < TLVLength / 2; ++k)
+            {
+                TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
+            }
         }
     }
+    return true;
 }
 
 

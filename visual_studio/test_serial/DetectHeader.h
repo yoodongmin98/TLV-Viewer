@@ -9,7 +9,7 @@ class DetectHeader
 public:
 	DetectHeader();
 	~DetectHeader();
-	bool FindHeader(std::vector<int>& _Buffer);
+	bool FindHeader(std::vector<int>& _Buffer, std::vector<int> pattern);
 
 protected:
 

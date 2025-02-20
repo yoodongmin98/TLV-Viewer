@@ -15,22 +15,19 @@ DetectHeader::~DetectHeader()
 }
 
 
-bool DetectHeader::FindHeader(std::vector<int>& _Buffer)
+bool DetectHeader::FindHeader(std::vector<int>& _Buffer , std::vector<int> pattern)
 {
-	std::vector<int> pattern = { 2,1,4,3,6,5,8,7 };
-	size_t patternsize = pattern.size();
-
 	std::lock_guard<std::shared_mutex> lock(HeaderMutex);
 
-	if (_Buffer.size() < 2000)
+	if (_Buffer.size() < 1500)
 		return false;
 
 
 	for (auto i = 0; i < _Buffer.size() - pattern.size(); ++i)
 	{
-		if (std::equal(_Buffer.begin() + i, _Buffer.begin() + i + patternsize, pattern.begin()))
+		if (std::equal(_Buffer.begin() + i, _Buffer.begin() + i + pattern.size(), pattern.begin()))
 		{
-			_Buffer.erase(_Buffer.begin(), _Buffer.begin() + i + 8);
+			_Buffer.erase(_Buffer.begin(), _Buffer.begin() + i);
 			return true;
 		}
 	}

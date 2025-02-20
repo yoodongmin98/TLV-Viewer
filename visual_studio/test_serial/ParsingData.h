@@ -3,8 +3,11 @@
 #include <vector>
 #include <shared_mutex>
 #include <string>
+#include <deque>
 
 
+
+class DetectHeader;
 class CSV;
 class ParsingData
 {
@@ -18,12 +21,12 @@ protected:
 	std::string TransVersion(std::vector<int>& _Buffer);
 	int ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize=4);
 	void TLV_HeaderParsing(std::vector<int>& _Buffer);
-	void TLV_TypeParsing(std::vector<int>& _Buffer);
+	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 	void DataView();
 
 	
 private:
-	int BufferIndex = 0;
+	int BufferIndex = 8;
 	std::string Version;
 	int TotalPacketLength = 0;
 	int Platform = 0;
@@ -42,4 +45,5 @@ private:
 	std::vector<std::vector<int>> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;
+	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 };

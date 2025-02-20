@@ -74,18 +74,12 @@ bool Module::Connect()
 	return false;
 }
 
-static int Counts = 0;
-static int HCounts = 0;
+
 void Module::DataParsing()
 {
-	Counts++;
-	if (DetectHeaders->FindHeader(HexBuffer))
-	{
-		HCounts++;
+	std::vector<int> MagicNumber = { 2,1,4,3,6,5,8,7 };
+	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
 		ParsingDatas->DataParsing(HexBuffer);
-
-	}
-	std::cout << "µ· ÇÁ·¹ÀÓ È½¼ö - Çì´õÃ£ÀºÈ½¼öÂ÷ÀÌ" << Counts - HCounts << std::endl;
 }
 
 

@@ -1,13 +1,13 @@
 #include "CSV.h"
 #include <OpenXLSX.hpp>
 
-
+#include <string>
 
 
 
 
 using namespace OpenXLSX;
-
+using namespace std;
 CSV::CSV()
 {
 
@@ -41,6 +41,11 @@ void CSV::CreateFile()
 		RX2Sheet = RX2.workbook().worksheet("Sheet1");
 		RX3Sheet = RX3.workbook().worksheet("Sheet1");
 		RX4Sheet = RX4.workbook().worksheet("Sheet1");
+
+		SheetList.emplace_back(RX1Sheet);
+		SheetList.emplace_back(RX2Sheet);
+		SheetList.emplace_back(RX3Sheet);
+		SheetList.emplace_back(RX4Sheet);
 		IsCreate = true;
 	}
 }
@@ -50,17 +55,16 @@ void CSV::CreateFile()
 void CSV::WriteFile(std::vector<int>& _Data)
 {
 	CreateFile();
-	//파일 하나생성
-	//512개로 나눈거 뭐 파일로 나누든 시트로 나누든 해서 128 x 4로 만듬(642,7 따로)
-	int SheetCount = 1;
-	//for (auto p = 0; p < 4; ++p)
+
+
+	for (auto& Sheets : SheetList)
 	{
-		//for (auto i = 1; i <= _Data.size() / 4; ++i)
-		//for (auto i = 1; i <= 64; ++i)
+		for (auto i = 1; i <= _Data.size() / 4; ++i)
 		{
-			//RX1Sheet.cell("A" + std::to_string(i)).value() = _Data[i];
+			std::string colName = getExcelColumnName(i + 1);  // 1부터 시작하는 열 인덱스
+			std::string cellAddress = colName + "1";  // "A1", "B1", "C1" ...
+			Sheets.cell(cellAddress).value() = _Data[i];  // 값 쓰기
 		}
-		//SheetCount++;
 	}
 	
 	RX1.save();
@@ -68,4 +72,17 @@ void CSV::WriteFile(std::vector<int>& _Data)
 	RX3.save();
 	RX4.save();
 	
+}
+
+
+std::string CSV::getExcelColumnName(int colNum)
+{
+	string columnName;
+	while (colNum > 0) 
+	{
+		int remainder = (colNum - 1) % 26;  
+		columnName = char('A' + remainder) + columnName;
+		colNum = (colNum - 1) / 26;
+	}
+	return columnName;
 }

@@ -1,7 +1,0 @@
-에러가 발생했습니다. Error : bad allocation
-에러가 발생했습니다. Error : vector too long
-에러가 발생했습니다. Error : vector too long
-에러가 발생했습니다. Error : vector too long
-에러가 발생했습니다. Error : vector too long
-에러가 발생했습니다. Error : IO Exception: Unknown error opening the serial port: 5, file C:\Users\admin\PersonalWorkSpace\Code\TLV-Viewer\src\impl\win.cc, line 86.
-에러가 발생했습니다. Error : vector too long
