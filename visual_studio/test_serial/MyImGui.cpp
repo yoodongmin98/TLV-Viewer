@@ -1,6 +1,12 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <thread>
+#include <atomic>
+
+#include <functional>
+#include <iostream>
+#include <string>
 
 
 #include "MyImGui.h"
@@ -13,6 +19,9 @@
 
 
 MyImGui* MyImGui::MyImGuis = nullptr;
+std::atomic<bool> g_Running = true;  // 렌더링 루프 플래그
+std::atomic<bool> g_IsMoving = false;  // 창 이동 감지 플래그
+
 
 MyImGui::MyImGui()
 	: ThreadPools(std::make_shared<ThreadPool>(MYThreadCount))
@@ -31,9 +40,11 @@ MyImGui::~MyImGui()
 
 void MyImGui::Instance()
 {
+	//절전모드방지인데 이건 좀 지켜봐야할듯
+	//SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
 	WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
 	::RegisterClassExW(&wc);
-	hwnd = ::CreateWindowW(wc.lpszClassName, L"TLV-Viewer Program", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1500, 820, nullptr, nullptr, wc.hInstance, nullptr);
+	hwnd = ::CreateWindowW(wc.lpszClassName, L"SerialPort Program", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1500, 820, nullptr, nullptr, wc.hInstance, nullptr);
 
 
 
@@ -56,11 +67,44 @@ void MyImGui::Instance()
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
-	ImVec4 clear_color = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);
 
+	std::thread renderThread(std::bind(&MyImGui::RenderLoop, this, io));
+	MSG msg;
+	while (true)
+	{
+		while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
+		{
+			::TranslateMessage(&msg);
+			::DispatchMessage(&msg);
+
+			if (msg.message == WM_QUIT)
+			{
+				g_Running = false;  // RenderLoop 종료
+				renderThread.join();  // 쓰레드 종료 대기
+				return;
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));  // CPU 사용량 절약
+		}
+	}
+
+	g_Running = false;
+	renderThread.join();
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
+	CleanupDeviceD3D();
+	::DestroyWindow(hwnd);
+	::UnregisterClassW(wc.lpszClassName, wc.hInstance);
+}
+
+
+void MyImGui::RenderLoop(ImGuiIO& io)
+{
+	ImVec4 clear_color = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);
 	// Main loop
-	bool done = false;
-	while (!done)
+
+	while (g_Running)
 	{
 
 		if (GetClientRect(hwnd, &rect))
@@ -68,20 +112,17 @@ void MyImGui::Instance()
 			width = rect.right - rect.left;
 			height = rect.bottom - rect.top;
 		}
-		MSG msg;
-		while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+		if (g_IsMoving)
 		{
-			::TranslateMessage(&msg);
-			::DispatchMessage(&msg);
-			if (msg.message == WM_QUIT)
-				done = true;
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			continue;
 		}
-		if (done)
-			break;
 
 		if (g_SwapChainOccluded && g_pSwapChain->Present(0, DXGI_PRESENT_TEST) == DXGI_STATUS_OCCLUDED)
 		{
-			::Sleep(10);
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			continue;
 		}
 		g_SwapChainOccluded = false;
@@ -93,18 +134,17 @@ void MyImGui::Instance()
 			g_ResizeWidth = g_ResizeHeight = 0;
 			CreateRenderTarget();
 		}
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//LogFile
+
 		if (LogFileSet)
 		{
 			LogFileName = "Log.txt";
 			LogFileOpen();
 			LogFileSet = false;
 		}
-
 
 		Interfaces->Instance();
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,16 +158,7 @@ void MyImGui::Instance()
 		HRESULT hr = g_pSwapChain->Present(1, 0);
 		g_SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
 	}
-
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
-
-	CleanupDeviceD3D();
-	::DestroyWindow(hwnd);
-	::UnregisterClassW(wc.lpszClassName, wc.hInstance);
 }
-
 
 bool MyImGui::CreateDeviceD3D(HWND hWnd)
 {
@@ -181,16 +212,24 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_SIZE:
+	{
 		if (wParam == SIZE_MINIMIZED)
 			return 0;
 		g_ResizeWidth = (UINT)LOWORD(lParam);
 		g_ResizeHeight = (UINT)HIWORD(lParam);
 		return 0;
+	}
+	case WM_MOVE:
+	{
+		g_IsMoving = false; // 창이 이동하면 강제로 렌더링 다시 시작
+		break;
+	}
 	case WM_SYSCOMMAND:
 		if ((wParam & 0xfff0) == SC_KEYMENU)
 			return 0;
 		break;
 	case WM_DESTROY:
+		g_Running = false;
 		::PostQuitMessage(0);
 		return 0;
 	}

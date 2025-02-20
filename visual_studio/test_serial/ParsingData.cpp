@@ -55,12 +55,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        //Debug
-        if(TLV_Datas[1].size()==0)
-        {
-            int a = 0;
-        }
-        CSVs->WriteFile(TLV_Datas[1]); //가끔 1번인덱스가 비어있네?
+        //CSVs->WriteFile(TLV_Datas[1]);
         BufferIndex = 0;
     }
 }

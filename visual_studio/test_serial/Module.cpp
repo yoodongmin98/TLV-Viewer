@@ -11,7 +11,7 @@
 
 
 Module::Module()
-	: serialThread(&Module::DataInput, this)
+	//: serialThread(&Module::DataInput, this)
 {
 	DetectHeaders = std::make_shared<DetectHeader>();
 	ParsingDatas = std::make_shared<ParsingData>();
@@ -33,13 +33,9 @@ void Module::SetBaudrate()
 
 void Module::DataInput()
 {
-	//Debug
-	static int Countsss = 0;
-	//
-
 	while (!stop)
 	{
-		if (MySerial.available())
+		if (MySerial.isOpen())
 		{
 			std::string hexs = MySerial.read();
 			{
@@ -48,12 +44,7 @@ void Module::DataInput()
 					HexBuffer.push_back(static_cast<int>(c));
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(0));
-			Countsss++;
 		}
-
-		//Debug
-		std::cout <<"읽은 데이터 개수"<< Countsss << std::endl;
-		//
 	}
 }
 
@@ -76,17 +67,25 @@ bool Module::Connect()
 		MySerial.setBaudrate(Baudrate);
 		MySerial.setTimeout(timeout);
 		MySerial.open();
+		stop = false;
+		serialThread = std::thread(&Module::DataInput, this);
 		return true;
 	}
 	return false;
 }
 
-
+static int Counts = 0;
+static int HCounts = 0;
 void Module::DataParsing()
 {
-	DetectHeaders->FindHeader(HexBuffer);
-	ParsingDatas->DataParsing(HexBuffer);
-	
+	Counts++;
+	if (DetectHeaders->FindHeader(HexBuffer))
+	{
+		HCounts++;
+		ParsingDatas->DataParsing(HexBuffer);
+
+	}
+	std::cout << "돈 프레임 횟수 - 헤더찾은횟수차이" << Counts - HCounts << std::endl;
 }
 
 

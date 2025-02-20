@@ -18,7 +18,9 @@ CSV::~CSV()
 	for (XLDocument& Document : DocumentList)
 	{
 		Document.save();
-		Document.close();
+
+		if(Document.isOpen())
+			Document.close();
 	}
 }
 
@@ -54,9 +56,9 @@ void CSV::WriteFile(std::vector<int>& _Data)
 	//for (auto p = 0; p < 4; ++p)
 	{
 		//for (auto i = 1; i <= _Data.size() / 4; ++i)
-		for (auto i = 1; i <= 64; ++i)
+		//for (auto i = 1; i <= 64; ++i)
 		{
-			RX1Sheet.cell("A" + std::to_string(i)).value() = _Data[i];
+			//RX1Sheet.cell("A" + std::to_string(i)).value() = _Data[i];
 		}
 		//SheetCount++;
 	}
