@@ -11,9 +11,9 @@ public:
 	CSV();
 	~CSV();
 
-	void WriteFile(std::vector<int>& _Data);
+	void WriteFile(std::vector<int>& _Data , std::string& _Name);
 protected:
-	void CreateFile();
+	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);
 private:
 	bool IsCreate = false;

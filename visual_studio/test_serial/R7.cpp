@@ -6,7 +6,7 @@
 
 R7::R7()
 {
-
+	ModuleName = "R7";
 }
 
 
@@ -50,7 +50,7 @@ void R7::UI()
 	}
 	if (MySerial.isOpen())
 	{
-		DataParsing();
+		DataParsing(ModuleName);
 	}
 	ImGui::End();
 }

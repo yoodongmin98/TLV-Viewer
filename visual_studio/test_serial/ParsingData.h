@@ -16,11 +16,11 @@ public:
 	~ParsingData();
 
 	
-	void DataParsing(std::vector<int>& _Buffer);
+	void DataParsing(std::vector<int>& _Buffer, std::string& _Name);
 protected:
 	std::string TransVersion(std::vector<int>& _Buffer);
 	int ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize=4);
-	void TLV_HeaderParsing(std::vector<int>& _Buffer);
+	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 	void DataView();
 
@@ -42,7 +42,7 @@ private:
 	std::shared_mutex DataMutex;
 
 	
-	std::vector<std::vector<int>> TLV_Datas;
+	std::vector<int> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;

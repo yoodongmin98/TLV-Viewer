@@ -23,6 +23,7 @@ Module::~Module()
 		serialThread.join();
 	if (MySerial.isOpen())
 		MySerial.close();
+	/*HexBuffer.clear();*/
 }
 
 
@@ -75,11 +76,11 @@ bool Module::Connect()
 }
 
 
-void Module::DataParsing()
+void Module::DataParsing(std::string _Name)
 {
 	std::vector<int> MagicNumber = { 2,1,4,3,6,5,8,7 };
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
-		ParsingDatas->DataParsing(HexBuffer);
+		ParsingDatas->DataParsing(HexBuffer,_Name);
 }
 
 

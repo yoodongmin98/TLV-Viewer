@@ -6,7 +6,7 @@
 
 R642::R642()
 {
-	
+	ModuleName = "R642";
 }
 R642::~R642()
 {
@@ -49,7 +49,7 @@ void R642::UI()
 	}
 	if (MySerial.isOpen())
 	{
-		DataParsing();
+		DataParsing(ModuleName);
 	}
 	ImGui::End();
 }

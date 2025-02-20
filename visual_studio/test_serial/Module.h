@@ -30,11 +30,15 @@ protected:
 	std::vector<const char*> AllPort;
 	std::vector<int> HexBuffer;
 
+
+	//Module Name
+	std::string ModuleName;
+
 	int SelectPort = 0;
 
 	void SetPortInfo();
 	bool Connect();
-	void DataParsing();
+	void DataParsing(std::string _Name);
 private:
 	//Thread
 	void DataInput();
@@ -46,4 +50,7 @@ private:
 	//Data Parsing
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 	std::shared_ptr<ParsingData> ParsingDatas = nullptr;
+
+
+
 };

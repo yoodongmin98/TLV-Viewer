@@ -35,14 +35,14 @@ ParsingData::~ParsingData()
 }
 
 
-void ParsingData::DataParsing(std::vector<int>& _Buffer) 
+void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
 {
-    TLV_HeaderParsing(_Buffer);
+    TLV_HeaderParsing(_Buffer,_Name);
     DataView();
 }
 
 
-void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
+void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name)
 {
     if (_Buffer.size() > 100)
     {
@@ -55,8 +55,8 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        if (TLV_Datas.size() == 2)
-            CSVs->WriteFile(TLV_Datas[1]);
+        if (TLV_Datas.size() > 0)
+            CSVs->WriteFile(TLV_Datas, _Name);
         BufferIndex = 8;
     }
 }
@@ -67,20 +67,19 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
     std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
     TLV_Datas.clear();
     TLV_Datas.resize(NumberofTLVs);
-    for (auto i = 0; i < NumberofTLVs; ++i)
-    {
-        if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
-        {
-            //좀 짜치지만 나중에 바꾸는거로
-            BufferIndex = 0;
-            TLVType = ParseLittleEndian(_Buffer);
-            TLVLength = ParseLittleEndian(_Buffer);
-            for (auto k = 0; k < TLVLength / 2; ++k)
-            {
-                TLV_Datas[i].push_back(ParseLittleEndian(_Buffer, 2));
-            }
-        }
-    }
+   
+	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
+	{
+		//좀 짜치지만 나중에 바꾸는거로
+		BufferIndex = 0;
+		TLVType = ParseLittleEndian(_Buffer);
+		TLVLength = ParseLittleEndian(_Buffer);
+		for (auto k = 0; k < TLVLength / 2; ++k)
+		{
+			TLV_Datas.push_back(ParseLittleEndian(_Buffer, 2));
+		}
+	}
+    
     return true;
 }
 
