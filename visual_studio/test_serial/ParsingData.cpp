@@ -38,7 +38,6 @@ ParsingData::~ParsingData()
 void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
 {
     TLV_HeaderParsing(_Buffer,_Name);
-    DataView();
 }
 
 
@@ -83,19 +82,6 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 }
 
 
-void ParsingData::DataView()
-{
-    ImGui::Text("Version = %s", Version.c_str());
-    ImGui::Text("TotalPacketLength = %d", TotalPacketLength);
-    ImGui::Text("Platform = %d", Platform);
-    ImGui::Text("FrameNumber = %d", FrameNumber);
-    ImGui::Text("Time = %d", Time);
-    ImGui::Text("NumberofDetectedObjects = %d", NumberofDetectedObjects);
-    ImGui::Text("NumberofTLVs = %d", NumberofTLVs);
-    ImGui::Text("SubframeNumber = %d", SubframeNumber);
-    ImGui::Text("TLVType = %d", TLVType);
-    ImGui::Text("TLVLength = %d", TLVLength);
-}
 
 
 

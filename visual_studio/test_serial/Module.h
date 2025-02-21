@@ -40,6 +40,7 @@ protected:
 	bool Connect();
 	void DisConnect();
 	void DataParsing(std::string _Name);
+	void DataView();
 private:
 	//Thread
 	void DataInput();

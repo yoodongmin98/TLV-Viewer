@@ -20,6 +20,7 @@ void R7::Instance()
 	SetPortInfo();
 	SetBaudrate();
 	R7Setting();
+	DataView();
 	UI();
 }
 

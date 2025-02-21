@@ -15,18 +15,61 @@ public:
 	ParsingData();
 	~ParsingData();
 
-	
+
 	void DataParsing(std::vector<int>& _Buffer, std::string& _Name);
+
+	const std::string GetVersion()
+	{
+		return Version;
+	}
+	const int GetTotalPacketLength()
+	{
+		return TotalPacketLength;
+	}
+	const int GetPlatform()
+	{
+		return Platform;
+	}
+	const int GetFrameNumber()
+	{
+		return FrameNumber;
+	}
+	const int GetTime()
+	{
+		return Time;
+	}
+	const int GetNumberofDetectedObjects()
+	{
+		return NumberofDetectedObjects;
+	}
+	const int GetNumberofTLVs()
+	{
+		return NumberofTLVs;
+	}
+	const int GetSubframeNumber()
+	{
+		return SubframeNumber;
+	}
+	const int GetTLVType()
+	{
+		return TLVType;
+	}
+	const int GetTLVLength()
+	{
+		return TLVLength;
+	}
+
 protected:
+
 	std::string TransVersion(std::vector<int>& _Buffer);
-	int ParseLittleEndian(std::vector<int>& _Buffer , const int _bytesize=4);
+	int ParseLittleEndian(std::vector<int>& _Buffer, const int _bytesize = 4);
+
 	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
-	void DataView();
 
-	
 private:
 	int BufferIndex = 8;
+
 	std::string Version;
 	int TotalPacketLength = 0;
 	int Platform = 0;
@@ -41,7 +84,7 @@ private:
 
 	std::shared_mutex DataMutex;
 
-	
+
 	std::vector<int> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;

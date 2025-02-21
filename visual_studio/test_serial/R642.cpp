@@ -19,6 +19,7 @@ void R642::Instance()
 	SetPortInfo();
 	SetBaudrate();
 	R642Setting();
+	DataView();
 	UI();
 }
 

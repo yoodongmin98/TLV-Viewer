@@ -5,6 +5,7 @@
 #include <thread>
 #include <shared_mutex>
 #include <serial/serial.h>
+#include "imgui.h"
 
 
 
@@ -35,17 +36,23 @@ void Module::DataInput()
 {
 	while (!stop)
 	{
-		if (MySerial.isOpen() && MySerial.available())
+		try
 		{
-			std::string hexs = MySerial.read();
-			//Debug
-			std::cout << hexs;
+			if (MySerial.isOpen() && MySerial.available())
 			{
-				std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
-				for (unsigned char c : hexs)
-					HexBuffer.push_back(static_cast<int>(c));
+				std::string hexs = MySerial.read();
+				{
+					std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
+					for (unsigned char c : hexs)
+						HexBuffer.push_back(static_cast<int>(c));
+				}
+				std::this_thread::sleep_for(std::chrono::milliseconds(0));
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(0));
+		}
+		catch (...)
+		{
+			stop = true;
+			MySerial.close();
 		}
 	}
 }
@@ -72,6 +79,8 @@ bool Module::Connect()
 			MySerial.setTimeout(timeout);
 			MySerial.open();
 			stop = false;
+			if (serialThread.joinable()) 
+				serialThread.join();  // ¶Ç´Â detach();
 			serialThread = std::thread(&Module::DataInput, this);
 			return true;
 		}
@@ -104,5 +113,18 @@ void Module::DataParsing(std::string _Name)
 }
 
 
+void Module::DataView()
+{
+	ImGui::Text("Version = %s", ParsingDatas->GetVersion().c_str());
+	ImGui::Text("TotalPacketLength = %d", ParsingDatas->GetTotalPacketLength());
+	ImGui::Text("Platform = %d", ParsingDatas->GetPlatform());
+	ImGui::Text("FrameNumber = %d", ParsingDatas->GetFrameNumber());
+	ImGui::Text("Time = %d", ParsingDatas->GetTime());
+	ImGui::Text("NumberofDetectedObjects = %d", ParsingDatas->GetNumberofDetectedObjects());
+	ImGui::Text("NumberofTLVs = %d", ParsingDatas->GetNumberofTLVs());
+	ImGui::Text("SubframeNumber = %d", ParsingDatas->GetSubframeNumber());
+	ImGui::Text("TLVType = %d", ParsingDatas->GetTLVType());
+	ImGui::Text("TLVLength = %d", ParsingDatas->GetTLVLength());
+}
 
 
