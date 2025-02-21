@@ -38,6 +38,8 @@ void Module::DataInput()
 		if (MySerial.isOpen() && MySerial.available())
 		{
 			std::string hexs = MySerial.read();
+			//Debug
+			std::cout << hexs;
 			{
 				std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
 				for (unsigned char c : hexs)
@@ -61,15 +63,22 @@ void Module::SetPortInfo()
 
 bool Module::Connect()
 {
-	if (!MySerial.isOpen())
+	try
 	{
-		MySerial.setPort(ComPort);
-		MySerial.setBaudrate(Baudrate);
-		MySerial.setTimeout(timeout);
-		MySerial.open();
-		stop = false;
-		serialThread = std::thread(&Module::DataInput, this);
-		return true;
+		if (!MySerial.isOpen())
+		{
+			MySerial.setPort(ComPort);
+			MySerial.setBaudrate(Baudrate);
+			MySerial.setTimeout(timeout);
+			MySerial.open();
+			stop = false;
+			serialThread = std::thread(&Module::DataInput, this);
+			return true;
+		}
+	}
+	catch (...)
+	{
+		std::cout << "포트를 열 수 없습니다." << std::endl;
 	}
 	return false;
 }
