@@ -12,11 +12,16 @@ public:
 	~CSV();
 
 	void WriteFile(std::vector<int>& _Data , std::string& _Name);
+	void SaveFile();
 protected:
 	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);
 private:
 	bool IsCreate = false;
+
+	int Cells = 1;
+
+
 	std::vector<XLDocument> DocumentList;
 	XLDocument RX1;
 	XLDocument RX2;

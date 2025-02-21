@@ -1,6 +1,6 @@
 #include "CSV.h"
 #include <OpenXLSX.hpp>
-
+#include "imgui.h"
 #include <string>
 
 
@@ -51,10 +51,14 @@ void CSV::CreateFile(std::string& _Name)
 }
 
 
-static int Cells = 1;
+
 //어찌되었든 저장이 되긴 되니까 다른거 먼저해야징
 void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
 {
+	if (_Data.empty())
+		return;
+
+
 	CreateFile(_Name);
 
 	for (auto k=0; k<SheetList.size(); ++k)
@@ -80,4 +84,11 @@ std::string CSV::getExcelColumnName(int colNum)
 		colNum = (colNum - 1) / 26;
 	}
 	return columnName;
+}
+
+
+
+void CSV::SaveFile()
+{
+
 }

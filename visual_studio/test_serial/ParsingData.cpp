@@ -66,7 +66,6 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 {
     std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
     TLV_Datas.clear();
-    TLV_Datas.resize(NumberofTLVs);
    
 	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
 	{
