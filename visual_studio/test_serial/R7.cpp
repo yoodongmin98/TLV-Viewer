@@ -22,6 +22,8 @@ void R7::Instance()
 	R7Setting();
 	DataView();
 	UI();
+	ImGui::PopStyleColor();
+	ImGui::End();
 }
 
 
@@ -36,6 +38,7 @@ void R7::SetBaudrate()
 
 void R7::R7Setting()
 {
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.4f, 0.6f, 0.9f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2(0, 250), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
 	ImGui::Begin("A", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
@@ -58,7 +61,12 @@ void R7::UI()
 	if (MySerial.isOpen())
 	{
 		DataParsing(ModuleName);
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.3f, 0.4f, 1.0f));
+		ImGui::BeginChild("Data Processing Overview", ImVec2(0, 0), true);
+		ImGui::Text("Recorded Data Count = %d", 1);
+		ImGui::EndChild();
+		ImGui::PopStyleColor();
 	}
-	ImGui::End();
 }
 

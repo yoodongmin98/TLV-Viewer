@@ -25,7 +25,8 @@ void ubpulse::Instance()
 	ubpulseSetting();
 	PulseDataView();
 	UI();
-	
+	ImGui::PopStyleColor();
+	ImGui::End();
 }
 
 
@@ -40,6 +41,7 @@ void ubpulse::SetBaudrate()
 
 void ubpulse::ubpulseSetting()
 {
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.6f, 0.5f, 0.9f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2((MyImGui::MyImGuis->GetWindowSize_X() / 3) * 2, 250), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
 	ImGui::Begin("C", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
@@ -63,8 +65,6 @@ void ubpulse::UI()
 	{
 		DataParsing(ModuleName);
 	}
-	
-	ImGui::End();
 }
 
 

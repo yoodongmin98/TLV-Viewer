@@ -55,7 +55,7 @@ void CSV::CreateFile(std::string& _Name)
 //어찌되었든 저장이 되긴 되니까 다른거 먼저해야징
 void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
 {
-	if (_Data.empty())
+	if (_Data.empty() || _Data.size()>1000)
 		return;
 
 
