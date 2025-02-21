@@ -38,6 +38,7 @@ protected:
 
 	void SetPortInfo();
 	bool Connect();
+	void DisConnect();
 	void DataParsing(std::string _Name);
 private:
 	//Thread

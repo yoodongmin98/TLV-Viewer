@@ -48,6 +48,11 @@ void R7::UI()
 	{
 		Connect();
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
+	{
+		DisConnect();
+	}
 	if (MySerial.isOpen())
 	{
 		DataParsing(ModuleName);

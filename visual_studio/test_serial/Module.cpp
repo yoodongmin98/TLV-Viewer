@@ -35,7 +35,7 @@ void Module::DataInput()
 {
 	while (!stop)
 	{
-		if (MySerial.isOpen())
+		if (MySerial.isOpen() && MySerial.available())
 		{
 			std::string hexs = MySerial.read();
 			{
@@ -72,6 +72,18 @@ bool Module::Connect()
 		return true;
 	}
 	return false;
+}
+
+
+void Module::DisConnect()
+{
+	if (MySerial.isOpen())
+	{
+		stop = true;
+		if (serialThread.joinable())
+			serialThread.join();
+		MySerial.close();
+	}
 }
 
 
