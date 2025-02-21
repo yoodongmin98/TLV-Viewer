@@ -107,7 +107,6 @@ void Module::DisConnect()
 
 void Module::DataParsing(std::string _Name)
 {
-	std::vector<int> MagicNumber = { 2,1,4,3,6,5,8,7 };
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
 		ParsingDatas->DataParsing(HexBuffer,_Name);
 }
@@ -125,6 +124,16 @@ void Module::DataView()
 	ImGui::Text("SubframeNumber = %d", ParsingDatas->GetSubframeNumber());
 	ImGui::Text("TLVType = %d", ParsingDatas->GetTLVType());
 	ImGui::Text("TLVLength = %d", ParsingDatas->GetTLVLength());
+}
+
+void Module::PulseDataView()
+{
+	ImGui::Text("PacketUnitData0 = %d", ParsingDatas->GetPacketUnitData0());
+	ImGui::Text("PacketCount = %d", ParsingDatas->GetPacketCount());
+	ImGui::Text("PacketUnitData1 = %d", ParsingDatas->GetPacketUnitData1());
+	ImGui::Text("PacketCyclicData = %d", ParsingDatas->GetPacketCyclicData());
+	ImGui::Text("PacketStreamDataHighByte = %d", ParsingDatas->GetPacketStreamDataHighByte());
+	ImGui::Text("PacketStreamDataLowByte = %d", ParsingDatas->GetPacketStreamDataLowByte());
 }
 
 

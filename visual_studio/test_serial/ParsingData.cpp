@@ -37,7 +37,10 @@ ParsingData::~ParsingData()
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
 {
-    TLV_HeaderParsing(_Buffer,_Name);
+    if (_Name == "ubpulse")
+        ubpulse_HeaderParsing(_Buffer);
+    else
+        TLV_HeaderParsing(_Buffer,_Name);
 }
 
 
@@ -79,6 +82,22 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 	}
     
     return true;
+}
+
+
+
+void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
+{
+    PacketUnitData0 = _Buffer[2];
+    PacketCount = _Buffer[4];
+    PacketUnitData1 = _Buffer[5];
+    PacketCyclicData = _Buffer[6];
+    PacketStreamDataHighByte = _Buffer[7];
+    PacketStreamDataLowByte = _Buffer[8];
+    {
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
+        _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
+    }
 }
 
 

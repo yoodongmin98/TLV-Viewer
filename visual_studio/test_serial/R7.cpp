@@ -30,6 +30,7 @@ void R7::SetBaudrate()
 	if (AllPort.size() >= SelectPort)
 		ComPort = std::string(AllPort[SelectPort]);
 	Baudrate = 1843200;
+	MagicNumber = { 2,1,4,3,6,5,8,7 };
 }
 
 

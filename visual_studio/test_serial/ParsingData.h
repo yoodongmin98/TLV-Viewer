@@ -59,6 +59,32 @@ public:
 		return TLVLength;
 	}
 
+	const int GetPacketUnitData0()
+	{
+		return PacketUnitData0;
+	}
+	const int GetPacketCount()
+	{
+		return PacketCount;
+	}
+	const int GetPacketUnitData1()
+	{
+		return PacketUnitData1;
+	}
+	const int GetPacketCyclicData()
+	{
+		return PacketCyclicData;
+	}
+	const int GetPacketStreamDataHighByte()
+	{
+		return PacketStreamDataHighByte;
+	}
+	const int GetPacketStreamDataLowByte()
+	{
+		return PacketStreamDataLowByte;
+	}
+		
+
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
@@ -67,9 +93,12 @@ protected:
 	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 
+	void ubpulse_HeaderParsing(std::vector<int>& _Buffer);
+
 private:
 	int BufferIndex = 8;
 
+	//TLV
 	std::string Version;
 	int TotalPacketLength = 0;
 	int Platform = 0;
@@ -81,6 +110,14 @@ private:
 
 	int TLVType = 0;
 	int TLVLength = 0;
+
+	//ubpulse
+	int PacketUnitData0 = 0;
+	int PacketCount = 0;
+	int PacketUnitData1 = 0;
+	int PacketCyclicData = 0;
+	int PacketStreamDataHighByte = 0;
+	int PacketStreamDataLowByte = 0;
 
 	std::shared_mutex DataMutex;
 

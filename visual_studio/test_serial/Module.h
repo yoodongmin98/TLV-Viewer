@@ -33,6 +33,7 @@ protected:
 
 	//Module Name
 	std::string ModuleName;
+	std::vector<int> MagicNumber;
 
 	int SelectPort = 0;
 
@@ -41,6 +42,7 @@ protected:
 	void DisConnect();
 	void DataParsing(std::string _Name);
 	void DataView();
+	void PulseDataView();
 private:
 	//Thread
 	void DataInput();
@@ -48,7 +50,6 @@ private:
 	std::shared_mutex HexBufferMutex;
 	std::atomic<bool> stop = false;
 	
-
 	//Data Parsing
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 	std::shared_ptr<ParsingData> ParsingDatas = nullptr;

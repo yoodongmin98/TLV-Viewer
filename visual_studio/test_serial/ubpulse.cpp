@@ -8,7 +8,7 @@
 
 ubpulse::ubpulse()
 {
-
+	ModuleName = "ubpulse";
 }
 
 
@@ -23,6 +23,7 @@ void ubpulse::Instance()
 	SetPortInfo();
 	SetBaudrate();
 	ubpulseSetting();
+	PulseDataView();
 	UI();
 	
 }
@@ -33,6 +34,7 @@ void ubpulse::SetBaudrate()
 	if (AllPort.size() >= SelectPort)
 		ComPort = std::string(AllPort[SelectPort]);
 	Baudrate = 115200;
+	MagicNumber = { 255,254 };
 }
 
 
@@ -56,6 +58,10 @@ void ubpulse::UI()
 	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
 	{
 		DisConnect();
+	}
+	if (MySerial.isOpen())
+	{
+		DataParsing(ModuleName);
 	}
 	
 	ImGui::End();
