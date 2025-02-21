@@ -85,8 +85,6 @@ private:
     std::shared_ptr<ThreadPool> ThreadPools = nullptr;
     std::shared_ptr<GuiInterface> Interfaces = nullptr;
 
-
-
     std::ofstream logFile;
     std::string LogFileName;
 };

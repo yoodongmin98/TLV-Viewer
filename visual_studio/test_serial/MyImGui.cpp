@@ -70,6 +70,7 @@ void MyImGui::Instance()
 
 	std::thread renderThread(std::bind(&MyImGui::RenderLoop, this, io));
 	MSG msg;
+	
 	while (true)
 	{
 		while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
@@ -89,9 +90,6 @@ void MyImGui::Instance()
 
 	g_Running = false;
 	renderThread.join();
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
 
 	CleanupDeviceD3D();
 	::DestroyWindow(hwnd);
@@ -158,6 +156,13 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 		HRESULT hr = g_pSwapChain->Present(1, 0);
 		g_SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
 	}
+
+	g_Running = false;
+
+	// ImGui 包访 府家胶 沥府
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 }
 
 bool MyImGui::CreateDeviceD3D(HWND hWnd)

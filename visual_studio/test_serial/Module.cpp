@@ -11,7 +11,6 @@
 
 
 Module::Module()
-	//: serialThread(&Module::DataInput, this)
 {
 	DetectHeaders = std::make_shared<DetectHeader>();
 	ParsingDatas = std::make_shared<ParsingData>();
@@ -23,7 +22,7 @@ Module::~Module()
 		serialThread.join();
 	if (MySerial.isOpen())
 		MySerial.close();
-	/*HexBuffer.clear();*/
+	HexBuffer.clear();
 }
 
 
