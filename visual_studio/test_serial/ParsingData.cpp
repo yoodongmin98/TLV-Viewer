@@ -40,11 +40,11 @@ void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
     if (_Name == "ubpulse")
         ubpulse_HeaderParsing(_Buffer);
     else
-        TLV_HeaderParsing(_Buffer,_Name);
+        TLV_HeaderParsing(_Buffer);
 }
 
 
-void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name)
+void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
 {
     if (_Buffer.size() > 100)
     {
@@ -57,8 +57,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-        if (TLV_Datas.size() > 0)
-            CSVs->WriteFile(TLV_Datas, _Name);
+
         BufferIndex = 8;
     }
 }
@@ -67,7 +66,10 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
 bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 {
     std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
-    TLV_Datas.clear();
+    {
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
+        TLV_Datas.clear();
+    }
    
 	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
 	{
@@ -96,7 +98,6 @@ void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
         _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
     }
 }
-
 
 
 
@@ -136,4 +137,13 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
     BufferIndex += 4;
 
     return VersionString;
+}
+
+
+
+void ParsingData::CSV_WriteData(std::string _Name)
+{
+ 
+     if (TLV_Datas.size() > 0)
+            CSVs->WriteFile(TLV_Datas, _Name);
 }

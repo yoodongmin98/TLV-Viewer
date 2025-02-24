@@ -18,6 +18,16 @@ public:
 	~Module();
 	virtual void SetBaudrate() = 0;
 
+
+	std::shared_ptr<ParsingData>& GetParsingDatas()
+	{
+		return ParsingDatas;
+	}
+
+	std::string GetModuleName()
+	{
+		return ModuleName;
+	}
 protected:
 	//Serial
 	serial::Serial MySerial;

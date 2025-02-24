@@ -21,7 +21,7 @@ public:
 protected:
 	void SetBackGround();
 
-
+	void GetLastData();
 private:
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;

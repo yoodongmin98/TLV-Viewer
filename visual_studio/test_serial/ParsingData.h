@@ -85,16 +85,16 @@ public:
 	}
 		
 
+	void CSV_WriteData(std::string _Name);
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
 	int ParseLittleEndian(std::vector<int>& _Buffer, const int _bytesize = 4);
 
-	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
+	void TLV_HeaderParsing(std::vector<int>& _Buffer);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 
 	void ubpulse_HeaderParsing(std::vector<int>& _Buffer);
-
 private:
 	int BufferIndex = 8;
 

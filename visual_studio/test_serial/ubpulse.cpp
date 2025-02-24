@@ -64,6 +64,7 @@ void ubpulse::UI()
 	if (MySerial.isOpen())
 	{
 		DataParsing(ModuleName);
+		CallbackTrigger();
 	}
 }
 
