@@ -38,7 +38,7 @@ void R642::SetBaudrate()
 
 void R642::R642Setting()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.8f, 0.5f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.8f, 0.5f, 0.5f));
 	ImGui::SetNextWindowPos(ImVec2((MyImGui::MyImGuis->GetWindowSize_X() / 3), 250), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
 	ImGui::Begin("B", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);

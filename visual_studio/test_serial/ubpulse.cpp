@@ -41,7 +41,7 @@ void ubpulse::SetBaudrate()
 
 void ubpulse::ubpulseSetting()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.6f, 0.5f, 0.9f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.6f, 0.5f, 0.9f, 0.5f));
 	ImGui::SetNextWindowPos(ImVec2((MyImGui::MyImGuis->GetWindowSize_X() / 3) * 2, 250), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
 	ImGui::Begin("C", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);

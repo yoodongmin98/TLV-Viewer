@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "CSV.h"
 #include "DetectHeader.h"
-//
+
 //프레임 헤더 구조 :
 //
 //Sync Pattern(8 bytes) : 프레임의 시작을 나타내는 고정된 패턴입니다.
@@ -71,14 +71,11 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
    
 	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
 	{
-		//좀 짜치지만 나중에 바꾸는거로
 		BufferIndex = 0;
 		TLVType = ParseLittleEndian(_Buffer);
 		TLVLength = ParseLittleEndian(_Buffer);
 		for (auto k = 0; k < TLVLength / 2; ++k)
-		{
 			TLV_Datas.push_back(ParseLittleEndian(_Buffer, 2));
-		}
 	}
     
     return true;
@@ -107,6 +104,7 @@ void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
 int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
 {
     int value = 0;
+
     if (_Buffer.size() < 4 || BufferIndex + 3 >= _Buffer.size()) return 0;
 
     if (_bytesize == 4)
@@ -120,6 +118,7 @@ int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
     }
     
     BufferIndex += _bytesize;
+
     return value;
 }
 
@@ -127,11 +126,13 @@ int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
 std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 {
     std::string VersionString;
+
     VersionString = VersionString + 
     std::to_string(_Buffer[BufferIndex+3]) + "." +
     std::to_string(_Buffer[BufferIndex+2]) + "." +
     std::to_string(_Buffer[BufferIndex+1]) + "." +
     std::to_string(_Buffer[BufferIndex+0]);
     BufferIndex += 4;
+
     return VersionString;
 }

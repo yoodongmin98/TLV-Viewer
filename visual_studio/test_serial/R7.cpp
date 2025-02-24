@@ -62,7 +62,7 @@ void R7::UI()
 	{
 		DataParsing(ModuleName);
 
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.3f, 0.4f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.3f, 0.4f, 0.5f));
 		ImGui::BeginChild("Data Processing Overview", ImVec2(0, 0), true);
 		ImGui::Text("Recorded Data Count = %d", 1);
 		ImGui::EndChild();
