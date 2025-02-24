@@ -27,4 +27,5 @@ private:
 	std::shared_ptr<R7> R7s = nullptr;
 	std::shared_ptr<ubpulse> ubpulses = nullptr;
 
+	std::string Time;
 };

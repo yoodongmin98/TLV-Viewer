@@ -17,6 +17,7 @@
 #include "R642.h"
 #include "R7.h"
 #include "ubpulse.h"
+#include "MyTime.h"
 
 
 GuiInterface::GuiInterface()
@@ -51,6 +52,7 @@ void GuiInterface::SetBackGround()
 
 void GuiInterface::GetLastData()
 {
-	R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName());
-	R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName());
+	Time = "[ " + MyTime::Time->GetLocalDay() + " " + MyTime::Time->GetLocalTime() + " ]";
+	R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
+	R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
 }

@@ -85,7 +85,7 @@ public:
 	}
 		
 
-	void CSV_WriteData(std::string _Name);
+	void CSV_WriteData(std::string& _Name , std::string& _Time);
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);

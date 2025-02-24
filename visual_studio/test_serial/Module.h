@@ -24,7 +24,7 @@ public:
 		return ParsingDatas;
 	}
 
-	std::string GetModuleName()
+	std::string& GetModuleName()
 	{
 		return ModuleName;
 	}

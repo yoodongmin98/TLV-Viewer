@@ -53,7 +53,7 @@ void CSV::CreateFile(std::string& _Name)
 
 
 
-void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
+void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name , std::string& _Time)
 {
 	if (_Data.empty() || _Data.size()>1000)
 		return;
@@ -68,7 +68,7 @@ void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
 			std::string TimeStampLine = "A" + std::to_string(Cells);
 			std::string colName = getExcelColumnName(i + 1);  // 1부터 시작하는 열 인덱스
 			std::string cellAddress = colName + std::to_string(Cells);  // "A1", "B1", "C1" ...
-			SheetList[k].cell(TimeStampLine).value() = "[ " + MyTime::Time->GetLocalDay() + " " +MyTime::Time->GetLocalTime() + " ]";
+			SheetList[k].cell(TimeStampLine).value() = _Time;
 			SheetList[k].cell(cellAddress).value() = _Data[i];  // 값 쓰기
 		}
 	}

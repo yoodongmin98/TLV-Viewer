@@ -141,9 +141,8 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 
 
 
-void ParsingData::CSV_WriteData(std::string _Name)
+void ParsingData::CSV_WriteData(std::string& _Name , std::string& _Time)
 {
- 
      if (TLV_Datas.size() > 0)
-            CSVs->WriteFile(TLV_Datas, _Name);
+            CSVs->WriteFile(TLV_Datas, _Name, _Time);
 }
