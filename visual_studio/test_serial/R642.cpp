@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "MyImGui.h"
 #include <string>
+#include "MyTime.h"
 
 R642::R642()
 {
@@ -60,8 +61,9 @@ void R642::UI()
 	}
 	if (MySerial.isOpen())
 	{
+		std::cout << "ÆÄ½Ì½ÃÀÛ : " << MyTime::Time->GetLocalTime() << std::endl;
+		std::cout << "ÆÄ½Ì³¡ : " << MyTime::Time->GetLocalTime() << std::endl;
 		DataParsing(ModuleName);
 	}
 	
 }
-

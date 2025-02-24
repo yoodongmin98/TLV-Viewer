@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "CSV.h"
 #include "DetectHeader.h"
-
+#include "MyTime.h"
 //프레임 헤더 구조 :
 //
 //Sync Pattern(8 bytes) : 프레임의 시작을 나타내는 고정된 패턴입니다.
@@ -83,7 +83,8 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
     return true;
 }
 
-
+//std::cout << "파싱시작 : " << MyTime::Time->GetLocalTime() << std::endl;
+//std::cout << "파싱끝 : " << MyTime::Time->GetLocalTime() << std::endl;
 
 void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
 {
