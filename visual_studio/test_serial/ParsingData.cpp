@@ -114,6 +114,7 @@ int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
     }
     else if (_bytesize == 2)
     {
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
         value = (_Buffer[BufferIndex] << 0) | (_Buffer[BufferIndex + 1] << 8);
     }
     

@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include <string>
 
-
+#include "MyTime.h"
 
 
 using namespace OpenXLSX;
@@ -52,7 +52,7 @@ void CSV::CreateFile(std::string& _Name)
 
 
 
-//어찌되었든 저장이 되긴 되니까 다른거 먼저해야징
+
 void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
 {
 	if (_Data.empty() || _Data.size()>1000)
@@ -65,8 +65,10 @@ void CSV::WriteFile(std::vector<int>& _Data , std::string& _Name)
 	{
 		for (auto i = 1; i <= _Data.size() / 4; ++i)
 		{
+			std::string TimeStampLine = "A" + std::to_string(Cells);
 			std::string colName = getExcelColumnName(i + 1);  // 1부터 시작하는 열 인덱스
 			std::string cellAddress = colName + std::to_string(Cells);  // "A1", "B1", "C1" ...
+			SheetList[k].cell(TimeStampLine).value() = "[ " + MyTime::Time->GetLocalDay() + " " +MyTime::Time->GetLocalTime() + " ]";
 			SheetList[k].cell(cellAddress).value() = _Data[i];  // 값 쓰기
 		}
 	}
