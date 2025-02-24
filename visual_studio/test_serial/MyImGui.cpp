@@ -144,7 +144,7 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 			LogFileSet = false;
 		}
 
-		Interfaces->Instance();
+		Interfaces->Instance(io);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ImGui::Render();

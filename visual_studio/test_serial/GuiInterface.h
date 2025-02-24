@@ -5,6 +5,7 @@
 #include <string>
 #include <shared_mutex>
 #include <atomic>
+#include "imgui.h"
 
 
 
@@ -17,9 +18,9 @@ public:
 	GuiInterface();
 	~GuiInterface();
 
-	void Instance();
+	void Instance(ImGuiIO& io);
 protected:
-	void SetBackGround();
+	void SetBackGround(ImGuiIO& io);
 
 	void GetLastData();
 private:

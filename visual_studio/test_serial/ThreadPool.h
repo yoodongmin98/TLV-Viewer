@@ -21,6 +21,10 @@ public:
 
 
 	void AddWork(std::function<void()> _function);
+	const size_t GetTaskSize()
+	{
+		return tasks.empty() ? 0 : tasks.size();
+	}
 	std::queue<std::function<void()>> GetTasks()
 	{
 		return tasks;

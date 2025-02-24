@@ -18,7 +18,7 @@
 #include "R7.h"
 #include "ubpulse.h"
 #include "MyTime.h"
-
+#include "ThreadPool.h"
 
 GuiInterface::GuiInterface()
 {
@@ -35,9 +35,9 @@ GuiInterface::~GuiInterface()
 
 
 
-void GuiInterface::Instance()
+void GuiInterface::Instance(ImGuiIO& io)
 {
-	SetBackGround();
+	SetBackGround(io);
 
 	R642s->Instance();
 	R7s->Instance();
@@ -45,14 +45,15 @@ void GuiInterface::Instance()
 }
 
 
-void GuiInterface::SetBackGround()
+void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
-	
+	//std::cout << ThreadPool::TP->GetTaskSize() << std::endl;
 }
 
 void GuiInterface::GetLastData()
 {
 	Time = "[ " + MyTime::Time->GetLocalDay() + " " + MyTime::Time->GetLocalTime() + " ]";
+	
 	R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
 	R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
 }
