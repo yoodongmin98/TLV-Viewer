@@ -5,7 +5,7 @@
 #include <string>
 #include <mutex>
 #include <thread>
-
+#include <atomic>
 
 
 using namespace OpenXLSX;
@@ -23,7 +23,7 @@ protected:
 	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);
 private:
-	bool IsCreate = false;
+	std::atomic<bool> IsCreate;
 
 	int Cells = 1;
 

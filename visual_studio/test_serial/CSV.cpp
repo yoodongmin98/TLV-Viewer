@@ -10,7 +10,7 @@ using namespace OpenXLSX;
 using namespace std;
 CSV::CSV()
 {
-	sheetCellData.resize(4);
+	IsCreate = false;
 }
 
 CSV::~CSV()
@@ -76,14 +76,11 @@ void CSV::WriteFile(std::vector<int>& _Data, std::string& _Name, std::string& _T
 	sheetCellData.resize(4);
 	size_t dataSize = _Data.size() / 4;
 	CreateFile(_Name);
-	{
-		std::lock_guard<std::mutex> lock(csvMutex);
-	}
+	
 	for (auto k = 0; k < 4; ++k)
 	{
 		std::string TimeStampLine = "A" + std::to_string(Cells);
 		{
-			std::lock_guard<std::mutex> lock(csvMutex);
 			sheetCellData[k].emplace_back(TimeStampLine, _Time);
 		}
 
@@ -91,10 +88,8 @@ void CSV::WriteFile(std::vector<int>& _Data, std::string& _Name, std::string& _T
 		{
 			std::string cellAddress = getExcelColumnName(i + 1) + std::to_string(Cells);
 			// 각 시트마다 다른 데이터를 넣음
-			{
-				std::lock_guard<std::mutex> lock(csvMutex);
-				sheetCellData[k].emplace_back(cellAddress, std::to_string(_Data[k * dataSize + i - 1]));
-			}
+			int idx = k * dataSize + i - 1;
+			sheetCellData[k].emplace_back(cellAddress, std::to_string(_Data[idx]));
 		}
 	}
 	Cells++;
@@ -105,7 +100,6 @@ void CSV::WriteFile(std::vector<int>& _Data, std::string& _Name, std::string& _T
 			SheetList[k].cell(address).value() = value;
 		}
 	}
-	Count++;
 }
 
 

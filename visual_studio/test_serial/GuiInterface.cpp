@@ -55,8 +55,13 @@ void GuiInterface::GetLastData()
 	oss << "[ " << MyTime::Time->GetLocalDay() << " " << MyTime::Time->GetLocalTime() << " ]";
 	std::string Time = oss.str();
 
-	R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
-	R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
+	std::function<void()> boundFunction = std::bind(&ParsingData::CSV_WriteData,
+		R642s->GetParsingDatas(), 
+		R642s->GetModuleName(),    
+		Time);
+	ThreadPool::TP->AddWork(boundFunction);
+	//R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
+	//R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
 	
 	
 }

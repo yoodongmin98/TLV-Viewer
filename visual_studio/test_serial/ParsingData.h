@@ -120,6 +120,7 @@ private:
 	int PacketStreamDataLowByte = 0;
 
 	std::shared_mutex DataMutex;
+	std::shared_mutex TLVMutex;
 
 
 	std::vector<int> TLV_Datas;
