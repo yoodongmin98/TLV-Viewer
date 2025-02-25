@@ -8,12 +8,13 @@ ThreadPool* ThreadPool::TP = nullptr;
 
 ThreadPool::ThreadPool()
 {
-	TP = this;
+	
 }
 
 
 ThreadPool::ThreadPool(size_t numThreads)
 {
+	TP = this;
 	for (size_t i = 0; i < numThreads; ++i)
 	{
 		Worker.push_back(std::thread(&ThreadPool::WorkerThread, this));
@@ -73,6 +74,11 @@ void ThreadPool::WorkerThread()
 
 void ThreadPool::AddWork(std::function<void()> _function)
 {
+	if (this == nullptr) 
+	{
+		std::cerr << "ThreadPool이 삭제된 상태에서 AddWork 호출!" << std::endl;
+		return;
+	}
 	{
 		std::lock_guard<std::mutex> lock(QueueMutex);
 		if (stop)

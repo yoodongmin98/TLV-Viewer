@@ -3,8 +3,13 @@
 #include <vector>
 #include <OpenXLSX.hpp>
 #include <string>
+#include <mutex>
+#include <thread>
+
+
+
 using namespace OpenXLSX;
-//여기에 OpenXlsx넣을듯 ㅇㅇ
+
 class CSV
 {
 public:
@@ -13,6 +18,7 @@ public:
 
 	void WriteFile(std::vector<int>& _Data , std::string& _Name, std::string& _Time);
 	void SaveFile();
+	void WriteExcel();
 protected:
 	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);
@@ -21,6 +27,9 @@ private:
 
 	int Cells = 1;
 
+	std::mutex csvMutex;
+	//test
+	int Count = 0;
 
 	std::vector<XLDocument> DocumentList;
 	XLDocument RX1;
@@ -33,4 +42,10 @@ private:
 	XLWorksheet RX2Sheet;
 	XLWorksheet RX3Sheet;
 	XLWorksheet RX4Sheet;
+
+
+	std::vector<std::vector<std::pair<std::string, std::string>>> sheetCellData;
+
+
+	std::thread CsvThread;
 };

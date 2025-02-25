@@ -83,8 +83,6 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
     return true;
 }
 
-//std::cout << "ÆÄ½Ì½ÃÀÛ : " << MyTime::Time->GetLocalTime() << std::endl;
-//std::cout << "ÆÄ½Ì³¡ : " << MyTime::Time->GetLocalTime() << std::endl;
 
 void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
 {

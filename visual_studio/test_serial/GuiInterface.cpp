@@ -20,6 +20,7 @@
 #include "MyTime.h"
 #include "ThreadPool.h"
 
+
 GuiInterface::GuiInterface()
 {
 	R642s = std::make_shared<R642>();
@@ -38,7 +39,6 @@ GuiInterface::~GuiInterface()
 void GuiInterface::Instance(ImGuiIO& io)
 {
 	SetBackGround(io);
-
 	R642s->Instance();
 	R7s->Instance();
 	ubpulses->Instance();
@@ -47,13 +47,16 @@ void GuiInterface::Instance(ImGuiIO& io)
 
 void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
-	//std::cout << ThreadPool::TP->GetTaskSize() << std::endl;
 }
 
 void GuiInterface::GetLastData()
 {
-	Time = "[ " + MyTime::Time->GetLocalDay() + " " + MyTime::Time->GetLocalTime() + " ]";
-	
+	std::ostringstream oss;
+	oss << "[ " << MyTime::Time->GetLocalDay() << " " << MyTime::Time->GetLocalTime() << " ]";
+	std::string Time = oss.str();
+
 	R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
 	R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
+	
+	
 }
