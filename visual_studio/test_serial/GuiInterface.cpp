@@ -59,7 +59,12 @@ void GuiInterface::GetLastData()
 		R642s->GetParsingDatas(), 
 		R642s->GetModuleName(),    
 		Time);
+	std::function<void()> boundFunctions = std::bind(&ParsingData::CSV_WriteData,
+		R7s->GetParsingDatas(),
+		R7s->GetModuleName(),
+		Time);
 	ThreadPool::TP->AddWork(boundFunction);
+	ThreadPool::TP->AddWork(boundFunctions);
 	//R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
 	//R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
 	
