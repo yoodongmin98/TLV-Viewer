@@ -46,10 +46,10 @@ void CSV::CreateFile(std::string& _Name)
 		RX3.create(_Name + "RX3.xlsx");
 		RX4.create(_Name + "RX4.xlsx");
 
-		RX1Sheet = RX1.workbook().worksheet("Sheet1");
-		RX2Sheet = RX2.workbook().worksheet("Sheet1");
-		RX3Sheet = RX3.workbook().worksheet("Sheet1");
-		RX4Sheet = RX4.workbook().worksheet("Sheet1");
+		RX1Sheet = RX1.workbook().sheet("Sheet1").get<XLWorksheet>();
+		RX2Sheet = RX2.workbook().sheet("Sheet1").get<XLWorksheet>();
+		RX3Sheet = RX3.workbook().sheet("Sheet1").get<XLWorksheet>();
+		RX4Sheet = RX4.workbook().sheet("Sheet1").get<XLWorksheet>();
 
 		SheetList.emplace_back(RX1Sheet);
 		SheetList.emplace_back(RX2Sheet);
@@ -68,9 +68,13 @@ void CSV::WriteExcel()
 
 
 
-void CSV::WriteFile(std::vector<int>& _Data, std::string& _Name, std::string& _Time)
+void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string& _Time)
 {
-	if (_Data.empty() || _Data.size() > 1000) { return; }
+	if (_Data.empty() || _Data.size() > 1000 || _Data.size()==0) 
+	{ 
+		std::cout << "사이즈가 작아서 리턴됐슈" << std::endl;
+		return; 
+	}
 
 	sheetCellData.clear();
 	sheetCellData.resize(4);

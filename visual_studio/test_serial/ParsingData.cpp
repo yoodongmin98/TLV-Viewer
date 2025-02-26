@@ -142,7 +142,11 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 
 void ParsingData::CSV_WriteData(std::string& _Name , std::string& _Time)
 {
-    std::lock_guard<std::shared_mutex> lock(DataMutex);
-     if (TLV_Datas.size() > 0)
-            CSVs->WriteFile(TLV_Datas, _Name, _Time);
+    std::vector<int> localCopy;
+    {
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
+        if (TLV_Datas.empty()) return;
+        localCopy = TLV_Datas;
+    }
+    CSVs->WriteFile(localCopy, _Name, _Time);
 }

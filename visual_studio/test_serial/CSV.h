@@ -16,14 +16,14 @@ public:
 	CSV();
 	~CSV();
 
-	void WriteFile(std::vector<int>& _Data , std::string& _Name, std::string& _Time);
+	void WriteFile(std::vector<int> _Data , std::string& _Name, std::string& _Time);
 	void SaveFile();
 	void WriteExcel();
 protected:
 	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);
 private:
-	std::atomic<bool> IsCreate;
+	std::atomic<bool> IsCreate = false;
 
 	int Cells = 1;
 
