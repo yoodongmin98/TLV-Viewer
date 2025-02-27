@@ -49,15 +49,6 @@ void R7::R7Setting()
 
 void R7::UI()
 {
-	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
-	{
-		Connect();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
-	{
-		DisConnect();
-	}
 	if (MySerial.isOpen())
 	{
 		std::function<void()> funcs = std::bind(&R7::DataParsing, this, ModuleName);

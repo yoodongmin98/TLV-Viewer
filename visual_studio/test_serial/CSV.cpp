@@ -76,7 +76,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 	{
 		std::string TimeStampLine = "A" + std::to_string(Cells);
 		{
-			std::cout << "시트에 들어간 time : " << _Time << std::endl;
+			//std::cout << "시트에 들어간 time : " << _Time << std::endl;
 			sheetCellData[k].emplace_back(TimeStampLine, _Time + " " + std::to_string(_Frame));
 		}
 

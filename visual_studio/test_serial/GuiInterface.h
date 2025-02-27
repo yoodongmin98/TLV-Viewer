@@ -23,6 +23,8 @@ protected:
 	void SetBackGround(ImGuiIO& io);
 
 	void GetLastData();
+
+	void EventListener()
 private:
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;

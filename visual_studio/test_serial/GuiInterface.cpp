@@ -27,7 +27,7 @@ GuiInterface::GuiInterface()
 	R7s = std::make_shared<R7>();
 	ubpulses = std::make_shared<ubpulse>();
 
-	this->R7s->GetParsingDatas()->Get_ubpulse_DataEvent() = std::bind(&GuiInterface::GetLastData, this);
+	this->R642s->GetParsingDatas()->Get_ubpulse_DataEvent() = std::bind(&GuiInterface::GetLastData, this);
 }
 GuiInterface::~GuiInterface()
 {
@@ -45,33 +45,37 @@ void GuiInterface::Instance(ImGuiIO& io)
 }
 
 
+void EventListener()
+{
+	while (true)
+	{
+		if (triggered.load(std::memory_order_acquire))
+		{
+			std::cout << "트리거 실행시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+			triggered.store(false, std::memory_order_release);
+		}
+		std::this_thread::yield(); // CPU 점유 최소화
+	}
+}
+
 void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
+	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
+	{
+		R642s->Connect();
+		//R7s->Connect();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
+	{
+		R642s->DisConnect();
+		//R7s->DisConnect();
+	}
 }
 
 void GuiInterface::GetLastData()
 {
-	//std::cout << "콜백 실행 된 시간 푼다" <<MyTime::Time->GetLocalTime()<< std::endl;
-	//std::ostringstream oss;
-	//oss << "[ " << MyTime::Time->GetLocalDay() << " " << MyTime::Time->GetLocalTime() << " ]";
-	//std::string Time = oss.str();
-
-	///*std::function<void()> boundFunction = std::bind(&ParsingData::CSV_WriteData,
-	//	R642s->GetParsingDatas(), 
-	//	R642s->GetModuleName(),    
-	//	Time,
-	//	R642s->GetParsingDatas()->GetTLVBuffer(),
-	//	R642s->GetParsingDatas()->GetLastDataCount()
-	//);*/
-	//std::function<void()> boundFunctions = std::bind(&ParsingData::CSV_WriteData,
-	//	R7s->GetParsingDatas(),
-	//	R7s->GetModuleName(),
-	//	Time,
-	//	R7s->GetParsingDatas()->GetTLVBuffer(),
-	//	R7s->GetParsingDatas()->GetLastDataCount()
-	//	);
-	////ThreadPool::TP->AddWork(boundFunction);
-	//ThreadPool::TP->AddWork(boundFunctions);
-	//R642s->GetParsingDatas()->SetLastDataCountPlus();
-	//R7s->GetParsingDatas()->SetLastDataCountPlus();
+	int a = ubpulses->GetParsingDatas()->GetPacketStreamDataHighByte();
+	int b = ubpulses->GetParsingDatas()->GetPacketStreamDataLowByte();
+	std::cout <<"트리거 실행시간 : "<< MyTime::Time->GetLocalTime() << " high : " << a << " Low : " << b << std::endl;
 }

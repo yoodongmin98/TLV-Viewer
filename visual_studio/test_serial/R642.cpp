@@ -50,19 +50,12 @@ void R642::R642Setting()
 
 void R642::UI()
 {
-	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
-	{
-		Connect();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
-	{
-		DisConnect();
-	}
 	if (MySerial.isOpen())
 	{
 		std::function<void()> funcs = std::bind(&R642::DataParsing, this, ModuleName);
 		ThreadPool::TP->AddWork(funcs);
+
+		//std::cout << "스레드에 딲 넣었을 때 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
 		//DataParsing(ModuleName);
 	}
 }

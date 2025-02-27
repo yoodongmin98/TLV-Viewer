@@ -59,7 +59,14 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
         if (TLV_Datas.size() > 0)
+        {
+            if (_Name == "R642")
+            {
+                CallbackTrigger();
+                std::cout << "트리거 줬다 : " << MyTime::Time->GetLocalTime() << std::endl;
+            }
             CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), FrameNumber);
+        }
         BufferIndex = 8;
     }
 }
@@ -94,12 +101,16 @@ void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
     PacketCount = _Buffer[4];
     PacketUnitData1 = _Buffer[5];
     PacketCyclicData = _Buffer[6];
-    PacketStreamDataHighByte = _Buffer[7];
-    PacketStreamDataLowByte = _Buffer[8];
     {
-       // std::lock_guard<std::shared_mutex> lock(DataMutex);
-        _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
+        PacketStreamDataHighByte = _Buffer[7];
+        PacketStreamDataLowByte = _Buffer[8];
     }
+
+
+       // std::lock_guard<std::shared_mutex> lock(DataMutex);
+       _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
+    
     //std::cout << "ubpulse buffer size : " << _Buffer.size() << "시간 : " << MyTime::Time->GetLocalTime() << std::endl;
 }
 
@@ -160,12 +171,5 @@ void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time , std::ve
         localCopy = _Buffer[Count];
     }
     if (localCopy.size() > 0)
-    {
-        //std::cout << "함수 들어갔다" << std::endl;
         CSVs->WriteFile(localCopy, _Name, _Time, FrameNumber);
-    }
-    else
-    {
-        //std::cout << "함수 안 !!!!!들어갔다" << std::endl;
-    }
 }

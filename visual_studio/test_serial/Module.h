@@ -28,6 +28,8 @@ public:
 	{
 		return ModuleName;
 	}
+	bool Connect();
+	void DisConnect();
 protected:
 	//Serial
 	serial::Serial MySerial;
@@ -48,8 +50,6 @@ protected:
 	int SelectPort = 0;
 
 	void SetPortInfo();
-	bool Connect();
-	void DisConnect();
 	void DataParsing(std::string _Name);
 	void DataView();
 	void PulseDataView();
