@@ -73,8 +73,10 @@ void GuiInterface::EventListener()
 		{
 			triggered.store(false, std::memory_order_release);
 
-			std::string HighByte = "A" + std::to_string(Cells);
-			std::string LowByte = "B" + std::to_string(Cells);
+			std::string Time = "A" + std::to_string(Cells);
+			std::string HighByte = "B" + std::to_string(Cells);
+			std::string LowByte = "C" + std::to_string(Cells);
+			UbSheet.cell(Time).value() = MyTime::Time->GetLocalTime();
 			UbSheet.cell(HighByte).value() = ubpulses->GetParsingDatas()->GetPacketStreamDataHighByte();
 			UbSheet.cell(LowByte).value() = ubpulses->GetParsingDatas()->GetPacketStreamDataLowByte();
 			Cells++;
