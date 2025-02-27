@@ -85,7 +85,7 @@ public:
 	}
 		
 
-	void CSV_WriteData(std::string& _Name , std::string& _Time);
+	void CSV_WriteData(std::string& _Name , std::string _Time);
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
@@ -122,8 +122,8 @@ private:
 	std::shared_mutex DataMutex;
 	std::shared_mutex TLVMutex;
 
-
-	std::vector<int> TLV_Datas;
+	int LastDataCount = 0;
+	std::vector<std::vector<int>> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;

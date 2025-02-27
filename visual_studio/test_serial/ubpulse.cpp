@@ -3,7 +3,7 @@
 
 #include "imgui.h"
 #include "MyImGui.h"
-
+#include "MyTime.h"
 
 
 ubpulse::ubpulse()
@@ -65,6 +65,7 @@ void ubpulse::UI()
 	{
 		DataParsing(ModuleName);
 		CallbackTrigger();
+		//std::cout << "trigger호출된 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
 	}
 }
 

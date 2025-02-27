@@ -51,6 +51,7 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 
 void GuiInterface::GetLastData()
 {
+	std::cout << "콜백 실행됬다 ㅇㅇ" << std::endl;
 	std::ostringstream oss;
 	oss << "[ " << MyTime::Time->GetLocalDay() << " " << MyTime::Time->GetLocalTime() << " ]";
 	std::string Time = oss.str();
@@ -65,8 +66,5 @@ void GuiInterface::GetLastData()
 		Time);
 	ThreadPool::TP->AddWork(boundFunction);
 	ThreadPool::TP->AddWork(boundFunctions);
-	//R642s->GetParsingDatas()->CSV_WriteData(R642s->GetModuleName(), Time);
-	//R7s->GetParsingDatas()->CSV_WriteData(R7s->GetModuleName(), Time);
-	
-	
+	std::cout << "콜백 끝났다 ㅇㅇ" << std::endl;
 }

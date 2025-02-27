@@ -26,6 +26,8 @@ ParsingData::ParsingData()
 {
     CSVs = std::make_shared<CSV>();
     DetectHeaders = std::make_shared<DetectHeader>();
+    //짜침
+    TLV_Datas.resize(102);
 }
 
 
@@ -67,8 +69,13 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 {
     std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
     {
-        std::lock_guard<std::shared_mutex> lock(DataMutex);
-        TLV_Datas.clear();
+        if (LastDataCount > 100)
+        {
+            std::lock_guard<std::shared_mutex> lock(DataMutex);
+            LastDataCount = 0;
+            TLV_Datas.clear();
+            TLV_Datas.resize(102);
+        }
     }
    
 	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
@@ -77,7 +84,8 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 		TLVType = ParseLittleEndian(_Buffer);
 		TLVLength = ParseLittleEndian(_Buffer);
 		for (auto k = 0; k < TLVLength / 2; ++k)
-			TLV_Datas.push_back(ParseLittleEndian(_Buffer, 2));
+			TLV_Datas[LastDataCount].push_back(ParseLittleEndian(_Buffer, 2));
+        LastDataCount++;
 	}
     
     return true;
@@ -86,6 +94,7 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 
 void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
 {
+   
     PacketUnitData0 = _Buffer[2];
     PacketCount = _Buffer[4];
     PacketUnitData1 = _Buffer[5];
@@ -93,9 +102,10 @@ void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
     PacketStreamDataHighByte = _Buffer[7];
     PacketStreamDataLowByte = _Buffer[8];
     {
-        std::lock_guard<std::shared_mutex> lock(DataMutex);
+       // std::lock_guard<std::shared_mutex> lock(DataMutex);
         _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
     }
+    //std::cout << "ubpulse buffer size : " << _Buffer.size() << "시간 : " << MyTime::Time->GetLocalTime() << std::endl;
 }
 
 
@@ -140,13 +150,17 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 
 
 
-void ParsingData::CSV_WriteData(std::string& _Name , std::string& _Time)
+void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time)
 {
     std::vector<int> localCopy;
     {
         std::lock_guard<std::shared_mutex> lock(DataMutex);
-        if (TLV_Datas.empty()) return;
-        localCopy = TLV_Datas;
+        if (TLV_Datas.empty())
+        {
+            std::cout<<"비어있어서 리턴했어염"<<std::endl;
+            return;
+        }
+        localCopy = TLV_Datas[LastDataCount];
     }
     CSVs->WriteFile(localCopy, _Name, _Time);
 }

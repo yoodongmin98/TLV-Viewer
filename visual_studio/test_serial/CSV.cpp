@@ -68,11 +68,11 @@ void CSV::WriteExcel()
 
 
 
-void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string& _Time)
+void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Time)
 {
 	if (_Data.empty() || _Data.size() > 1000 || _Data.size()==0) 
 	{ 
-		std::cout << "사이즈가 작아서 리턴됐슈" << std::endl;
+		std::cout << "_데이터가 이상해서 리턴했어여 사이즈 : " << _Data.size() << std::endl;
 		return; 
 	}
 
@@ -85,6 +85,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string& _Ti
 	{
 		std::string TimeStampLine = "A" + std::to_string(Cells);
 		{
+			std::cout << "시트에 들어간 time : " << _Time << std::endl;
 			sheetCellData[k].emplace_back(TimeStampLine, _Time);
 		}
 
