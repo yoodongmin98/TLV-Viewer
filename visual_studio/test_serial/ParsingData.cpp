@@ -26,8 +26,7 @@ ParsingData::ParsingData()
 {
     CSVs = std::make_shared<CSV>();
     DetectHeaders = std::make_shared<DetectHeader>();
-    //짜침
-    TLV_Datas.resize(102);
+    TLV_Datas.resize(13000);
 }
 
 
@@ -42,11 +41,11 @@ void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
     if (_Name == "ubpulse")
         ubpulse_HeaderParsing(_Buffer);
     else
-        TLV_HeaderParsing(_Buffer);
+        TLV_HeaderParsing(_Buffer,_Name);
 }
 
 
-void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
+void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name)
 {
     if (_Buffer.size() > 100)
     {
@@ -59,7 +58,8 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
         NumberofTLVs = ParseLittleEndian(_Buffer);
         SubframeNumber = ParseLittleEndian(_Buffer);
         TLV_TypeParsing(_Buffer);
-
+        if (TLV_Datas.size() > 0)
+            CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), FrameNumber);
         BufferIndex = 8;
     }
 }
@@ -68,14 +68,10 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer)
 bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 {
     std::vector<int> TLVHeader = { 4,0,0,0,0,4,0,0 };
+
     {
-        if (LastDataCount > 100)
-        {
-            std::lock_guard<std::shared_mutex> lock(DataMutex);
-            LastDataCount = 0;
-            TLV_Datas.clear();
-            TLV_Datas.resize(102);
-        }
+        std::lock_guard<std::shared_mutex> lock(DataMutex);
+        TLV_Datas.clear();
     }
    
 	if (DetectHeaders->FindHeader(_Buffer, TLVHeader))
@@ -84,8 +80,7 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 		TLVType = ParseLittleEndian(_Buffer);
 		TLVLength = ParseLittleEndian(_Buffer);
 		for (auto k = 0; k < TLVLength / 2; ++k)
-			TLV_Datas[LastDataCount].push_back(ParseLittleEndian(_Buffer, 2));
-        LastDataCount++;
+			TLV_Datas.push_back(ParseLittleEndian(_Buffer, 2));
 	}
     
     return true;
@@ -150,17 +145,27 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 
 
 
-void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time)
+void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time , std::vector<std::vector<int>> _Buffer , int Count)
 {
     std::vector<int> localCopy;
     {
         std::lock_guard<std::shared_mutex> lock(DataMutex);
-        if (TLV_Datas.empty())
+        if (_Buffer.empty())
         {
             std::cout<<"비어있어서 리턴했어염"<<std::endl;
             return;
         }
-        localCopy = TLV_Datas[LastDataCount];
+      
+        
+        localCopy = _Buffer[Count];
     }
-    CSVs->WriteFile(localCopy, _Name, _Time);
+    if (localCopy.size() > 0)
+    {
+        //std::cout << "함수 들어갔다" << std::endl;
+        CSVs->WriteFile(localCopy, _Name, _Time, FrameNumber);
+    }
+    else
+    {
+        //std::cout << "함수 안 !!!!!들어갔다" << std::endl;
+    }
 }

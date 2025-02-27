@@ -64,8 +64,6 @@ void ubpulse::UI()
 	if (MySerial.isOpen())
 	{
 		DataParsing(ModuleName);
-		CallbackTrigger();
-		//std::cout << "trigger호출된 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
 	}
 }
 

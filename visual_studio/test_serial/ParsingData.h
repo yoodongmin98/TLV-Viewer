@@ -4,7 +4,7 @@
 #include <shared_mutex>
 #include <string>
 #include <deque>
-
+#include <functional>
 
 
 class DetectHeader;
@@ -83,18 +83,35 @@ public:
 	{
 		return PacketStreamDataLowByte;
 	}
+	std::vector<int> GetTLVBuffer()
+	{
+		return TLV_Datas;
+	}
+	const int GetLastDataCount()
+	{
+		return LastDataCount;
+	}
+	void SetLastDataCountPlus()
+	{
+		LastDataCount++;
+	}
 		
+	std::function<void()>& Get_ubpulse_DataEvent()
+	{
+		return DataCallbackFunction;
+	}
 
-	void CSV_WriteData(std::string& _Name , std::string _Time);
+	void CSV_WriteData(std::string& _Name , std::string _Time, std::vector<std::vector<int>> _Buffer, int Count);
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
 	int ParseLittleEndian(std::vector<int>& _Buffer, const int _bytesize = 4);
 
-	void TLV_HeaderParsing(std::vector<int>& _Buffer);
+	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 
 	void ubpulse_HeaderParsing(std::vector<int>& _Buffer);
+
 private:
 	int BufferIndex = 8;
 
@@ -122,9 +139,21 @@ private:
 	std::shared_mutex DataMutex;
 	std::shared_mutex TLVMutex;
 
+
+	std::vector<int> PreCopy;
 	int LastDataCount = 0;
-	std::vector<std::vector<int>> TLV_Datas;
+	std::vector<int> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
+
+
+
+	
+	void CallbackTrigger()
+	{
+		if (DataCallbackFunction)
+			DataCallbackFunction();
+	}
+	std::function<void()> DataCallbackFunction;
 };

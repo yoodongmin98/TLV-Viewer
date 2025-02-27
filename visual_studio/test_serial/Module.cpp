@@ -6,7 +6,7 @@
 #include <shared_mutex>
 #include <serial/serial.h>
 #include "imgui.h"
-
+#include "MyTime.h"
 
 
 
@@ -109,7 +109,9 @@ void Module::DataParsing(std::string _Name)
 {
 	std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
+	{
 		ParsingDatas->DataParsing(HexBuffer,_Name);
+	}
 }
 
 

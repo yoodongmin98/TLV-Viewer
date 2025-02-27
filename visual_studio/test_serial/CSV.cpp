@@ -5,31 +5,22 @@
 #include "ThreadPool.h"
 #include "MyTime.h"
 #include <functional>
-
+#include <string>
 using namespace OpenXLSX;
 using namespace std;
 CSV::CSV()
 {
-	IsCreate = false;
+	IsCreate = true;
 }
 
 CSV::~CSV()
 {
-	/*std::cout << "저장을 시작합니다" << std::endl;
-	std::function<void()> Functions = std::bind(&CSV::WriteExcel, this);
-	ThreadPool::TP->AddWork(Functions);*/
 	if (RX1.isOpen())
 	{
 		RX1.save();
 		RX2.save();
 		RX3.save();
 		RX4.save();
-		std::cout << "저장이 완료되었습니다." << std::endl;
-		RX1.close();
-		RX2.close();
-		RX3.close();
-		RX4.close();
-		std::cout << "파일을 닫습니다. 프로그램이 종료됩니다." << std::endl;
 	}
 }
 
@@ -39,23 +30,23 @@ CSV::~CSV()
 
 void CSV::CreateFile(std::string& _Name)
 {
-	if (!IsCreate)
+	if (IsCreate)
 	{
+		IsCreate = false;
 		RX1.create(_Name + "RX1.xlsx");
 		RX2.create(_Name + "RX2.xlsx");
 		RX3.create(_Name + "RX3.xlsx");
 		RX4.create(_Name + "RX4.xlsx");
 
-		RX1Sheet = RX1.workbook().sheet("Sheet1").get<XLWorksheet>();
-		RX2Sheet = RX2.workbook().sheet("Sheet1").get<XLWorksheet>();
-		RX3Sheet = RX3.workbook().sheet("Sheet1").get<XLWorksheet>();
-		RX4Sheet = RX4.workbook().sheet("Sheet1").get<XLWorksheet>();
+		RX1Sheet = RX1.workbook().sheet("Sheet1");
+		RX2Sheet = RX2.workbook().sheet("Sheet1");
+		RX3Sheet = RX3.workbook().sheet("Sheet1");
+		RX4Sheet = RX4.workbook().sheet("Sheet1");
 
 		SheetList.emplace_back(RX1Sheet);
 		SheetList.emplace_back(RX2Sheet);
 		SheetList.emplace_back(RX3Sheet);
 		SheetList.emplace_back(RX4Sheet);
-		IsCreate = true;
 	}
 }
 
@@ -68,7 +59,7 @@ void CSV::WriteExcel()
 
 
 
-void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Time)
+void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Time,const int _Frame)
 {
 	if (_Data.empty() || _Data.size() > 1000 || _Data.size()==0) 
 	{ 
@@ -76,7 +67,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 		return; 
 	}
 
-	sheetCellData.clear();
+	std::vector<std::vector<std::pair<std::string, std::string>>> sheetCellData;
 	sheetCellData.resize(4);
 	size_t dataSize = _Data.size() / 4;
 	CreateFile(_Name);
@@ -86,7 +77,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 		std::string TimeStampLine = "A" + std::to_string(Cells);
 		{
 			std::cout << "시트에 들어간 time : " << _Time << std::endl;
-			sheetCellData[k].emplace_back(TimeStampLine, _Time);
+			sheetCellData[k].emplace_back(TimeStampLine, _Time + " " + std::to_string(_Frame));
 		}
 
 		for (size_t i = 1; i <= dataSize; ++i)
@@ -102,7 +93,11 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 	{
 		for (auto& [address, value] : sheetCellData[k])
 		{
-			SheetList[k].cell(address).value() = value;
+			std::lock_guard<std::shared_mutex> lock(sheetmutex);
+			if (SheetList.size() == 4)
+				SheetList[k].cell(address).value() = value;
+			else
+				std::cerr << "사이즈4가 아니라 못돌렸슴" << std::endl;
 		}
 	}
 }

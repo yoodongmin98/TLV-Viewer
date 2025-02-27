@@ -6,7 +6,8 @@
 #include <mutex>
 #include <thread>
 #include <atomic>
-
+#include <shared_mutex>
+#include <atomic>
 
 using namespace OpenXLSX;
 
@@ -16,7 +17,7 @@ public:
 	CSV();
 	~CSV();
 
-	void WriteFile(std::vector<int> _Data , std::string& _Name, std::string _Time);
+	void WriteFile(std::vector<int> _Data , std::string& _Name, std::string _Time, const int _Packet);
 	void SaveFile();
 	void WriteExcel();
 protected:
@@ -31,6 +32,8 @@ private:
 	//test
 	int Count = 0;
 
+
+	std::shared_mutex sheetmutex;
 	std::vector<XLDocument> DocumentList;
 	XLDocument RX1;
 	XLDocument RX2;

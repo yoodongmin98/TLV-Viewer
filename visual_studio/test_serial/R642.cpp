@@ -4,7 +4,8 @@
 #include "MyImGui.h"
 #include <string>
 #include "MyTime.h"
-
+#include <functional>
+#include "ThreadPool.h"
 R642::R642()
 {
 	ModuleName = "R642";
@@ -29,7 +30,6 @@ void R642::Instance()
 
 void R642::SetBaudrate()
 {
-	
 	if(AllPort.size()>=SelectPort)
 		ComPort = std::string(AllPort[SelectPort]);
 	Baudrate = 1843200;
@@ -61,7 +61,8 @@ void R642::UI()
 	}
 	if (MySerial.isOpen())
 	{
-		DataParsing(ModuleName);
+		std::function<void()> funcs = std::bind(&R642::DataParsing, this, ModuleName);
+		ThreadPool::TP->AddWork(funcs);
+		//DataParsing(ModuleName);
 	}
-	
 }
