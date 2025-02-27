@@ -101,6 +101,11 @@ public:
 		return DataCallbackFunction;
 	}
 
+	std::shared_ptr<CSV> GetCSVs()
+	{
+		return CSVs;
+	}
+
 	void CSV_WriteData(std::string& _Name , std::string _Time, std::vector<std::vector<int>> _Buffer, int Count);
 protected:
 

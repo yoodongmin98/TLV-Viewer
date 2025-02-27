@@ -6,8 +6,9 @@
 #include <shared_mutex>
 #include <atomic>
 #include "imgui.h"
+#include <OpenXLSX.hpp>
 
-
+using namespace OpenXLSX;
 
 class ubpulse;
 class R7;
@@ -24,11 +25,21 @@ protected:
 
 	void GetLastData();
 
-	void EventListener()
+	void EventListener();
 private:
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;
 	std::shared_ptr<ubpulse> ubpulses = nullptr;
 
 	std::string Time;
+
+
+	//THread
+	std::thread listener;
+	std::atomic<bool> triggered = false;
+	std::atomic<bool> running= true ;
+
+	XLDocument UbExcel;
+	XLWorksheet UbSheet;
+	int Cells = 1;
 };

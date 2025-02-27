@@ -119,7 +119,13 @@ std::string CSV::getExcelColumnName(int colNum)
 
 void CSV::SaveFile()
 {
-
+	if (RX1.isOpen())
+	{
+		RX1.save();
+		RX2.save();
+		RX3.save();
+		RX4.save();
+	}
 }
 
 

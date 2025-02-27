@@ -7,6 +7,7 @@
 #include <serial/serial.h>
 #include "imgui.h"
 #include "MyTime.h"
+#include <CSV.h>
 
 
 
@@ -101,6 +102,7 @@ void Module::DisConnect()
 		if (serialThread.joinable())
 			serialThread.join();
 		MySerial.close();
+		ParsingDatas->GetCSVs()->SaveFile();
 	}
 }
 
