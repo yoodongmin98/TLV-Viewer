@@ -4,6 +4,7 @@
 #include "CSV.h"
 #include "DetectHeader.h"
 #include "MyTime.h"
+#include <tuple>
 //프레임 헤더 구조 :
 //
 //Sync Pattern(8 bytes) : 프레임의 시작을 나타내는 고정된 패턴입니다.
@@ -36,16 +37,27 @@ ParsingData::~ParsingData()
 }
 
 
-void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name)
+void ParsingData::R7Save()
+{
+    std::cout << "저장중입니다............." << std::endl;
+    for (auto i = 0; i < R7Vector.size(); ++i)
+    {
+        CSVs->WriteFile(std::get<0>(R7Vector[i]), std::get<1>(R7Vector[i]), std::get<2>(R7Vector[i]), 0);
+    }
+    CSVs->SaveFile();
+    std::cout << "저장끝!" << std::endl;
+}
+
+void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name, std::string Time)
 {
     if (_Name == "ubpulse")
         ubpulse_HeaderParsing(_Buffer);
     else
-        TLV_HeaderParsing(_Buffer,_Name);
+        TLV_HeaderParsing(_Buffer,_Name , Time);
 }
 
 
-void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name)
+void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name , std::string _Time)
 {
     if (_Buffer.size() > 100)
     {
@@ -63,9 +75,13 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
             if (_Name == "R642")
             {
                 CallbackTrigger();
-                std::cout << "트리거 줬다 : " << MyTime::Time->GetLocalTime() << std::endl;
+                std::cout << "트리거 신호 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+                CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), 0); 
             }
-            CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), FrameNumber);
+            else
+            {
+                R7Vector.push_back(std::make_tuple(TLV_Datas, _Name, _Time));
+            }
         }
         BufferIndex = 8;
     }

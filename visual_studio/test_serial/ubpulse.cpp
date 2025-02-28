@@ -63,7 +63,7 @@ void ubpulse::UI()
 	}
 	if (MySerial.isOpen())
 	{
-		DataParsing(ModuleName);
+		DataParsing(ModuleName,"0");
 	}
 }
 

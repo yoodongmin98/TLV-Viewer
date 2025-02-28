@@ -23,6 +23,7 @@ void R642::Instance()
 	R642Setting();
 	DataView();
 	UI();
+	std::cout << "버퍼 사이즈  : " << HexBuffer.size() << std::endl;
 	ImGui::PopStyleColor();
 	ImGui::End();
 }
@@ -52,10 +53,7 @@ void R642::UI()
 {
 	if (MySerial.isOpen())
 	{
-		std::function<void()> funcs = std::bind(&R642::DataParsing, this, ModuleName);
+		std::function<void()> funcs = std::bind(&R642::DataParsing, this, ModuleName ,"0");
 		ThreadPool::TP->AddWork(funcs);
-
-		//std::cout << "스레드에 딲 넣었을 때 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
-		//DataParsing(ModuleName);
 	}
 }

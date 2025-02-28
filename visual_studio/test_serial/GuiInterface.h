@@ -26,6 +26,7 @@ protected:
 	void GetLastData();
 
 	void EventListener();
+	void REventListener();
 private:
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;
@@ -36,7 +37,9 @@ private:
 
 	//THread
 	std::thread listener;
+	std::thread Rlistener;
 	std::atomic<bool> triggered = false;
+	std::atomic<bool> R7triggered = false;
 	std::atomic<bool> running= true ;
 
 	XLDocument UbExcel;

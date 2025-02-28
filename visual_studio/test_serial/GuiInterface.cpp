@@ -22,6 +22,7 @@
 #include "ThreadPool.h"
 
 
+
 using namespace OpenXLSX;
 
 
@@ -35,6 +36,7 @@ GuiInterface::GuiInterface()
 
 	//CallBack
 	listener = std::thread(&GuiInterface::EventListener, this);
+	Rlistener = std::thread(&GuiInterface::REventListener, this);
 
 	this->R642s->GetParsingDatas()->Get_ubpulse_DataEvent() = std::bind(&GuiInterface::GetLastData, this);
 
@@ -47,6 +49,9 @@ GuiInterface::~GuiInterface()
 {
 	running.store(false, std::memory_order_release);
 	if (listener.joinable()) listener.join();
+	if (Rlistener.joinable()) Rlistener.join();
+
+
 	if (UbExcel.isOpen())
 	{
 		UbExcel.save();
@@ -69,19 +74,34 @@ void GuiInterface::EventListener()
 {
 	while (running.load(std::memory_order_acquire))
 	{
-		if (triggered.load(std::memory_order_acquire))
+		if (triggered.exchange(false, std::memory_order_acq_rel))
 		{
-			triggered.store(false, std::memory_order_release);
-
 			std::string Time = "A" + std::to_string(Cells);
 			std::string HighByte = "B" + std::to_string(Cells);
 			std::string LowByte = "C" + std::to_string(Cells);
+			std::string Results = "D" + std::to_string(Cells);
 			UbSheet.cell(Time).value() = MyTime::Time->GetLocalTime();
 			UbSheet.cell(HighByte).value() = ubpulses->GetParsingDatas()->GetPacketStreamDataHighByte();
 			UbSheet.cell(LowByte).value() = ubpulses->GetParsingDatas()->GetPacketStreamDataLowByte();
+			UbSheet.cell(Results).value() = ubpulses->GetParsingDatas()->GetPacketStreamDataHighByte() * 256 + ubpulses->GetParsingDatas()->GetPacketStreamDataLowByte();
 			Cells++;
+			triggered.store(false, std::memory_order_release);
 		}
-		std::this_thread::yield(); // CPU 점유 최소화
+		std::this_thread::yield();
+	}
+}
+
+
+void GuiInterface::REventListener()
+{
+	while (running.load(std::memory_order_acquire))
+	{
+		if (R7triggered.exchange(false, std::memory_order_acq_rel))
+		{
+			R7s->DataParsing("R7",MyTime::Time->GetLocalTime());
+			R7triggered.store(false, std::memory_order_release);
+		}
+		std::this_thread::yield(); 
 	}
 }
 
@@ -91,6 +111,7 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 	{
 		R642s->Connect();
 		R7s->Connect();
+		ubpulses->Connect();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
@@ -98,10 +119,12 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 		R642s->DisConnect();
 		R7s->DisConnect();
 		ubpulses->DisConnect();
+		R7s->GetParsingDatas()->R7Save();
 	}
 }
 
 void GuiInterface::GetLastData()
 {
 	triggered.store(true, std::memory_order_release);
+	R7triggered.store(true, std::memory_order_release);
 }

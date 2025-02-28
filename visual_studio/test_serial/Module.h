@@ -30,6 +30,7 @@ public:
 	}
 	bool Connect();
 	void DisConnect();
+	void DataParsing(std::string _Name , std::string Time);
 protected:
 	//Serial
 	serial::Serial MySerial;
@@ -50,7 +51,6 @@ protected:
 	int SelectPort = 0;
 
 	void SetPortInfo();
-	void DataParsing(std::string _Name);
 	void DataView();
 	void PulseDataView();
 private:

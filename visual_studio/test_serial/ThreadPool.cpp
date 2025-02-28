@@ -39,7 +39,7 @@ ThreadPool::~ThreadPool()
 }
 
 
-
+int TaskCountssss = 0;
 void ThreadPool::WorkerThread()
 {
 	while (true)

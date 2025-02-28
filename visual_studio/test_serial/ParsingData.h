@@ -16,7 +16,7 @@ public:
 	~ParsingData();
 
 
-	void DataParsing(std::vector<int>& _Buffer, std::string& _Name);
+	void DataParsing(std::vector<int>& _Buffer, std::string& _Name, std::string Time);
 
 	const std::string GetVersion()
 	{
@@ -107,12 +107,13 @@ public:
 	}
 
 	void CSV_WriteData(std::string& _Name , std::string _Time, std::vector<std::vector<int>> _Buffer, int Count);
+	void R7Save();
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
 	int ParseLittleEndian(std::vector<int>& _Buffer, const int _bytesize = 4);
 
-	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name);
+	void TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Name, std::string Time);
 	bool TLV_TypeParsing(std::vector<int>& _Buffer);
 
 	void ubpulse_HeaderParsing(std::vector<int>& _Buffer);
@@ -153,7 +154,7 @@ private:
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 
 
-
+	std::vector<std::tuple<std::vector<int>,std::string ,std::string>> R7Vector;
 	
 	void CallbackTrigger()
 	{

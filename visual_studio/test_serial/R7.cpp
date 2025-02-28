@@ -51,8 +51,8 @@ void R7::UI()
 {
 	if (MySerial.isOpen())
 	{
-		std::function<void()> funcs = std::bind(&R7::DataParsing, this, ModuleName);
-		ThreadPool::TP->AddWork(funcs);
+		//std::function<void()> funcs = std::bind(&R7::DataParsing, this, ModuleName);
+		//ThreadPool::TP->AddWork(funcs);
 		//DataParsing(ModuleName);
 	
 

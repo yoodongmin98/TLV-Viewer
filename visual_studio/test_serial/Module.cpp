@@ -107,12 +107,12 @@ void Module::DisConnect()
 }
 
 
-void Module::DataParsing(std::string _Name)
+void Module::DataParsing(std::string _Name , std::string Time)
 {
 	std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
 	{
-		ParsingDatas->DataParsing(HexBuffer,_Name);
+		ParsingDatas->DataParsing(HexBuffer,_Name , Time);
 	}
 }
 
