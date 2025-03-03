@@ -50,13 +50,6 @@ GuiInterface::~GuiInterface()
 	running.store(false, std::memory_order_release);
 	if (listener.joinable()) listener.join();
 	if (Rlistener.joinable()) Rlistener.join();
-
-
-	if (UbExcel.isOpen())
-	{
-		UbExcel.save();
-		UbExcel.close();
-	}
 }
 
 
@@ -107,20 +100,34 @@ void GuiInterface::REventListener()
 
 void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
-	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(495, 250), ImGuiCond_Always);
+	ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
+	ImGui::SeparatorText("Setting");
+
+	if (ImGui::Button("START", ImVec2{ 150,50 }))
 	{
 		R642s->Connect();
 		R7s->Connect();
 		ubpulses->Connect();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
+	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
 	{
 		R642s->DisConnect();
 		R7s->DisConnect();
 		ubpulses->DisConnect();
+
+		//R642는 파싱중에 트리거를 주면서 저장
+		//나머지는 disconnect때 따로 저장
 		R7s->GetParsingDatas()->R7Save();
+		if (UbExcel.isOpen())
+		{
+			UbExcel.save();
+			UbExcel.close();
+		}
 	}
+	ImGui::End();
 }
 
 void GuiInterface::GetLastData()

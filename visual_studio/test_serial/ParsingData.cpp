@@ -112,7 +112,6 @@ bool ParsingData::TLV_TypeParsing(std::vector<int>& _Buffer)
 
 void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
 {
-   
     PacketUnitData0 = _Buffer[2];
     PacketCount = _Buffer[4];
     PacketUnitData1 = _Buffer[5];
@@ -122,12 +121,7 @@ void ParsingData::ubpulse_HeaderParsing(std::vector<int>& _Buffer)
         PacketStreamDataHighByte = _Buffer[7];
         PacketStreamDataLowByte = _Buffer[8];
     }
-
-
-       // std::lock_guard<std::shared_mutex> lock(DataMutex);
-       _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
-    
-    //std::cout << "ubpulse buffer size : " << _Buffer.size() << "시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+     _Buffer.erase(_Buffer.begin(), _Buffer.begin() + 1);
 }
 
 
@@ -148,6 +142,10 @@ int ParsingData::ParseLittleEndian(std::vector<int>& _Buffer , int _bytesize)
     {
         std::lock_guard<std::shared_mutex> lock(DataMutex);
         value = (_Buffer[BufferIndex] << 0) | (_Buffer[BufferIndex + 1] << 8);
+    }
+    else
+    {
+        std::cout << "파싱할 byte size가 잘못 입력되었습니다. 입력된 byte size : " << _bytesize << std::endl;
     }
     
     BufferIndex += _bytesize;
@@ -179,7 +177,7 @@ void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time , std::ve
         std::lock_guard<std::shared_mutex> lock(DataMutex);
         if (_Buffer.empty())
         {
-            std::cout<<"비어있어서 리턴했어염"<<std::endl;
+            std::cout<<"버퍼가 비어있어서 리턴되었습니다."<<std::endl;
             return;
         }
       

@@ -80,11 +80,11 @@ void MyImGui::Instance()
 
 			if (msg.message == WM_QUIT)
 			{
-				g_Running = false;  // RenderLoop 종료
-				renderThread.join();  // 쓰레드 종료 대기
+				g_Running = false;  
+				renderThread.join(); 
 				return;
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));  // CPU 사용량 절약
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
 
@@ -136,13 +136,6 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
-
-		if (LogFileSet)
-		{
-			LogFileName = "Log.txt";
-			LogFileOpen();
-			LogFileSet = false;
-		}
 
 		Interfaces->Instance(io);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////

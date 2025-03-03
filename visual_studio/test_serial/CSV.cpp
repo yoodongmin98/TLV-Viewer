@@ -63,7 +63,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 {
 	if (_Data.empty() || _Data.size() > 1000 || _Data.size()==0) 
 	{ 
-		std::cout << "_데이터가 이상해서 리턴했어여 사이즈 : " << _Data.size() << std::endl;
+		std::cout << "데이터가 사이즈 문제로 리턴되었습니다. 데이터 사이즈 : " << _Data.size() << std::endl;
 		return; 
 	}
 
@@ -76,14 +76,13 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 	{
 		std::string TimeStampLine = "A" + std::to_string(Cells);
 		{
-			//std::cout << "시트에 들어간 time : " << _Time << std::endl;
 			sheetCellData[k].emplace_back(TimeStampLine, _Time + " " + std::to_string(_Frame));
 		}
 
 		for (size_t i = 1; i <= dataSize; ++i)
 		{
 			std::string cellAddress = getExcelColumnName(i + 1) + std::to_string(Cells);
-			// 각 시트마다 다른 데이터를 넣음
+
 			int idx = k * dataSize + i - 1;
 			sheetCellData[k].emplace_back(cellAddress, std::to_string(_Data[idx]));
 		}
@@ -97,7 +96,7 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 			if (SheetList.size() == 4)
 				SheetList[k].cell(address).value() = value;
 			else
-				std::cerr << "사이즈4가 아니라 못돌렸슴" << std::endl;
+				std::cerr << "4개의 시트가 전부 생성되지 않았습니다." << std::endl;
 		}
 	}
 }
@@ -127,7 +126,3 @@ void CSV::SaveFile()
 		RX4.save();
 	}
 }
-
-
-//std::cout << "파싱시작 : " << MyTime::Time->GetLocalTime() << std::endl;
-//std::cout << "파싱끝 : " << MyTime::Time->GetLocalTime() << std::endl;

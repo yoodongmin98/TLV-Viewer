@@ -23,7 +23,6 @@ void R642::Instance()
 	R642Setting();
 	DataView();
 	UI();
-	std::cout << "버퍼 사이즈  : " << HexBuffer.size() << std::endl;
 	ImGui::PopStyleColor();
 	ImGui::End();
 }

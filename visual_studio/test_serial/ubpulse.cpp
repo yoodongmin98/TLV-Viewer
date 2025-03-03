@@ -52,15 +52,6 @@ void ubpulse::ubpulseSetting()
 
 void ubpulse::UI()
 {
-	if (ImGui::Button("Connect", ImVec2{ 150,20 }))
-	{
-		Connect();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("DisConnect", ImVec2{ 150,20 }))
-	{
-		DisConnect();
-	}
 	if (MySerial.isOpen())
 	{
 		DataParsing(ModuleName,"0");
