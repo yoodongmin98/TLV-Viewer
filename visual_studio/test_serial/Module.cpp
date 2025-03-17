@@ -103,6 +103,7 @@ void Module::DisConnect()
 		if (serialThread.joinable())
 			serialThread.join();
 		MySerial.close();
+		ParsingDatas->GetCSVs()->SetIsCreate();
 	}
 }
 

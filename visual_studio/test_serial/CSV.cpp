@@ -26,6 +26,7 @@ void CSV::CreateFile(std::string& _Name)
 {
 	if (IsCreate)
 	{
+		SheetList.clear();
 		IsCreate = false;
 		RX1.create(_Name + "RX1.xlsx");
 		RX2.create(_Name + "RX2.xlsx");
