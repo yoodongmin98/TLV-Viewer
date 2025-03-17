@@ -83,6 +83,7 @@ bool Module::Connect()
 			if (serialThread.joinable()) 
 				serialThread.join();  // ¶Ç´Â detach();
 			serialThread = std::thread(&Module::DataInput, this);
+			ParsingDatas->GetCSVs()->SetIsCreate();
 			return true;
 		}
 	}
@@ -102,7 +103,6 @@ void Module::DisConnect()
 		if (serialThread.joinable())
 			serialThread.join();
 		MySerial.close();
-		ParsingDatas->GetCSVs()->SaveFile();
 	}
 }
 

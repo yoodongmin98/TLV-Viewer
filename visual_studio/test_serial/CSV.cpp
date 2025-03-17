@@ -15,13 +15,7 @@ CSV::CSV()
 
 CSV::~CSV()
 {
-	if (RX1.isOpen())
-	{
-		RX1.save();
-		RX2.save();
-		RX3.save();
-		RX4.save();
-	}
+	
 }
 
 
@@ -124,5 +118,10 @@ void CSV::SaveFile()
 		RX2.save();
 		RX3.save();
 		RX4.save();
+
+		RX1.close();
+		RX2.close();
+		RX3.close();
+		RX4.close();
 	}
 }

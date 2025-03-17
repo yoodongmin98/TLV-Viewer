@@ -101,7 +101,7 @@ public:
 		return DataCallbackFunction;
 	}
 
-	std::shared_ptr<CSV> GetCSVs()
+	std::shared_ptr<CSV>& GetCSVs()
 	{
 		return CSVs;
 	}

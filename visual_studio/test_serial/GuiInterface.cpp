@@ -20,7 +20,7 @@
 #include "ubpulse.h"
 #include "MyTime.h"
 #include "ThreadPool.h"
-
+#include "CSV.h"
 
 
 using namespace OpenXLSX;
@@ -114,13 +114,16 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 	ImGui::SameLine();
 	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
 	{
+		
+		if (R7s->GetSerial().isOpen())
+			R7s->GetParsingDatas()->R7Save();
+		if(R642s->GetSerial().isOpen())
+			R642s->GetParsingDatas()->GetCSVs()->SaveFile();
+
 		R642s->DisConnect();
 		R7s->DisConnect();
 		ubpulses->DisConnect();
-
-		//R642는 파싱중에 트리거를 주면서 저장
-		//나머지는 disconnect때 따로 저장
-		R7s->GetParsingDatas()->R7Save();
+		
 		if (UbExcel.isOpen())
 		{
 			UbExcel.save();
@@ -132,6 +135,8 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 
 void GuiInterface::GetLastData()
 {
-	triggered.store(true, std::memory_order_release);
-	R7triggered.store(true, std::memory_order_release);
+	if(ubpulses->GetSerial().isOpen())
+		triggered.store(true, std::memory_order_release);
+	if (R7s->GetSerial().isOpen())
+		R7triggered.store(true, std::memory_order_release);
 }

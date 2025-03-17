@@ -20,6 +20,10 @@ public:
 	void WriteFile(std::vector<int> _Data , std::string& _Name, std::string _Time, const int _Packet);
 	void SaveFile();
 	void WriteExcel();
+	void SetIsCreate()
+	{
+		IsCreate = true;
+	}
 protected:
 	void CreateFile(std::string& _Name);
 	std::string getExcelColumnName(int colNum);

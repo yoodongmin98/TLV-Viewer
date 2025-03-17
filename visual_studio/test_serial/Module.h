@@ -28,6 +28,10 @@ public:
 	{
 		return ModuleName;
 	}
+	serial::Serial& GetSerial()
+	{
+		return MySerial;
+	}
 	bool Connect();
 	void DisConnect();
 	void DataParsing(std::string _Name , std::string Time);
@@ -64,6 +68,9 @@ private:
 	std::shared_ptr<DetectHeader> DetectHeaders = nullptr;
 	std::shared_ptr<ParsingData> ParsingDatas = nullptr;
 
+	//일단 오른쪽위에 포트 관련된 정보들(뭐 연결되어있는지)
+	//저장하는거 스레드
 
+	//개인포트 : 트리거 몇번받았는지?
 
 };
