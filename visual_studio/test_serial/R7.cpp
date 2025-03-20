@@ -5,7 +5,6 @@
 #include "MyTime.h"
 #include "ThreadPool.h"
 
-
 R7::R7()
 {
 	ModuleName = "R7";
@@ -40,23 +39,27 @@ void R7::SetBaudrate()
 
 void R7::R7Setting()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.4f, 0.6f, 0.9f, 1.0f));
-	ImGui::SetNextWindowPos(ImVec2(0, 250), ImGuiCond_Always);
-	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
-	ImGui::Begin("A", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
-	ImGui::SeparatorText("HRS-R7 [1843200]");
-	ImGui::Combo("SelectPort", &SelectPort, AllPort.data(), AllPort.size());
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::SetNextWindowPos(ImVec2(41, 146), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(270, 310), ImGuiCond_Always);
+
+	ImGui::Begin("A", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.6f, 0.90196f, 1.0f)); 
+	//ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
+	ImGui::Text("HRS-R7 [1843200]");
+	ImGui::PopStyleColor();
+	//ImGui::PopFont();
+
+
+
+	ImGui::Combo("##input", &SelectPort, AllPort.data(), AllPort.size());
 }
 
 
 void R7::UI()
 {
-	if (MySerial.isOpen())
-	{
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.2f, 0.3f, 0.4f, 0.5f));
-		ImGui::BeginChild("Data Processing Overview", ImVec2(0, 0), true);
-		ImGui::EndChild();
-		ImGui::PopStyleColor();
-	}
+	
 }
 

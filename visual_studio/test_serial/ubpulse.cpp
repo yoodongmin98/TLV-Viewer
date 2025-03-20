@@ -41,12 +41,18 @@ void ubpulse::SetBaudrate()
 
 void ubpulse::ubpulseSetting()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.6f, 0.5f, 0.9f, 0.5f));
-	ImGui::SetNextWindowPos(ImVec2((MyImGui::MyImGuis->GetWindowSize_X() / 3) * 2, 250), ImGuiCond_Always);
-	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
-	ImGui::Begin("C", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
-	ImGui::SeparatorText("ubpulse [115200]");
-	ImGui::Combo("SelectPort", &SelectPort, AllPort.data(), AllPort.size());
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::SetNextWindowPos(ImVec2(607,146), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(270, 310), ImGuiCond_Always);
+	ImGui::Begin("C", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.6f, 0.90196f, 1.0f));
+	ImGui::Text("ubpulse [115200]");
+	ImGui::PopStyleColor(1);
+
+
+	ImGui::Combo("##input", &SelectPort, AllPort.data(), AllPort.size());
 }
 
 

@@ -20,6 +20,7 @@ public:
 	~GuiInterface();
 
 	void Instance(ImGuiIO& io);
+	void SetClock();
 protected:
 	void SetBackGround(ImGuiIO& io);
 

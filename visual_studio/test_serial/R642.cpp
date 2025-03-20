@@ -39,12 +39,19 @@ void R642::SetBaudrate()
 
 void R642::R642Setting()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.5f, 0.8f, 0.5f, 0.5f));
-	ImGui::SetNextWindowPos(ImVec2((MyImGui::MyImGuis->GetWindowSize_X() / 3), 250), ImGuiCond_Always);
-	ImGui::SetNextWindowSize(ImVec2(495, 531), ImGuiCond_Always);
-	ImGui::Begin("B", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
-	ImGui::SeparatorText("HRS-R642 [1843200]");
-	ImGui::Combo("SelectPort", &SelectPort, AllPort.data(), AllPort.size());
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::SetNextWindowPos(ImVec2(324 , 146), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(270, 310), ImGuiCond_Always);
+
+	ImGui::Begin("B", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.6f, 0.90196f, 1.0f));
+	ImGui::Text("HRS-R642 [1843200]");
+	ImGui::PopStyleColor(1);
+
+
+	ImGui::Combo("##input", &SelectPort, AllPort.data(), AllPort.size());
 	
 }
 

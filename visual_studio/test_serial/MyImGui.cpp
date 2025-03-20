@@ -44,7 +44,7 @@ void MyImGui::Instance()
 	//SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
 	WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
 	::RegisterClassExW(&wc);
-	hwnd = ::CreateWindowW(wc.lpszClassName, L"TLV - Viewer", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1500, 820, nullptr, nullptr, wc.hInstance, nullptr);
+	hwnd = ::CreateWindowW(wc.lpszClassName, L"TLV - Viewer", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1211, 540, nullptr, nullptr, wc.hInstance, nullptr);
 
 
 
@@ -99,9 +99,10 @@ void MyImGui::Instance()
 
 void MyImGui::RenderLoop(ImGuiIO& io)
 {
-	ImVec4 clear_color = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);
+	ImVec4 clear_color = ImVec4(0.631f, 0.761f, 0.957f, 1.00f);
 	// Main loop
-
+	myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 12.0f);
+	myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 21.0f);
 	while (g_Running)
 	{
 
@@ -140,6 +141,16 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 		Interfaces->Instance(io);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		//setting
+		ImGui::GetStyle().WindowBorderSize = 0.0f;
+		ImGui::GetStyle().WindowRounding = 15.0f;
+
+
+
+
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ImGui::Render();
 		const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
 		g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);

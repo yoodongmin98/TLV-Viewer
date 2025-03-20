@@ -23,6 +23,7 @@ static ID3D11RenderTargetView* g_mainRenderTargetView = nullptr;
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
+
 class GuiInterface;
 class ThreadPool;
 class MyImGui
@@ -65,6 +66,14 @@ public:
     {
         return rect;
     }
+    ImFont* GetLargeBoldFont()
+    {
+        return myFontLarge;
+    }
+    ImFont* GetSmallFont()
+    {
+        return myFontSmall;
+    }
 protected:
     void LogFileOpen();
     bool CreateDeviceD3D(HWND hWnd);
@@ -81,7 +90,9 @@ private:
     int width = 0;
     int height = 0;
 
-   
+    ImFont* myFontLarge;
+    ImFont* myFontSmall;
+
     std::shared_ptr<ThreadPool> ThreadPools = nullptr;
     std::shared_ptr<GuiInterface> Interfaces = nullptr;
 

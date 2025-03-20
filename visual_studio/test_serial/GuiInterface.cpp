@@ -100,10 +100,13 @@ void GuiInterface::REventListener()
 
 void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
-	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+	
+
+	SetClock();
+	/*ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 250), ImGuiCond_Always);
 	ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
-	ImGui::SeparatorText("Setting");
+
 
 	if (ImGui::Button("START", ImVec2{ 150,50 }))
 	{
@@ -130,7 +133,7 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 			UbExcel.close();
 		}
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 
 void GuiInterface::GetLastData()
@@ -164,4 +167,16 @@ std::string GuiInterface::SaveFileDialog()
 	std::string SZFILE(szFile);
 
 	return SZFILE;
+}
+
+
+
+void GuiInterface::SetClock()
+{
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::SetNextWindowPos(ImVec2(41, 38), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(833, 65), ImGuiCond_Always);
+	ImGui::Begin("##input", nullptr,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::End();
+	ImGui::PopStyleColor();
 }
