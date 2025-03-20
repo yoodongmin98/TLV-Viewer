@@ -105,8 +105,6 @@ public:
 	{
 		return CSVs;
 	}
-
-	void CSV_WriteData(std::string& _Name , std::string _Time, std::vector<std::vector<int>> _Buffer, int Count);
 	void R7Save();
 protected:
 

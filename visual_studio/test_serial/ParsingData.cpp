@@ -167,23 +167,3 @@ std::string ParsingData::TransVersion(std::vector<int>& _Buffer)
 
     return VersionString;
 }
-
-
-
-void ParsingData::CSV_WriteData(std::string& _Name , std::string _Time , std::vector<std::vector<int>> _Buffer , int Count)
-{
-    std::vector<int> localCopy;
-    {
-        std::lock_guard<std::shared_mutex> lock(DataMutex);
-        if (_Buffer.empty())
-        {
-            std::cout<<"버퍼가 비어있어서 리턴되었습니다."<<std::endl;
-            return;
-        }
-      
-        
-        localCopy = _Buffer[Count];
-    }
-    if (localCopy.size() > 0)
-        CSVs->WriteFile(localCopy, _Name, _Time, FrameNumber);
-}

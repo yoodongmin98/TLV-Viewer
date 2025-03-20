@@ -3,7 +3,7 @@
 #include <functional>
 #include <string>
 #include <thread>
-
+#include <filesystem>
 
 //lib
 #include <serial/serial.h>
@@ -139,4 +139,29 @@ void GuiInterface::GetLastData()
 		triggered.store(true, std::memory_order_release);
 	if (R7s->GetSerial().isOpen())
 		R7triggered.store(true, std::memory_order_release);
+}
+
+
+std::string GuiInterface::SaveFileDialog()
+{
+	OPENFILENAME ofn;
+	char szFile[260] = { 0 };
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = nullptr;
+	ofn.lpstrFilter = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST;
+	ofn.lpstrDefExt = "txt";
+
+	if (GetSaveFileName(&ofn))
+		std::wcout << "파일 저장 경로: " << szFile << std::endl;
+	else
+		std::wcout << "파일 저장 취소됨" << std::endl;
+
+	std::string SZFILE(szFile);
+
+	return SZFILE;
 }

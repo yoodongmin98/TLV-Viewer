@@ -24,7 +24,7 @@ protected:
 	void SetBackGround(ImGuiIO& io);
 
 	void GetLastData();
-
+	std::string SaveFileDialog();
 	void EventListener();
 	void REventListener();
 private:
@@ -33,7 +33,7 @@ private:
 	std::shared_ptr<ubpulse> ubpulses = nullptr;
 
 	std::string Time;
-
+	std::string Path;
 
 	//THread
 	std::thread listener;
