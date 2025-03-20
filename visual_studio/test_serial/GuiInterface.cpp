@@ -100,9 +100,8 @@ void GuiInterface::REventListener()
 
 void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
-	
-
 	SetClock();
+	SettingOption();
 	/*ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 250), ImGuiCond_Always);
 	ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
@@ -176,7 +175,33 @@ void GuiInterface::SetClock()
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ImGui::SetNextWindowPos(ImVec2(41, 38), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(833, 65), ImGuiCond_Always);
+
+
+	ImVec4 text_color = ImVec4(0.467, 0.467f, 0.467f, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_Text, text_color);
 	ImGui::Begin("##input", nullptr,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+
+	ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	cursorPos.x += 280;
+	cursorPos.y += 13;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::Text(MyTime::Time->GetLocalDay().c_str());
+	ImGui::SameLine();
+	ImGui::Text(MyTime::Time->GetLocalTime().c_str());
+
+	ImGui::PopFont();
+	ImGui::PopStyleColor(2);
 	ImGui::End();
+}
+
+void GuiInterface::SettingOption()
+{
+	ImGui::SetNextWindowPos(ImVec2(915, 0), ImGuiCond_Always);
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::SetNextWindowSize(ImVec2(280, 501), ImGuiCond_Always);
+	ImGui::Begin("##inputs", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 	ImGui::PopStyleColor();
+	ImGui::End();
 }

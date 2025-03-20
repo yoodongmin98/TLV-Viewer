@@ -2,6 +2,7 @@
 #include "DetectHeader.h"
 #include "ParsingData.h"
 #include "MyImGui.h"
+#include "MyDefine.h"
 
 #include <thread>
 #include <shared_mutex>
@@ -121,17 +122,29 @@ void Module::DataParsing(std::string _Name , std::string Time)
 
 void Module::DataView()
 {
-	ImGui::PushFont(MyImGui::MyImGuis->GetSmallFont());
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	cursorPos.x += HEADERSPACING; cursorPos.y += 16;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4667f, 0.4667f, 0.4667f, 1.0f));
 	ImGui::Text("Version = %s", ParsingDatas->GetVersion().c_str());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("TotalPacketLength = %d", ParsingDatas->GetTotalPacketLength());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("Platform = %d", ParsingDatas->GetPlatform());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("FrameNumber = %d", ParsingDatas->GetFrameNumber());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("Time = %d", ParsingDatas->GetTime());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("NumberofDetectedObjects = %d", ParsingDatas->GetNumberofDetectedObjects());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("NumberofTLVs = %d", ParsingDatas->GetNumberofTLVs());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("SubframeNumber = %d", ParsingDatas->GetSubframeNumber());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("TLVType = %d", ParsingDatas->GetTLVType());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("TLVLength = %d", ParsingDatas->GetTLVLength());
 	ImGui::PopStyleColor();
 	ImGui::PopFont();
@@ -139,14 +152,23 @@ void Module::DataView()
 
 void Module::PulseDataView()
 {
-	ImGui::PushFont(MyImGui::MyImGuis->GetSmallFont());
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	cursorPos.x += HEADERSPACING; cursorPos.y += 16;
+	ImGui::SetCursorPos(cursorPos);
+	ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4667f, 0.4667f, 0.4667f, 1.0f));
 	ImGui::Text("PacketUnitData0 = %d", ParsingDatas->GetPacketUnitData0());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("PacketCount = %d", ParsingDatas->GetPacketCount());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("PacketUnitData1 = %d", ParsingDatas->GetPacketUnitData1());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("PacketCyclicData = %d", ParsingDatas->GetPacketCyclicData());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("PacketStreamDataHighByte = %d", ParsingDatas->GetPacketStreamDataHighByte());
+	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("PacketStreamDataLowByte = %d", ParsingDatas->GetPacketStreamDataLowByte());
+	
 	ImGui::PopStyleColor();
 	ImGui::PopFont();
 }

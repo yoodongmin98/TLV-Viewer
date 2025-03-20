@@ -21,6 +21,7 @@ public:
 
 	void Instance(ImGuiIO& io);
 	void SetClock();
+	void SettingOption();
 protected:
 	void SetBackGround(ImGuiIO& io);
 

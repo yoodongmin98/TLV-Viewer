@@ -74,6 +74,14 @@ public:
     {
         return myFontSmall;
     }
+    ImFont* GetComboFont()
+    {
+        return myFontCombo;
+    }
+    ImFont* GetUnderTextFont()
+    {
+        return myFontUnderText;
+    }
 protected:
     void LogFileOpen();
     bool CreateDeviceD3D(HWND hWnd);
@@ -92,7 +100,9 @@ private:
 
     ImFont* myFontLarge;
     ImFont* myFontSmall;
-
+    ImFont* myFontCombo;
+    ImFont* myFontUnderText;
+    
     std::shared_ptr<ThreadPool> ThreadPools = nullptr;
     std::shared_ptr<GuiInterface> Interfaces = nullptr;
 
