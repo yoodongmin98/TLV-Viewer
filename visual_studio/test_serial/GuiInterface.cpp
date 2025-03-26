@@ -90,7 +90,6 @@ void GuiInterface::REventListener()
 	{
 		if (R7triggered.exchange(false, std::memory_order_acq_rel))
 		{
-			MyTime::Time->GetInterval();
 			R7s->DataParsingStart("R7",MyTime::Time->GetLocalTime());
 			R7triggered.store(false, std::memory_order_release);
 		}

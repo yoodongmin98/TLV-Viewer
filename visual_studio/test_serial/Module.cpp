@@ -91,7 +91,7 @@ bool Module::Connect()
 	}
 	catch (...)
 	{
-		std::cout << "포트를 열 수 없습니다." << std::endl;
+		std::cout << ComPort << " 포트를 열 수 없습니다." << std::endl;
 	}
 	return false;
 }
@@ -115,6 +115,7 @@ void Module::DataParsingStart(std::string _Name , std::string Time)
 	std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
 	{
+		MyTime::Time->GetInterval();
 		ParsingDatas->DataParsing(HexBuffer,_Name , Time);
 	}
 }

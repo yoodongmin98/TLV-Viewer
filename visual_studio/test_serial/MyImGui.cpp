@@ -144,10 +144,10 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//setting
-	/*	ImGui::GetStyle().WindowBorderSize = 0.0f;
+		ImGui::GetStyle().WindowBorderSize = 0.0f;
 		ImGui::GetStyle().WindowRounding = 15.0f;
 		ImGui::GetStyle().FrameRounding = 15.0f;
-*/
+
 
 
 
