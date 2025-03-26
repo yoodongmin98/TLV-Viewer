@@ -79,7 +79,7 @@ void R642::UI()
 {
 	if (MySerial.isOpen())
 	{
-		std::function<void()> funcs = std::bind(&R642::DataParsing, this, ModuleName ,"0");
+		std::function<void()> funcs = std::bind(&R642::DataParsingStart, this, ModuleName ,"0");
 		ThreadPool::TP->AddWork(funcs);
 	}
 }

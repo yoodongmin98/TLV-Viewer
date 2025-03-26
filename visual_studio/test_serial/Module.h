@@ -34,7 +34,7 @@ public:
 	}
 	bool Connect();
 	void DisConnect();
-	void DataParsing(std::string _Name , std::string Time);
+	void DataParsingStart(std::string _Name , std::string Time);
 protected:
 	//Serial
 	serial::Serial MySerial;

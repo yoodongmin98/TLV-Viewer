@@ -3,6 +3,7 @@
 #include <shared_mutex>
 #include <string_view>
 
+#include "MyTime.h"
 
 DetectHeader::DetectHeader()
 {
@@ -27,7 +28,6 @@ bool DetectHeader::FindHeader(std::vector<int>& _Buffer , std::vector<int> patte
 		if (std::equal(_Buffer.begin() + i, _Buffer.begin() + i + pattern.size(), pattern.begin()))
 		{
 			_Buffer.erase(_Buffer.begin(), _Buffer.begin() + i);
-			
 			return true;
 		}
 	}

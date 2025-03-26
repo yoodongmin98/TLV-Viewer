@@ -84,14 +84,14 @@ void GuiInterface::EventListener()
 	}
 }
 
-
 void GuiInterface::REventListener()
 {
 	while (running.load(std::memory_order_acquire))
 	{
 		if (R7triggered.exchange(false, std::memory_order_acq_rel))
 		{
-			R7s->DataParsing("R7",MyTime::Time->GetLocalTime());
+			MyTime::Time->GetInterval();
+			R7s->DataParsingStart("R7",MyTime::Time->GetLocalTime());
 			R7triggered.store(false, std::memory_order_release);
 		}
 		std::this_thread::yield(); 
@@ -102,7 +102,7 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
 	SetClock();
 	SettingOption();
-	/*ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(495, 250), ImGuiCond_Always);
 	ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
 
@@ -132,7 +132,7 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 			UbExcel.close();
 		}
 	}
-	ImGui::End();*/
+	ImGui::End();
 }
 
 void GuiInterface::GetLastData()
@@ -201,7 +201,46 @@ void GuiInterface::SettingOption()
 	ImGui::SetNextWindowPos(ImVec2(915, 0), ImGuiCond_Always);
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ImGui::SetNextWindowSize(ImVec2(280, 501), ImGuiCond_Always);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::Begin("##inputs", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+	RightFrameSetting();
+
 	ImGui::PopStyleColor();
+	ImGui::PopStyleVar();
 	ImGui::End();
+}
+
+
+void GuiInterface::RightFrameSetting()
+{
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.839f, 0.839f, 0.839f, 1.0f));
+
+
+
+
+
+	ImGui::SetCursorPos(ImVec2(15, 38)); 
+	ImGui::BeginChild("##1", ImVec2{ 250,70 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::EndChild();
+
+
+
+	ImGui::SetCursorPos(ImVec2(15, 121));
+	ImGui::BeginChild("##2", ImVec2{ 250,200 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::EndChild();
+
+
+	ImGui::SetCursorPos(ImVec2(15, 334));
+	ImGui::BeginChild("##3", ImVec2{ 250,65 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::EndChild();
+
+
+
+
+
+	ImGui::PopStyleColor();
+	ImGui::PopStyleVar(2);
 }

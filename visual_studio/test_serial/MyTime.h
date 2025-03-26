@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-
+#include <chrono>
 
 
 
@@ -13,8 +13,12 @@ public:
 	static MyTime* Time;
 	std::string GetLocalTime();
 	std::string GetLocalDay();
+	void GetInterval();
+
 protected:
 private:
 	__time64_t now2;
 	tm tm_2;
+
+	std::chrono::steady_clock::time_point lastTriggerTime;
 };

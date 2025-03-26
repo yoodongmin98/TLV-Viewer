@@ -58,3 +58,15 @@ std::string MyTime::GetLocalDay()
 
     return oss.str();
 }
+
+
+void MyTime::GetInterval()
+{
+    auto now = std::chrono::steady_clock::now();
+    long long  interval = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTriggerTime).count();
+
+    std::cout << "트리거 신호 시간 : " << interval << " ms" << std::endl;
+
+    lastTriggerTime = now; 
+
+}

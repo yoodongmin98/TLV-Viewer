@@ -75,7 +75,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
             if (_Name == "R642")
             {
                 CallbackTrigger();
-                std::cout << "트리거 신호 시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+                
                 CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), 0); 
             }
             else

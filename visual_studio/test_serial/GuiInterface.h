@@ -29,6 +29,8 @@ protected:
 	std::string SaveFileDialog();
 	void EventListener();
 	void REventListener();
+
+	void RightFrameSetting();
 private:
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;
