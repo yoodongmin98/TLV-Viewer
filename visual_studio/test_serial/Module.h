@@ -36,6 +36,11 @@ public:
 	{
 		return AllPortInfo;
 	}
+	void SetDataThreadStopFlag()
+	{
+		stop = true;
+		HexBuffer.clear();
+	}
 
 	bool Connect();
 	void DisConnect();

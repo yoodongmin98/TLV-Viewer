@@ -115,13 +115,22 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 	ImGui::SameLine();
 	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
 	{
+		
 		if (R642s->GetSerial().isOpen())
 		{
 			R642s->GetParsingDatas()->RSave(true);
 			R642s->GetParsingDatas()->TriggerDataReset();
+			R642s->SetDataThreadStopFlag();
 		}
 		if (R7s->GetSerial().isOpen())
+		{
 			R7s->GetParsingDatas()->RSave();
+			R7s->SetDataThreadStopFlag();
+		}
+		if (ubpulses->GetSerial().isOpen())
+		{
+			ubpulses->SetDataThreadStopFlag();
+		}
 	
 
 		R642s->DisConnect();
@@ -174,17 +183,18 @@ std::string GuiInterface::SaveFileDialog()
 
 void GuiInterface::SetClock()
 {
+	ImVec4 text_color = ImVec4(0.467, 0.467f, 0.467f, 1.0f);
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, text_color);
+
 	ImGui::SetNextWindowPos(ImVec2(41, 38), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(833, 65), ImGuiCond_Always);
 
 
-	ImVec4 text_color = ImVec4(0.467, 0.467f, 0.467f, 1.0f);
-	ImGui::PushStyleColor(ImGuiCol_Text, text_color);
 	ImGui::Begin("##input", nullptr,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 
 
-	//ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
+	ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	cursorPos.x += 280;
 	cursorPos.y += 13;
@@ -193,7 +203,7 @@ void GuiInterface::SetClock()
 	ImGui::SameLine();
 	ImGui::Text(MyTime::Time->GetLocalTime().c_str());
 
-	//ImGui::PopFont();
+	ImGui::PopFont();
 	ImGui::PopStyleColor(2);
 	ImGui::End();
 }
@@ -201,9 +211,10 @@ void GuiInterface::SetClock()
 void GuiInterface::SettingOption()
 {
 	ImGui::SetNextWindowPos(ImVec2(915, 0), ImGuiCond_Always);
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ImGui::SetNextWindowSize(ImVec2(280, 501), ImGuiCond_Always);
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+
 	ImGui::Begin("##inputs", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 
 	RightFrameSetting();
@@ -285,27 +296,25 @@ void GuiInterface::RightFrameSetting()
 	ImGui::BeginChild("##1", ImVec2{ 250,70 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 
 	ImGui::SetCursorPos(ImVec2(20, 11));
-	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerFont());
+	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerFont());
 	ImGui::Text("Trigger Interval"); 
 	ImGui::SetCursorPos(ImVec2(140, 11));
 	ImGui::Text("TriggerCount");
-	//ImGui::PopFont();
+	ImGui::PopFont();
 
 
-	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
+	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
 	ImGui::SetCursorPos(ImVec2(25, 29));
 	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerInterval()); ImGui::SameLine();
-	//ImGui::PopFont();
-
-	//ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
-	ImGui::SetCursorPos(ImVec2(80, 41));
-	ImGui::Text("m/s"); ImGui::SameLine();
-	//ImGui::PopFont();
-
-	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
 	ImGui::SetCursorPos(ImVec2(145, 29));
 	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerCount());
-	//ImGui::PopFont();
+	ImGui::PopFont();
+
+	ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
+	ImGui::SetCursorPos(ImVec2(80, 41));
+	ImGui::Text("m/s"); ImGui::SameLine();
+	ImGui::PopFont();
+
 
 	ImGui::EndChild();
 
@@ -315,6 +324,12 @@ void GuiInterface::RightFrameSetting()
 
 	ImGui::SetCursorPos(ImVec2(15, 121));
 	ImGui::BeginChild("##2", ImVec2{ 250,200 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	PortInfos.clear();
+	/*PortInfos = R642s->GetAllPortInfo();
+	for (const char* V : PortInfos)
+	{
+		ImGui::Text(V);
+	}*/
 	ImGui::EndChild();
 
 

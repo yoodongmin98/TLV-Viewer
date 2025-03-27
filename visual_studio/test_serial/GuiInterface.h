@@ -36,6 +36,12 @@ private:
 	std::shared_ptr<R7> R7s = nullptr;
 	std::shared_ptr<ubpulse> ubpulses = nullptr;
 
+
+
+
+	std::vector<const char*> PortInfos;
+
+
 	std::string Time;
 	std::string Path;
 

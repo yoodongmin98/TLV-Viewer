@@ -6,6 +6,7 @@
 #include "MyTime.h"
 #include <functional>
 #include <string>
+#include <filesystem>
 using namespace OpenXLSX;
 using namespace std;
 CSV::CSV()
@@ -28,6 +29,23 @@ void CSV::CreateFile(std::string& _Name)
 	{
 		SheetList.clear();
 		IsCreate = false;
+		std::string rx1File = _Name + "RX1.xlsx";
+		std::string rx2File = _Name + "RX2.xlsx";
+		std::string rx3File = _Name + "RX3.xlsx";
+		std::string rx4File = _Name + "RX4.xlsx";
+
+		if (std::filesystem::exists(rx1File))
+		{
+			RX1.close();
+			std::filesystem::remove(rx1File);
+		}
+		if (std::filesystem::exists(rx2File))
+			std::filesystem::remove(rx2File);
+		if (std::filesystem::exists(rx3File))
+			std::filesystem::remove(rx3File);
+		if (std::filesystem::exists(rx4File))
+			std::filesystem::remove(rx4File);
+
 		RX1.create(_Name + "RX1.xlsx");
 		RX2.create(_Name + "RX2.xlsx");
 		RX3.create(_Name + "RX3.xlsx");
@@ -83,13 +101,15 @@ void CSV::WriteFile(std::vector<int> _Data, std::string& _Name, std::string _Tim
 		}
 	}
 	Cells++;
-	for (auto k = 0; k < 4; ++k)
+	for (auto p = 0; p < 4; ++p)
 	{
-		for (auto& [address, value] : sheetCellData[k])
+		for (auto& [address, value] : sheetCellData[p])
 		{
 			std::lock_guard<std::shared_mutex> lock(sheetmutex);
 			if (SheetList.size() == 4)
-				SheetList[k].cell(address).value() = value;
+			{
+				SheetList[p].cell(address).value() = value;
+			}
 			else
 				std::cerr << "4개의 시트가 전부 생성되지 않았습니다." << std::endl;
 		}
@@ -125,6 +145,6 @@ void CSV::SaveFile()
 		RX3.close();
 		RX4.close();
 
-		Cells = 0;
+		Cells = 1;
 	}
 }

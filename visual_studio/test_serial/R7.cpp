@@ -47,14 +47,14 @@ void R7::R7Setting()
 
 
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4f, 0.6f, 0.90196f, 1.0f)); 
-	//ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
+	ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	cursorPos.x += 17;
 	cursorPos.y += 18;
 	ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("HRS-R7 [1843200]");
+	ImGui::PopFont();
 	ImGui::PopStyleColor();
-	//ImGui::PopFont();
 
 
 	cursorPos.x -= 5;
@@ -66,7 +66,7 @@ void R7::R7Setting()
 	ImGui::PushStyleColor(ImGuiCol_Text, text_color);
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, new_bg_color);
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, new_bg_color);
-	//ImGui::PushFont(MyImGui::MyImGuis->MyImGuis->GetComboFont());
+	ImGui::PushFont(MyImGui::MyImGuis->MyImGuis->GetComboFont());
 	ImGui::PushItemWidth(236.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(20.0f, 7.0f));
 	ImGui::PushStyleColor(ImGuiCol_Button, new_bg_color);
@@ -74,7 +74,7 @@ void R7::R7Setting()
 	ImGui::PopStyleVar(1);
 	ImGui::PopStyleColor(4);
 	ImGui::PopItemWidth();
-	//ImGui::PopFont();
+	ImGui::PopFont();
 }
 
 
