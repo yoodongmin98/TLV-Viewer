@@ -79,7 +79,6 @@ void R642::UI()
 {
 	if (MySerial.isOpen())
 	{
-		std::function<void()> funcs = std::bind(&R642::DataParsingStart, this, ModuleName ,"0");
-		ThreadPool::TP->AddWork(funcs);
+		DataParsingStart(ModuleName, MyTime::Time->GetLocalTime());
 	}
 }

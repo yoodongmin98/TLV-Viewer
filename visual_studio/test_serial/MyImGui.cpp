@@ -70,7 +70,14 @@ void MyImGui::Instance()
 
 	std::thread renderThread(std::bind(&MyImGui::RenderLoop, this, io));
 	MSG msg;
-	
+	myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 14.0f);
+	myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-SemiBold.otf", 25.0f);
+	myFontCombo = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 17.0f);
+	myFontUnderText = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 14.0f);
+
+	ImGui::GetStyle().WindowBorderSize = 0.0f;
+	ImGui::GetStyle().WindowRounding = 15.0f;
+	ImGui::GetStyle().FrameRounding = 15.0f;
 	while (true)
 	{
 		while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
@@ -101,10 +108,7 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 {
 	ImVec4 clear_color = ImVec4(0.631f, 0.761f, 0.957f, 1.00f);
 	// Main loop
-	myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 14.0f);
-	myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-SemiBold.otf", 25.0f);
-	myFontCombo = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 17.0f);
-	myFontUnderText = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 14.0f);
+	
 	while (g_Running)
 	{
 
@@ -144,9 +148,7 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//setting
-		ImGui::GetStyle().WindowBorderSize = 0.0f;
-		ImGui::GetStyle().WindowRounding = 15.0f;
-		ImGui::GetStyle().FrameRounding = 15.0f;
+		
 
 
 

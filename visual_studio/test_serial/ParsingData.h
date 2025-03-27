@@ -105,7 +105,7 @@ public:
 	{
 		return CSVs;
 	}
-	void R7Save();
+	void RSave(bool Standard = 0);
 protected:
 
 	std::string TransVersion(std::vector<int>& _Buffer);
@@ -153,6 +153,7 @@ private:
 
 
 	std::vector<std::tuple<std::vector<int>,std::string ,std::string>> R7Vector;
+	std::vector<std::tuple<std::vector<int>, std::string, std::string>> R642Vector;
 	
 	void CallbackTrigger()
 	{

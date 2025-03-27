@@ -115,11 +115,11 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 	ImGui::SameLine();
 	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
 	{
-		
+		if (R642s->GetSerial().isOpen())
+			R642s->GetParsingDatas()->RSave(true);
 		if (R7s->GetSerial().isOpen())
-			R7s->GetParsingDatas()->R7Save();
-		if(R642s->GetSerial().isOpen())
-			R642s->GetParsingDatas()->GetCSVs()->SaveFile();
+			R7s->GetParsingDatas()->RSave();
+	
 
 		R642s->DisConnect();
 		R7s->DisConnect();

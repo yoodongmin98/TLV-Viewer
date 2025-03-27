@@ -37,14 +37,28 @@ ParsingData::~ParsingData()
 }
 
 
-void ParsingData::R7Save()
+void ParsingData::RSave(bool Standard)
 {
     std::cout << "저장중입니다............." << std::endl;
-    for (auto i = 0; i < R7Vector.size(); ++i)
+    if (Standard)
     {
-        CSVs->WriteFile(std::get<0>(R7Vector[i]), std::get<1>(R7Vector[i]), std::get<2>(R7Vector[i]), 0);
+        std::cout << "R642시작시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+        for (auto i = 0; i < R642Vector.size(); ++i)
+        {
+            CSVs->WriteFile(std::get<0>(R642Vector[i]), std::get<1>(R642Vector[i]), std::get<2>(R642Vector[i]), 0);
+        }
+        CSVs->SaveFile();
     }
-    CSVs->SaveFile();
+    else
+    {
+        std::cout << "R7시작시간 : " << MyTime::Time->GetLocalTime() << std::endl;
+        for (auto i = 0; i < R7Vector.size(); ++i)
+        {
+            CSVs->WriteFile(std::get<0>(R7Vector[i]), std::get<1>(R7Vector[i]), std::get<2>(R7Vector[i]), 0);
+        }
+        CSVs->SaveFile();
+    }
+    std::cout << "저장끝난시간 : " << MyTime::Time->GetLocalTime() << std::endl;
     std::cout << "저장끝!" << std::endl;
 }
 
@@ -75,11 +89,11 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
             if (_Name == "R642")
             {
                 CallbackTrigger();
-                CSVs->WriteFile(TLV_Datas, _Name , MyTime::Time->GetLocalTime(), 0); 
+                R642Vector.emplace_back(std::make_tuple(TLV_Datas, _Name, _Time)); 
             }
             else
             {
-                R7Vector.push_back(std::make_tuple(TLV_Datas, _Name, _Time));
+                R7Vector.emplace_back(std::make_tuple(TLV_Datas, _Name, _Time));
             }
         }
         BufferIndex = 8;

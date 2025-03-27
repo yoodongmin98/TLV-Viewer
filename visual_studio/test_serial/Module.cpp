@@ -49,6 +49,8 @@ void Module::DataInput()
 					for (unsigned char c : hexs)
 						HexBuffer.push_back(static_cast<int>(c));
 				}
+				//if (HexBuffer.size() % 1216 == 0)
+					//std::cout << MyTime::Time->GetLocalTime() << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(0));
 			}
 		}
@@ -115,7 +117,6 @@ void Module::DataParsingStart(std::string _Name , std::string Time)
 	std::lock_guard<std::shared_mutex> lock(HexBufferMutex);
 	if (DetectHeaders->FindHeader(HexBuffer, MagicNumber))
 	{
-		MyTime::Time->GetInterval();
 		ParsingDatas->DataParsing(HexBuffer,_Name , Time);
 	}
 }
