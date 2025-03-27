@@ -49,8 +49,6 @@ void Module::DataInput()
 					for (unsigned char c : hexs)
 						HexBuffer.push_back(static_cast<int>(c));
 				}
-				//if (HexBuffer.size() % 1216 == 0)
-					//std::cout << MyTime::Time->GetLocalTime() << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(0));
 			}
 		}

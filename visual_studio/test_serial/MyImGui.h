@@ -74,6 +74,10 @@ public:
     {
         return myFontSmall;
     }
+    ImFont* GetMediumFont()
+    {
+        return myFontMedium;
+    }
     ImFont* GetComboFont()
     {
         return myFontCombo;
@@ -82,6 +86,15 @@ public:
     {
         return myFontUnderText;
     }
+    ImFont* GetTriggerFont()
+    {
+        return Trigger;
+    }
+    ImFont* GetTriggerNumberFont()
+    {
+        return TriggerNumber;
+    }
+
 protected:
     void LogFileOpen();
     bool CreateDeviceD3D(HWND hWnd);
@@ -99,9 +112,12 @@ private:
     int height = 0;
 
     ImFont* myFontLarge;
+    ImFont* myFontMedium;
     ImFont* myFontSmall;
     ImFont* myFontCombo;
     ImFont* myFontUnderText;
+    ImFont* Trigger;
+    ImFont* TriggerNumber;
     
     std::shared_ptr<ThreadPool> ThreadPools = nullptr;
     std::shared_ptr<GuiInterface> Interfaces = nullptr;

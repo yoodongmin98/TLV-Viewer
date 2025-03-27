@@ -71,9 +71,12 @@ void MyImGui::Instance()
 	std::thread renderThread(std::bind(&MyImGui::RenderLoop, this, io));
 	MSG msg;
 	myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 14.0f);
+	myFontMedium = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 18.0f);
 	myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-SemiBold.otf", 25.0f);
 	myFontCombo = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 17.0f);
 	myFontUnderText = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 14.0f);
+	Trigger = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 14.0f);
+	TriggerNumber = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 33.0f);
 
 	ImGui::GetStyle().WindowBorderSize = 0.0f;
 	ImGui::GetStyle().WindowRounding = 15.0f;

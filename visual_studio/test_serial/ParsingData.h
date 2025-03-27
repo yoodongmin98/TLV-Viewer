@@ -83,17 +83,26 @@ public:
 	{
 		return PacketStreamDataLowByte;
 	}
+	const int GetTriggerInterval()
+	{
+		return TriggerInterval;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	std::vector<int> GetTLVBuffer()
 	{
 		return TLV_Datas;
-	}
-	const int GetLastDataCount()
-	{
-		return LastDataCount;
-	}
-	void SetLastDataCountPlus()
-	{
-		LastDataCount++;
 	}
 		
 	std::function<void()>& Get_ubpulse_DataEvent()
@@ -140,12 +149,9 @@ private:
 	int PacketStreamDataHighByte = 0;
 	int PacketStreamDataLowByte = 0;
 
+	int TriggerInterval = 0;
+
 	std::shared_mutex DataMutex;
-	std::shared_mutex TLVMutex;
-
-
-	std::vector<int> PreCopy;
-	int LastDataCount = 0;
 	std::vector<int> TLV_Datas;
 
 	std::shared_ptr<CSV> CSVs = nullptr;

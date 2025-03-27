@@ -89,6 +89,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
             if (_Name == "R642")
             {
                 CallbackTrigger();
+                TriggerInterval = MyTime::Time->GetInterval();
                 R642Vector.emplace_back(std::make_tuple(TLV_Datas, _Name, _Time)); 
             }
             else

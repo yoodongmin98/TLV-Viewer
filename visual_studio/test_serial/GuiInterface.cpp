@@ -210,12 +210,69 @@ void GuiInterface::SettingOption()
 	ImGui::End();
 }
 
-
+//ImGuiCol_Text,
+//ImGuiCol_TextDisabled,
+//ImGuiCol_WindowBg,              // Background of normal windows
+//ImGuiCol_ChildBg,               // Background of child windows
+//ImGuiCol_PopupBg,               // Background of popups, menus, tooltips windows
+//ImGuiCol_Border,
+//ImGuiCol_BorderShadow,
+//ImGuiCol_FrameBg,               // Background of checkbox, radio button, plot, slider, text input
+//ImGuiCol_FrameBgHovered,
+//ImGuiCol_FrameBgActive,
+//ImGuiCol_TitleBg,               // Title bar
+//ImGuiCol_TitleBgActive,         // Title bar when focused
+//ImGuiCol_TitleBgCollapsed,      // Title bar when collapsed
+//ImGuiCol_MenuBarBg,
+//ImGuiCol_ScrollbarBg,
+//ImGuiCol_ScrollbarGrab,
+//ImGuiCol_ScrollbarGrabHovered,
+//ImGuiCol_ScrollbarGrabActive,
+//ImGuiCol_CheckMark,             // Checkbox tick and RadioButton circle
+//ImGuiCol_SliderGrab,
+//ImGuiCol_SliderGrabActive,
+//ImGuiCol_Button,
+//ImGuiCol_ButtonHovered,
+//ImGuiCol_ButtonActive,
+//ImGuiCol_Header,                // Header* colors are used for CollapsingHeader, TreeNode, Selectable, MenuItem
+//ImGuiCol_HeaderHovered,
+//ImGuiCol_HeaderActive,
+//ImGuiCol_Separator,
+//ImGuiCol_SeparatorHovered,
+//ImGuiCol_SeparatorActive,
+//ImGuiCol_ResizeGrip,            // Resize grip in lower-right and lower-left corners of windows.
+//ImGuiCol_ResizeGripHovered,
+//ImGuiCol_ResizeGripActive,
+//ImGuiCol_TabHovered,            // Tab background, when hovered
+//ImGuiCol_Tab,                   // Tab background, when tab-bar is focused & tab is unselected
+//ImGuiCol_TabSelected,           // Tab background, when tab-bar is focused & tab is selected
+//ImGuiCol_TabSelectedOverline,   // Tab horizontal overline, when tab-bar is focused & tab is selected
+//ImGuiCol_TabDimmed,             // Tab background, when tab-bar is unfocused & tab is unselected
+//ImGuiCol_TabDimmedSelected,     // Tab background, when tab-bar is unfocused & tab is selected
+//ImGuiCol_TabDimmedSelectedOverline,//..horizontal overline, when tab-bar is unfocused & tab is selected
+//ImGuiCol_PlotLines,
+//ImGuiCol_PlotLinesHovered,
+//ImGuiCol_PlotHistogram,
+//ImGuiCol_PlotHistogramHovered,
+//ImGuiCol_TableHeaderBg,         // Table header background
+//ImGuiCol_TableBorderStrong,     // Table outer and header borders (prefer using Alpha=1.0 here)
+//ImGuiCol_TableBorderLight,      // Table inner borders (prefer using Alpha=1.0 here)
+//ImGuiCol_TableRowBg,            // Table row background (even rows)
+//ImGuiCol_TableRowBgAlt,         // Table row background (odd rows)
+//ImGuiCol_TextLink,              // Hyperlink color
+//ImGuiCol_TextSelectedBg,
+//ImGuiCol_DragDropTarget,        // Rectangle highlighting a drop target
+//ImGuiCol_NavHighlight,          // Gamepad/keyboard: current highlighted item
+//ImGuiCol_NavWindowingHighlight, // Highlight window when using CTRL+TAB
+//ImGuiCol_NavWindowingDimBg,     // Darken/colorize entire screen behind the CTRL+TAB window list, when active
+//ImGuiCol_ModalWindowDimBg,      // Darken/colorize entire screen behind a modal window, when one is active
+//ImGuiCol_COUNT,
 void GuiInterface::RightFrameSetting()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.0f);
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.839f, 0.839f, 0.839f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 
 
@@ -223,7 +280,28 @@ void GuiInterface::RightFrameSetting()
 
 	ImGui::SetCursorPos(ImVec2(15, 38)); 
 	ImGui::BeginChild("##1", ImVec2{ 250,70 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+
+	ImGui::SetCursorPos(ImVec2(20, 11));
+	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerFont());
+	ImGui::Text("Trigger Interval"); 
+	ImGui::SetCursorPos(ImVec2(140, 11));
+	ImGui::Text("TriggerCount");
+	ImGui::PopFont();
+
+
+	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
+	ImGui::SetCursorPos(ImVec2(25, 29));
+	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerInterval()); ImGui::SameLine();
+	ImGui::PopFont();
+
+	ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
+	ImGui::SetCursorPos(ImVec2(80, 41));
+	ImGui::Text("m/s"); ImGui::SameLine();
+	ImGui::PopFont();
+
 	ImGui::EndChild();
+
+
 
 
 
@@ -240,6 +318,6 @@ void GuiInterface::RightFrameSetting()
 
 
 
-	ImGui::PopStyleColor();
+	ImGui::PopStyleColor(2);
 	ImGui::PopStyleVar(2);
 }

@@ -13,7 +13,7 @@ public:
 	static MyTime* Time;
 	std::string GetLocalTime();
 	std::string GetLocalDay();
-	void GetInterval();
+	int GetInterval();
 
 protected:
 private:

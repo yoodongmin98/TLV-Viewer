@@ -60,13 +60,11 @@ std::string MyTime::GetLocalDay()
 }
 
 
-void MyTime::GetInterval()
+int MyTime::GetInterval()
 {
     auto now = std::chrono::steady_clock::now();
-    long long  interval = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTriggerTime).count();
-
-    std::cout << "트리거 신호 시간 : " << interval << " ms" << std::endl;
-
+    int Interval = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastTriggerTime).count();
     lastTriggerTime = now; 
 
+    return Interval;
 }
