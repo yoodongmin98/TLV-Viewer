@@ -184,7 +184,7 @@ void GuiInterface::SetClock()
 	ImGui::Begin("##input", nullptr,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 
 
-	ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	cursorPos.x += 280;
 	cursorPos.y += 13;
@@ -193,7 +193,7 @@ void GuiInterface::SetClock()
 	ImGui::SameLine();
 	ImGui::Text(MyTime::Time->GetLocalTime().c_str());
 
-	ImGui::PopFont();
+	//ImGui::PopFont();
 	ImGui::PopStyleColor(2);
 	ImGui::End();
 }
@@ -285,27 +285,27 @@ void GuiInterface::RightFrameSetting()
 	ImGui::BeginChild("##1", ImVec2{ 250,70 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 
 	ImGui::SetCursorPos(ImVec2(20, 11));
-	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerFont());
 	ImGui::Text("Trigger Interval"); 
 	ImGui::SetCursorPos(ImVec2(140, 11));
 	ImGui::Text("TriggerCount");
-	ImGui::PopFont();
+	//ImGui::PopFont();
 
 
-	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
 	ImGui::SetCursorPos(ImVec2(25, 29));
 	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerInterval()); ImGui::SameLine();
-	ImGui::PopFont();
+	//ImGui::PopFont();
 
-	ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
 	ImGui::SetCursorPos(ImVec2(80, 41));
 	ImGui::Text("m/s"); ImGui::SameLine();
-	ImGui::PopFont();
+	//ImGui::PopFont();
 
-	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
 	ImGui::SetCursorPos(ImVec2(145, 29));
 	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerCount());
-	ImGui::PopFont();
+	//ImGui::PopFont();
 
 	ImGui::EndChild();
 

@@ -126,7 +126,7 @@ void Module::DataView()
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	cursorPos.x += HEADERSPACING; cursorPos.y += 16;
 	ImGui::SetCursorPos(cursorPos);
-	ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4667f, 0.4667f, 0.4667f, 1.0f));
 	ImGui::Text("Version = %s", ParsingDatas->GetVersion().c_str());
 	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
@@ -148,7 +148,7 @@ void Module::DataView()
 	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
 	ImGui::Text("TLVLength = %d", ParsingDatas->GetTLVLength());
 	ImGui::PopStyleColor();
-	ImGui::PopFont();
+	//ImGui::PopFont();
 }
 
 void Module::PulseDataView()
@@ -156,7 +156,7 @@ void Module::PulseDataView()
 	ImVec2 cursorPos = ImGui::GetCursorPos();
 	cursorPos.x += HEADERSPACING; cursorPos.y += 16;
 	ImGui::SetCursorPos(cursorPos);
-	ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
+	//ImGui::PushFont(MyImGui::MyImGuis->GetUnderTextFont());
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.4667f, 0.4667f, 0.4667f, 1.0f));
 	ImGui::Text("PacketUnitData0 = %d", ParsingDatas->GetPacketUnitData0());
 	cursorPos.y += HEADERSPACING; ImGui::SetCursorPos(cursorPos);
@@ -171,7 +171,7 @@ void Module::PulseDataView()
 	ImGui::Text("PacketStreamDataLowByte = %d", ParsingDatas->GetPacketStreamDataLowByte());
 	
 	ImGui::PopStyleColor();
-	ImGui::PopFont();
+	//ImGui::PopFont();
 }
 
 

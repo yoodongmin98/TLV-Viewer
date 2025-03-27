@@ -46,97 +46,73 @@ void MyImGui::Instance()
 	::RegisterClassExW(&wc);
 	hwnd = ::CreateWindowW(wc.lpszClassName, L"TLV - Viewer", WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, 100, 100, 1211, 540, nullptr, nullptr, wc.hInstance, nullptr);
 
-
-
+	// Initialize Direct3D
 	if (!CreateDeviceD3D(hwnd))
 	{
 		CleanupDeviceD3D();
 		::UnregisterClassW(wc.lpszClassName, wc.hInstance);
 	}
 
+	// Show the window
 	::ShowWindow(hwnd, SW_SHOWDEFAULT);
 	::UpdateWindow(hwnd);
 
+	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsLight();
 
+	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
-
-	std::thread renderThread(std::bind(&MyImGui::RenderLoop, this, io));
-	MSG msg;
-
-	myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 14.0f);
-	myFontMedium = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 18.0f);
-	myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-SemiBold.otf", 25.0f);
-	myFontCombo = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 17.0f);
-	myFontUnderText = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 14.0f);
-	Trigger = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 14.0f);
-	TriggerNumber = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 33.0f);
-	io.Fonts->Build();
+	//myFontSmall = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 14.0f);
+	//myFontMedium = io.Fonts->AddFontFromFileTTF("PretendardVariable.ttf", 18.0f);
+	//myFontLarge = io.Fonts->AddFontFromFileTTF("Pretendard-SemiBold.otf", 25.0f);
+	//myFontCombo = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 17.0f);
+	//myFontUnderText = io.Fonts->AddFontFromFileTTF("Pretendard-Medium.otf", 14.0f);
+	//Trigger = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 14.0f);
+	//TriggerNumber = io.Fonts->AddFontFromFileTTF("Pretendard-Bold.otf", 33.0f);
+	//io.Fonts->Build();
 
 	ImGui::GetStyle().WindowBorderSize = 0.0f;
 	ImGui::GetStyle().WindowRounding = 15.0f;
 	ImGui::GetStyle().FrameRounding = 15.0f;
-	while (true)
+
+	ImVec4 clear_color = ImVec4(0.631f, 0.761f, 0.957f, 1.00f);
+
+	// Main loop
+	bool done = false;
+	while (!done)
 	{
+		// Poll and handle messages (inputs, window resize, etc.)
+		// See the WndProc() function below for our to dispatch events to the Win32 backend.
+		MSG msg;
 		while (::PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE))
 		{
 			::TranslateMessage(&msg);
 			::DispatchMessage(&msg);
-
 			if (msg.message == WM_QUIT)
-			{
-				g_Running = false;  
-				renderThread.join(); 
-				return;
-			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+				done = true;
 		}
-	}
+		if (done)
+			break;
 
-	g_Running = false;
-	renderThread.join();
-
-	CleanupDeviceD3D();
-	::DestroyWindow(hwnd);
-	::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-}
-
-
-void MyImGui::RenderLoop(ImGuiIO& io)
-{
-	ImVec4 clear_color = ImVec4(0.631f, 0.761f, 0.957f, 1.00f);
-	// Main loop
-	
-	while (g_Running)
-	{
-
-		if (GetClientRect(hwnd, &rect))
-		{
-			width = rect.right - rect.left;
-			height = rect.bottom - rect.top;
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-		if (g_IsMoving)
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			continue;
-		}
-
+		// Handle window being minimized or screen locked
 		if (g_SwapChainOccluded && g_pSwapChain->Present(0, DXGI_PRESENT_TEST) == DXGI_STATUS_OCCLUDED)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			::Sleep(10);
 			continue;
 		}
 		g_SwapChainOccluded = false;
 
+		// Handle window resize (we don't resize directly in the WM_SIZE handler)
 		if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
 		{
 			CleanupRenderTarget();
@@ -144,35 +120,39 @@ void MyImGui::RenderLoop(ImGuiIO& io)
 			g_ResizeWidth = g_ResizeHeight = 0;
 			CreateRenderTarget();
 		}
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ImGui::StyleColorsDark();
 
+		// Start the Dear ImGui frame
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
-	
-		Interfaces->Instance(io);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		Interfaces->Instance(io);
+
+		// Rendering
 		ImGui::Render();
 		const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
 		g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
 		g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-		HRESULT hr = g_pSwapChain->Present(1, 0);
+		// Present
+		HRESULT hr = g_pSwapChain->Present(1, 0);   // Present with vsync
+		//HRESULT hr = g_pSwapChain->Present(0, 0); // Present without vsync
 		g_SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
 	}
 
-	g_Running = false;
-
-	// ImGui 包访 府家胶 沥府
+	// Cleanup
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	CleanupDeviceD3D();
+	::DestroyWindow(hwnd);
+	::UnregisterClassW(wc.lpszClassName, wc.hInstance);
+
 }
+
+
 
 bool MyImGui::CreateDeviceD3D(HWND hWnd)
 {

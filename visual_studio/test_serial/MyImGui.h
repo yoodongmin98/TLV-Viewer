@@ -101,8 +101,6 @@ protected:
     void CleanupDeviceD3D();
     void CreateRenderTarget();
     void CleanupRenderTarget();
-
-    void RenderLoop(ImGuiIO& io);
 private:
     HWND hwnd;
     RECT rect;
