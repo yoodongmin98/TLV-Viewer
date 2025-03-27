@@ -32,6 +32,11 @@ public:
 	{
 		return MySerial;
 	}
+	std::vector<const char*> GetAllPortInfo()
+	{
+		return AllPortInfo;
+	}
+
 	bool Connect();
 	void DisConnect();
 	void DataParsingStart(std::string _Name , std::string Time);
@@ -45,6 +50,7 @@ protected:
 
 	//Data Buffer
 	std::vector<const char*> AllPort;
+	std::vector<const char*> AllPortInfo;
 	std::vector<int> HexBuffer;
 
 

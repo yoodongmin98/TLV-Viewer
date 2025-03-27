@@ -124,5 +124,7 @@ void CSV::SaveFile()
 		RX2.close();
 		RX3.close();
 		RX4.close();
+
+		Cells = 0;
 	}
 }

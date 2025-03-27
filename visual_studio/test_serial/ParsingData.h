@@ -87,10 +87,19 @@ public:
 	{
 		return TriggerInterval;
 	}
+	const int GetTriggerCount()
+	{
+		return TriggerCount;
+	}
 
 
-
-
+	const void TriggerDataReset()
+	{
+		TriggerCount = 0;
+		TriggerInterval = 0;
+		R7Vector.clear();
+		R642Vector.clear();
+	}
 
 
 
@@ -150,6 +159,7 @@ private:
 	int PacketStreamDataLowByte = 0;
 
 	int TriggerInterval = 0;
+	int TriggerCount = 0;
 
 	std::shared_mutex DataMutex;
 	std::vector<int> TLV_Datas;

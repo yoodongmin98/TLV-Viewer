@@ -116,7 +116,10 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
 	{
 		if (R642s->GetSerial().isOpen())
+		{
 			R642s->GetParsingDatas()->RSave(true);
+			R642s->GetParsingDatas()->TriggerDataReset();
+		}
 		if (R7s->GetSerial().isOpen())
 			R7s->GetParsingDatas()->RSave();
 	
@@ -297,6 +300,11 @@ void GuiInterface::RightFrameSetting()
 	ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
 	ImGui::SetCursorPos(ImVec2(80, 41));
 	ImGui::Text("m/s"); ImGui::SameLine();
+	ImGui::PopFont();
+
+	ImGui::PushFont(MyImGui::MyImGuis->GetTriggerNumberFont());
+	ImGui::SetCursorPos(ImVec2(145, 29));
+	ImGui::Text("%d", this->R642s->GetParsingDatas()->GetTriggerCount());
 	ImGui::PopFont();
 
 	ImGui::EndChild();
