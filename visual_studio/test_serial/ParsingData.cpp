@@ -64,7 +64,7 @@ void ParsingData::RSave(bool Standard)
 
 void ParsingData::DataParsing(std::vector<int>& _Buffer, std::string& _Name, std::string Time)
 {
-    if (_Name == "ubpulse")
+    if (_Name.find("ubpulse") != std::string::npos)
         ubpulse_HeaderParsing(_Buffer);
     else
         TLV_HeaderParsing(_Buffer,_Name , Time);
@@ -86,7 +86,7 @@ void ParsingData::TLV_HeaderParsing(std::vector<int>& _Buffer, std::string& _Nam
         TLV_TypeParsing(_Buffer);
         if (TLV_Datas.size() > 0)
         {
-            if (_Name == "R642")
+            if (_Name.find("R642") != std::string::npos)
             {
                 CallbackTrigger();
                 TriggerCount++;

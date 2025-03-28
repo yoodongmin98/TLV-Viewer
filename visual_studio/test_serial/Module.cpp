@@ -64,6 +64,7 @@ void Module::SetPortInfo()
 {
 	PortInfos = serial::list_ports();
 	AllPort.clear();
+	AllPortInfo.clear();
 	for (serial::PortInfo& V : PortInfos)
 	{
 		AllPort.emplace_back(V.port.c_str());

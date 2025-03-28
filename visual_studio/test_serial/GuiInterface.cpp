@@ -25,10 +25,11 @@
 
 using namespace OpenXLSX;
 
-
+GuiInterface* GuiInterface::GUI = nullptr;
 
 GuiInterface::GuiInterface()
 {
+	GUI = this;
 	R642s = std::make_shared<R642>();
 	R7s = std::make_shared<R7>();
 	ubpulses = std::make_shared<ubpulse>();
@@ -90,7 +91,7 @@ void GuiInterface::REventListener()
 	{
 		if (R7triggered.exchange(false, std::memory_order_acq_rel))
 		{
-			R7s->DataParsingStart("R7",MyTime::Time->GetLocalTime());
+			R7s->DataParsingStart(Path + "R7",MyTime::Time->GetLocalTime());
 			R7triggered.store(false, std::memory_order_release);
 		}
 		std::this_thread::yield(); 
@@ -101,49 +102,6 @@ void GuiInterface::SetBackGround(ImGuiIO& _io)
 {
 	SetClock();
 	SettingOption();
-	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-	ImGui::SetNextWindowSize(ImVec2(495, 250), ImGuiCond_Always);
-	ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
-
-
-	if (ImGui::Button("START", ImVec2{ 150,50 }))
-	{
-		R642s->Connect();
-		R7s->Connect();
-		ubpulses->Connect();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("DisConnect & Save", ImVec2{ 150,50 }))
-	{
-		
-		if (R642s->GetSerial().isOpen())
-		{
-			R642s->GetParsingDatas()->RSave(true);
-			R642s->GetParsingDatas()->TriggerDataReset();
-			R642s->SetDataThreadStopFlag();
-		}
-		if (R7s->GetSerial().isOpen())
-		{
-			R7s->GetParsingDatas()->RSave();
-			R7s->SetDataThreadStopFlag();
-		}
-		if (ubpulses->GetSerial().isOpen())
-		{
-			ubpulses->SetDataThreadStopFlag();
-		}
-	
-
-		R642s->DisConnect();
-		R7s->DisConnect();
-		ubpulses->DisConnect();
-		
-		if (UbExcel.isOpen())
-		{
-			UbExcel.save();
-			UbExcel.close();
-		}
-	}
-	ImGui::End();
 }
 
 void GuiInterface::GetLastData()
@@ -179,6 +137,13 @@ std::string GuiInterface::SaveFileDialog()
 	return SZFILE;
 }
 
+std::string GuiInterface::GetFileNameFromPath(const std::string& path)
+{
+	size_t pos = path.find_last_of("\\");
+	if (pos != std::string::npos)
+		return path.substr(0, pos + 1);
+	return path;
+}
 
 
 void GuiInterface::SetClock()
@@ -224,70 +189,15 @@ void GuiInterface::SettingOption()
 	ImGui::End();
 }
 
-//ImGuiCol_Text,
-//ImGuiCol_TextDisabled,
-//ImGuiCol_WindowBg,              // Background of normal windows
-//ImGuiCol_ChildBg,               // Background of child windows
-//ImGuiCol_PopupBg,               // Background of popups, menus, tooltips windows
-//ImGuiCol_Border,
-//ImGuiCol_BorderShadow,
-//ImGuiCol_FrameBg,               // Background of checkbox, radio button, plot, slider, text input
-//ImGuiCol_FrameBgHovered,
-//ImGuiCol_FrameBgActive,
-//ImGuiCol_TitleBg,               // Title bar
-//ImGuiCol_TitleBgActive,         // Title bar when focused
-//ImGuiCol_TitleBgCollapsed,      // Title bar when collapsed
-//ImGuiCol_MenuBarBg,
-//ImGuiCol_ScrollbarBg,
-//ImGuiCol_ScrollbarGrab,
-//ImGuiCol_ScrollbarGrabHovered,
-//ImGuiCol_ScrollbarGrabActive,
-//ImGuiCol_CheckMark,             // Checkbox tick and RadioButton circle
-//ImGuiCol_SliderGrab,
-//ImGuiCol_SliderGrabActive,
-//ImGuiCol_Button,
-//ImGuiCol_ButtonHovered,
-//ImGuiCol_ButtonActive,
-//ImGuiCol_Header,                // Header* colors are used for CollapsingHeader, TreeNode, Selectable, MenuItem
-//ImGuiCol_HeaderHovered,
-//ImGuiCol_HeaderActive,
-//ImGuiCol_Separator,
-//ImGuiCol_SeparatorHovered,
-//ImGuiCol_SeparatorActive,
-//ImGuiCol_ResizeGrip,            // Resize grip in lower-right and lower-left corners of windows.
-//ImGuiCol_ResizeGripHovered,
-//ImGuiCol_ResizeGripActive,
-//ImGuiCol_TabHovered,            // Tab background, when hovered
-//ImGuiCol_Tab,                   // Tab background, when tab-bar is focused & tab is unselected
-//ImGuiCol_TabSelected,           // Tab background, when tab-bar is focused & tab is selected
-//ImGuiCol_TabSelectedOverline,   // Tab horizontal overline, when tab-bar is focused & tab is selected
-//ImGuiCol_TabDimmed,             // Tab background, when tab-bar is unfocused & tab is unselected
-//ImGuiCol_TabDimmedSelected,     // Tab background, when tab-bar is unfocused & tab is selected
-//ImGuiCol_TabDimmedSelectedOverline,//..horizontal overline, when tab-bar is unfocused & tab is selected
-//ImGuiCol_PlotLines,
-//ImGuiCol_PlotLinesHovered,
-//ImGuiCol_PlotHistogram,
-//ImGuiCol_PlotHistogramHovered,
-//ImGuiCol_TableHeaderBg,         // Table header background
-//ImGuiCol_TableBorderStrong,     // Table outer and header borders (prefer using Alpha=1.0 here)
-//ImGuiCol_TableBorderLight,      // Table inner borders (prefer using Alpha=1.0 here)
-//ImGuiCol_TableRowBg,            // Table row background (even rows)
-//ImGuiCol_TableRowBgAlt,         // Table row background (odd rows)
-//ImGuiCol_TextLink,              // Hyperlink color
-//ImGuiCol_TextSelectedBg,
-//ImGuiCol_DragDropTarget,        // Rectangle highlighting a drop target
-//ImGuiCol_NavHighlight,          // Gamepad/keyboard: current highlighted item
-//ImGuiCol_NavWindowingHighlight, // Highlight window when using CTRL+TAB
-//ImGuiCol_NavWindowingDimBg,     // Darken/colorize entire screen behind the CTRL+TAB window list, when active
-//ImGuiCol_ModalWindowDimBg,      // Darken/colorize entire screen behind a modal window, when one is active
-//ImGuiCol_COUNT,
+
 void GuiInterface::RightFrameSetting()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 10.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 1.0f);
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.839f, 0.839f, 0.839f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
-
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 1.0f,1.0f,1.0f,1.0f });
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
 
 
 
@@ -321,26 +231,86 @@ void GuiInterface::RightFrameSetting()
 
 
 
-
 	ImGui::SetCursorPos(ImVec2(15, 121));
 	ImGui::BeginChild("##2", ImVec2{ 250,200 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 	PortInfos.clear();
-	/*PortInfos = R642s->GetAllPortInfo();
-	for (const char* V : PortInfos)
+	PortInfos = R642s->GetAllPortInfo();
+	for (auto item : PortInfos) 
 	{
-		ImGui::Text(V);
-	}*/
+		ImGui::Text("%s", item);
+	}
 	ImGui::EndChild();
 
 
 	ImGui::SetCursorPos(ImVec2(15, 334));
 	ImGui::BeginChild("##3", ImVec2{ 250,65 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::Text("%s", Path.c_str());
+	ImGui::SetCursorPos(ImVec2(70, 33));
+	if (ImGui::Button("PATH SETTING"))
+	{
+		Path = GetFileNameFromPath(SaveFileDialog());
+	}
 	ImGui::EndChild();
 
 
 
 
+	ImGui::SetCursorPos(ImVec2(15, 402));
 
-	ImGui::PopStyleColor(2);
-	ImGui::PopStyleVar(2);
+	ImGui::PushFont(MyImGui::MyImGuis->GetComboFont());
+	ImGui::BeginDisabled(StartButton);
+	if (ImGui::Button("START", ImVec2{ 125,46 }))
+	{
+		StartButton = true;
+		R642s->Connect();
+		R7s->Connect();
+		ubpulses->Connect();
+	}
+	ImGui::EndDisabled();
+	ImGui::SetCursorPos(ImVec2(142, 402));
+	ImGui::BeginDisabled(SaveButton);
+	if (ImGui::Button("Cut & Save", ImVec2{ 125,46 }))
+	{
+		SaveButton = true;
+		if (R642s->GetSerial().isOpen())
+		{
+			R642s->GetParsingDatas()->RSave(true);
+			R642s->GetParsingDatas()->TriggerDataReset();
+			R642s->SetDataThreadStopFlag();
+		}
+		if (R7s->GetSerial().isOpen())
+		{
+			R7s->GetParsingDatas()->RSave();
+			R7s->SetDataThreadStopFlag();
+		}
+		if (ubpulses->GetSerial().isOpen())
+		{
+			ubpulses->SetDataThreadStopFlag();
+		}
+
+
+		R642s->DisConnect();
+		R7s->DisConnect();
+		ubpulses->DisConnect();
+
+		if (UbExcel.isOpen())
+		{
+			UbExcel.save();
+			UbExcel.close();
+		}
+	}
+	ImGui::EndDisabled();
+
+	if (StartButton && SaveButton)
+	{
+		ImGui::SetCursorPos(ImVec2(90, 450));
+		ImGui::TextColored(ImVec4(0.0f, 0.0f, 1.0f, 1.0f), "Save Completed.");
+		ImGui::SetCursorPos(ImVec2(50, 470));
+		ImGui::TextColored(ImVec4(0.0f, 0.0f, 1.0f, 1.0f), "Please Restart the Program.");
+	}
+
+
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+	ImGui::PopStyleVar(3);
 }

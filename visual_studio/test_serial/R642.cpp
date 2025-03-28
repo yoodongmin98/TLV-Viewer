@@ -6,6 +6,7 @@
 #include "MyTime.h"
 #include <functional>
 #include "ThreadPool.h"
+#include "GuiInterface.h"
 R642::R642()
 {
 	ModuleName = "R642";
@@ -80,6 +81,6 @@ void R642::UI()
 {
 	if (MySerial.isOpen())
 	{
-		DataParsingStart(ModuleName, MyTime::Time->GetLocalTime());
+		DataParsingStart(GuiInterface::GUI->GetFileNameFromPath(GuiInterface::GUI->GetPath()) + ModuleName, MyTime::Time->GetLocalTime());
 	}
 }

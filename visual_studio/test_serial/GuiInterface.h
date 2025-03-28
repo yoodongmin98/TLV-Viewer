@@ -16,12 +16,18 @@ class R642;
 class GuiInterface
 {
 public:
+	static GuiInterface* GUI;
 	GuiInterface();
 	~GuiInterface();
 
 	void Instance(ImGuiIO& io);
 	void SetClock();
 	void SettingOption();
+	std::string GetPath()
+	{
+		return Path;
+	}
+	std::string GetFileNameFromPath(const std::string& path);
 protected:
 	void SetBackGround(ImGuiIO& io);
 
@@ -32,20 +38,23 @@ protected:
 
 	void RightFrameSetting();
 private:
+
+	bool StartButton = false;
+	bool SaveButton = false;
 	std::shared_ptr<R642> R642s = nullptr;
 	std::shared_ptr<R7> R7s = nullptr;
 	std::shared_ptr<ubpulse> ubpulses = nullptr;
 
-
+	
 
 
 	std::vector<const char*> PortInfos;
 
 
-	std::string Time;
+
 	std::string Path;
 
-	//THread
+	//Thread
 	std::thread listener;
 	std::thread Rlistener;
 	std::atomic<bool> triggered = false;
