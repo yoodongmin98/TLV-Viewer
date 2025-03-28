@@ -198,6 +198,7 @@ void GuiInterface::RightFrameSetting()
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 1.0f,1.0f,1.0f,1.0f });
 	ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.373f, 0.608f, 0.922f, 1.00f));
 
 
 
@@ -232,6 +233,7 @@ void GuiInterface::RightFrameSetting()
 
 
 	ImGui::SetCursorPos(ImVec2(15, 121));
+	ImGui::PushFont(MyImGui::MyImGuis->GetSmallFont());
 	ImGui::BeginChild("##2", ImVec2{ 250,200 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 	PortInfos.clear();
 	PortInfos = R642s->GetAllPortInfo();
@@ -239,25 +241,35 @@ void GuiInterface::RightFrameSetting()
 	{
 		ImGui::Text("%s", item);
 	}
+	ImGui::PopFont();
 	ImGui::EndChild();
 
 
 	ImGui::SetCursorPos(ImVec2(15, 334));
 	ImGui::BeginChild("##3", ImVec2{ 250,65 }, true, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::SetCursorPos(ImVec2(15, 37));
+	ImGui::PushFont(MyImGui::MyImGuis->GetSmallFont());
 	ImGui::Text("%s", Path.c_str());
-	ImGui::SetCursorPos(ImVec2(70, 33));
+	ImGui::PopFont();
+	ImGui::SetCursorPos(ImVec2(13, 10));
+	ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.941f, 0.941f, 0.941f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.851f, 0.851f, 0.851f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.851f, 0.851f, 0.851f, 1.0f));
+
 	if (ImGui::Button("PATH SETTING"))
 	{
 		Path = GetFileNameFromPath(SaveFileDialog());
 	}
+	ImGui::PopStyleColor(3);
+	ImGui::PopStyleVar();
 	ImGui::EndChild();
 
 
 
 
 	ImGui::SetCursorPos(ImVec2(15, 402));
-
-	ImGui::PushFont(MyImGui::MyImGuis->GetComboFont());
+	ImGui::PushFont(MyImGui::MyImGuis->GetLargeBoldFont());
 	ImGui::BeginDisabled(StartButton);
 	if (ImGui::Button("START", ImVec2{ 125,46 }))
 	{
@@ -300,7 +312,9 @@ void GuiInterface::RightFrameSetting()
 		}
 	}
 	ImGui::EndDisabled();
+	ImGui::PopFont();
 
+	ImGui::PushFont(MyImGui::MyImGuis->GetMediumFont());
 	if (StartButton && SaveButton)
 	{
 		ImGui::SetCursorPos(ImVec2(90, 450));
@@ -308,9 +322,9 @@ void GuiInterface::RightFrameSetting()
 		ImGui::SetCursorPos(ImVec2(50, 470));
 		ImGui::TextColored(ImVec4(0.0f, 0.0f, 1.0f, 1.0f), "Please Restart the Program.");
 	}
-
-
 	ImGui::PopFont();
-	ImGui::PopStyleColor(3);
+
+
+	ImGui::PopStyleColor(4);
 	ImGui::PopStyleVar(3);
 }
