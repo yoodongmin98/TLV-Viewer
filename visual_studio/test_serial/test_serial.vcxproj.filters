@@ -158,5 +158,8 @@
     <ClInclude Include="ubpulse.h">
       <Filter>Contents\Header</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\OpenXLSX\OpenXLSX\OpenXLSX.hpp">
+      <Filter>ThirdParty\OPENXLSX</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
